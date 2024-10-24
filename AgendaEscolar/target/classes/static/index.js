@@ -13,18 +13,41 @@ document.addEventListener('DOMContentLoaded', function() {
             // Salvar a data do evento
             document.getElementById('event-form').onsubmit = function(e) {
                 e.preventDefault();
+
                 var title = document.getElementById('title').value;
                 var description = document.getElementById('description').value;
                 var type = document.getElementById('type').value;
 
-                // Adicionar o evento no calendário
-                calendar.addEvent({
-                    title: title + ' (' + type + ')',
-                    start: info.dateStr,
-                    description: description
-                });
+                // Montar os dados para enviar
+                var eventData = {
+                    titulo: title,
+                    descricao: description,
+                    type: type,
+                    data: info.dateStr
+                };
 
-                modal.hide(); // Fechar modal
+                // Fazer a requisição POST para o backend (controller)
+                fetch('/salvarprova', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded' // Necessário para o Spring interpretar os dados
+                    },
+                    body: new URLSearchParams(eventData) // Serializando os dados
+                })
+                .then(response => response.text()) // Converter a resposta para texto
+                .then(data => {
+                    console.log(data); // Exibe a resposta do servidor (ex: "Prova salva com sucesso!")
+
+                    // Adiciona o evento ao calendário
+                    calendar.addEvent({
+                        title: title + ' (' + type + ')',
+                        start: info.dateStr,
+                        description: description
+                    });
+
+                    modal.hide(); // Fecha o modal após o envio
+                })
+                .catch(error => console.error('Erro ao salvar a prova:', error));
             };
         }
     });
