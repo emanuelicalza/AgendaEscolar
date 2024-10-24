@@ -1,35 +1,18 @@
-document.addEventListener('DOMContentLoaded', function () {
+$(document).ready(function () {
     // Elementos dos botões
-    var btnLogin = document.getElementById('btnLogin');
-    var btnCadastro = document.getElementById('btnCadastro');
+    var btnLogin = $('#btnLogin');
+    var btnCadastro = $('#btnCadastro');
 
     // Contêiner para carregar os modais
-    var modalContainer = document.getElementById('modal-container');
+    var modalContainer = $('#modal-container');
 
-    // Carregar o modal de Login
-    btnLogin.addEventListener('click', function () {
-        loadModal('login.html', '#loginModal');
+    // Mostrar o modal de Login
+    btnLogin.on('click', function () {
+        $('#loginModal').modal('show');
     });
 
-    // Carregar o modal de Cadastro
-    btnCadastro.addEventListener('click', function () {
-        loadModal('cadastro.html', '#cadastroModal');
+    // Mostrar o modal de Cadastro
+    btnCadastro.on('click', function () {
+        $('#cadastroModal').modal('show');
     });
-
-    // Função para carregar o modal via AJAX
-    function loadModal(url, modalId) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                // Inserir o modal no contêiner
-                modalContainer.innerHTML = xhr.responseText;
-
-                // Mostrar o modal carregado
-                var modal = new bootstrap.Modal(document.querySelector(modalId));
-                modal.show();
-            }
-        };
-        xhr.send();
-    }
 });
