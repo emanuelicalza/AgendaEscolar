@@ -5,48 +5,45 @@ import com.AgendaEscolar.AgendaEscolar.service.S_Usuario;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 
 @Controller
 public class C_Cadastro {
-
-
     private final S_Usuario s_usuario;
 
-    // Injeção do serviço pelo construtor
     public C_Cadastro(S_Usuario s_usuario) {
-        this.s_usuario = s_usuario; // Atribuindo a instância do serviço
+        this.s_usuario = s_usuario;
     }
-    @PostMapping("/cadastrar")
-    public ResponseEntity<String> cadastrar(
+
+    @GetMapping("/cadastro")
+    public String getCadastro() {
+        return "/cadastro";
+    }
+
+    @PostMapping("/cadastro")
+    public String cadastrar(
             @RequestParam String nome,
             @RequestParam String email,
             @RequestParam String senha,
             @RequestParam String confirmarSenha,
-            @RequestParam String dataNascimento) {
+            @RequestParam String dataNascimento,
+            RedirectAttributes redirectAttributes) {
 
-        // Verifica se a senha e a confirmação da senha são iguais
         if (!senha.equals(confirmarSenha)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("As senhas não coincidem.");
+            redirectAttributes.addFlashAttribute("error", "As senhas não coincidem.");
+            return "redirect:/cadastro";
         }
 
-        // Lógica para salvar o usuário no banco de dados
-        M_Usuarios novoUsuario = new M_Usuarios();
-        novoUsuario.setNome(nome);
-        novoUsuario.setEmail(email);
-        novoUsuario.setSenha(senha);
-        novoUsuario.setDataNascimento(LocalDate.parse(dataNascimento)); // Conversão da data
-        novoUsuario.setTipo(1); // Tipo fixo como 1
-        novoUsuario.setIdDiretor(null); // idDiretor fixo como null
+        LocalDate dataNasc = LocalDate.parse(dataNascimento);
+        s_usuario.cadastrarUsuario(nome, email, senha, confirmarSenha, dataNasc);
 
-        s_usuario.cadastrarUsuario(novoUsuario);
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body("Usuário cadastrado com sucesso.");
+        redirectAttributes.addFlashAttribute("success", "Usuário cadastrado com sucesso.");
+        return "redirect:/"; // Altere para o mapeamento correto do seu index
     }
 }
