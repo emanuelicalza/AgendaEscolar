@@ -5,6 +5,7 @@ import com.AgendaEscolar.AgendaEscolar.repository.R_SalvarProva;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -46,5 +47,10 @@ public class S_SalvarProva {
             }
         }
         return null;
+    }
+
+    // Método para buscar todas as provas
+    public List<M_SalvarProva> buscarTodasProvas() {
+        return r_salvarProva.findAll();  // Chama o método do repositório para buscar todas as provas
     }
 }
