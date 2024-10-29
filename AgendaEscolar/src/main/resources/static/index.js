@@ -49,6 +49,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .catch(error => console.error('Erro ao salvar a prova:', error));
             };
+        },
+        events: function(fetchInfo, successCallback, failureCallback) {
+            fetch('/listarprovas') // Alterar para a rota que retorna os eventos do banco
+                .then(response => response.json())
+                .then(data => {
+                    // Formatar os dados para o FullCalendar
+                    const events = data.map(event => ({
+                        title: event.titulo + ' (' + event.type + ')',
+                        start: event.data,
+                        description: event.descricao
+                    }));
+                    successCallback(events);
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar eventos:', error);
+                    failureCallback(error);
+                });
         }
     });
 
