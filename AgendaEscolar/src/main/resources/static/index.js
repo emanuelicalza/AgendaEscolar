@@ -81,7 +81,7 @@ function salvarCadastrar(element){
     let dataNascimento = $("#dataNascimento").val();
 
     $.ajax({
-            url: "/cadastrar",
+            url: "/cadastro",
             method: "post",
             data: {
                 nome: nome,
