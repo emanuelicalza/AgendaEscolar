@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área do Diretor</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<!-- Nav Bar -->
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!-- outros links, se necessário -->
+            </ul>
+            <div th:if="${session.usuario != null}">
+                    <span class="navbar-text">
+                        <a th:href="@{/perfil}" th:text="${session.usuario.nome}" class="text-decoration-none"></a>
+                    </span>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <h1>Bem-vindo à Área do Diretor</h1>
+    <p>Aqui você pode gerenciar as informações da escola e criar perfis de professores.</p>
+
+    <!-- Botão para criar perfil de professor -->
+    <div class="mb-3">
+        <a href="/criarProfessor" class="btn btn-primary">Criar Perfil de Professor</a>
+    </div>
+
+    <!-- Tabela de professores cadastrados -->
+    <h2>Professores Cadastrados</h2>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Data de Nascimento</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Aqui você deve preencher a tabela com os dados dos professores cadastrados -->
+        <tr>
+            <td>1</td>
+            <td>Professor A</td>
+            <td>professorA@gmail.com</td>
+            <td>1980-01-01</td>
+            <td>
+                <a href="/editar-professor/1" class="btn btn-warning btn-sm">Editar</a>
+                <a href="/deletar-professor/1" class="btn btn-danger btn-sm">Deletar</a>
+            </td>
+        </tr>
+        <!-- Adicione mais linhas conforme necessário -->
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
