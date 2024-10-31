@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -33,7 +35,8 @@ public class C_Cadastro {
             @RequestParam String senha,
             @RequestParam String confirmarSenha,
             @RequestParam String dataNascimento,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            HttpSession session) {
 
         if (!senha.equals(confirmarSenha)) {
             redirectAttributes.addFlashAttribute("error", "As senhas não coincidem.");
@@ -41,7 +44,10 @@ public class C_Cadastro {
         }
 
         LocalDate dataNasc = LocalDate.parse(dataNascimento);
-        s_usuario.cadastrarUsuario(nome, email, senha, confirmarSenha, dataNasc);
+        M_Usuarios usuario = s_usuario.cadastrarUsuario(nome, email, senha, confirmarSenha, dataNasc);
+
+        // Armazena o usuário na sessão
+        session.setAttribute("usuario", usuario);
 
         redirectAttributes.addFlashAttribute("success", "Usuário cadastrado com sucesso.");
         return "redirect:/"; // Altere para o mapeamento correto do seu index

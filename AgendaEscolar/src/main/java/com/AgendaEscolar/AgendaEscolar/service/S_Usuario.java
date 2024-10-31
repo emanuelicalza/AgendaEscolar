@@ -18,16 +18,16 @@ public class S_Usuario {
             throw new IllegalArgumentException("As senhas não coincidem.");
         }
 
-        // Cria uma nova instância de M_Usuario
+        // Cria uma nova instância de M_Usuarios
         M_Usuarios novoUsuario = new M_Usuarios();
         novoUsuario.setNome(nome);
         novoUsuario.setEmail(email);
-        novoUsuario.setSenha(senha); // A senha deve ser hashada
+        novoUsuario.setSenha(senha); // Armazena a senha sem criptografia
         novoUsuario.setTipo(1); // Tipo padrão
         novoUsuario.setDataNascimento(dataNascimento);
         novoUsuario.setIdDiretor(null);
 
         // Salva o usuário no banco de dados
-        return r_usuario.save(novoUsuario);
+        return r_usuario.save(novoUsuario); // Retorna o usuário cadastrado
     }
 }
