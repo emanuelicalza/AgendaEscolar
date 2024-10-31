@@ -38,18 +38,22 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Pricing</a>
                 </li>
+                <!-- Área Diretor - só aparece se o usuário for diretor -->
+                <li class="nav-item" th:if="${session.usuario != null && session.usuario.tipo == 3}">
+                    <a class="nav-link" th:href="@{/areaDiretor}">Área Diretor</a>
+                </li>
             </ul>
 
-            <div class="d-flex align-items-center">
+            <div th:if="${session.usuario == null}" class="d-flex align-items-center">
                 <a class="btn btn-sm btn-primary me-2" href="login">Login</a>
                 <a class="btn btn-sm btn-secondary me-3" href="cadastro">Cadastrar</a>
-
-
-
-
-                <!-- futuro acesso ao perfil -->
+            </div>
+            <div th:if="${session.usuario != null}">
+                <!-- Link para a página de perfil do usuário logado -->
                 <span class="navbar-text">
-                    Seu nome aqui
+                    <a th:href="@{/perfil}" th:text="${session.usuario.nome}" class="text-decoration-none">
+                    <!-- Nome do usuário será exibido aqui -->
+                    </a>
                 </span>
             </div>
         </div>
