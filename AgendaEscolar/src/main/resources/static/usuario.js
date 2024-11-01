@@ -29,3 +29,18 @@ function salvarCadastrar(element){
             }
         });
 }
+
+$('#editarProfessorModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Botão que abriu o modal
+        var id = button.data('id'); // Extraindo dados do atributo data-* do botão
+        var nome = button.data('nome');
+        var email = button.data('email');
+        var dataNascimento = button.data('nascimento');
+
+        // Preenchendo os campos do modal
+        var modal = $(this);
+        modal.find('#professorId').val(id);
+        modal.find('#nomeEditar').val(nome);
+        modal.find('#emailEditar').val(email);
+        modal.find('#dataNascimentoEditar').val(dataNascimento);
+    });

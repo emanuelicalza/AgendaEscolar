@@ -2,16 +2,12 @@ package com.AgendaEscolar.AgendaEscolar.controller;
 
 import com.AgendaEscolar.AgendaEscolar.model.M_Usuarios;
 import com.AgendaEscolar.AgendaEscolar.service.S_Usuario;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import jakarta.servlet.http.HttpSession;
-
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import jakarta.servlet.http.HttpSession;
 
 import java.time.LocalDate;
 
@@ -25,7 +21,7 @@ public class C_Cadastro {
 
     @GetMapping("/cadastro")
     public String getCadastro() {
-        return "/cadastro";
+        return "cadastro"; // Certifique-se de que o nome da view esteja correto
     }
 
     @PostMapping("/cadastro")
@@ -44,12 +40,12 @@ public class C_Cadastro {
         }
 
         LocalDate dataNasc = LocalDate.parse(dataNascimento);
-        M_Usuarios usuario = s_usuario.cadastrarUsuario(nome, email, senha, confirmarSenha, dataNasc);
+        M_Usuarios usuario = s_usuario.cadastrarUsuario(nome, email, senha, senha, dataNasc, 1); // 1 para aluno
 
         // Armazena o usuário na sessão
         session.setAttribute("usuario", usuario);
 
         redirectAttributes.addFlashAttribute("success", "Usuário cadastrado com sucesso.");
-        return "redirect:/"; // Altere para o mapeamento correto do seu index
+        return "redirect:/"; // Redireciona para a página inicial
     }
 }
