@@ -21,6 +21,7 @@ public class C_SalvarProva {
     public C_SalvarProva(S_SalvarProva s_salvarProva) {
         this.s_salvarProva = s_salvarProva;
     }
+
     // Método para exibir todas as provas salvas
     @GetMapping("/provas")
     public String listarProvas(Model model) {
@@ -35,7 +36,8 @@ public class C_SalvarProva {
                               @RequestParam("descricao") String descricao,
                               @RequestParam("data") String data,
                               @RequestParam("type") String tipo,
-                              @RequestParam(name = "id", required = false) Long id, Model model) {
+                              @RequestParam(name = "id", required = false) Long id,
+                              Model model) {
         M_SalvarProva prova = s_salvarProva.salvarProva(titulo, descricao, data, tipo, id);
         if (prova != null) {
             model.addAttribute("mensagem", "Prova salva com sucesso!");
@@ -44,9 +46,20 @@ public class C_SalvarProva {
         }
         return "resultado";  // Nome do template Thymeleaf que mostrará a mensagem
     }
+
+    // Método para retornar provas em formato JSON
     @GetMapping("/listarprovas")
     public ResponseEntity<List<M_SalvarProva>> listarProvasJson() {
         List<M_SalvarProva> provas = s_salvarProva.buscarTodasProvas();
         return ResponseEntity.ok(provas);
+    }
+
+    // Método para carregar a página do calendário com as provas
+    @GetMapping("/agenda")
+    public String carregarAgenda(Model model) {
+        // Carrega as provas e adiciona ao modelo
+        List<M_SalvarProva> provas = s_salvarProva.buscarTodasProvas();
+        model.addAttribute("provas", provas);
+        return "agenda";  // Nome do template Thymeleaf da página do calendário
     }
 }
