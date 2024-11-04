@@ -44,10 +44,12 @@
                 <a class="btn btn-sm btn-primary me-2" href="login">Login</a>
                 <a class="btn btn-sm btn-secondary me-3" href="cadastro">Cadastrar</a>
             </div>
-            <div>
-                <!-- futuro acesso ao perfil -->
+            <div th:if="${session.usuario != null}">
+                <!-- Link para a página de perfil do usuário logado -->
                 <span class="navbar-text">
-                    Seu nome aqui
+                    <a th:href="@{/perfil}" th:text="${session.usuario.nome}" class="text-decoration-none">
+                    <!-- Nome do usuário será exibido aqui -->
+                    </a>
                 </span>
             </div>
         </div>

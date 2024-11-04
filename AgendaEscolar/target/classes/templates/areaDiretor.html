@@ -50,16 +50,18 @@
         </thead>
         <tbody>
         <!-- Aqui você deve preencher a tabela com os dados dos professores cadastrados -->
-        <tr>
-            <td>1</td>
-            <td>Professor A</td>
-            <td>professorA@gmail.com</td>
-            <td>1980-01-01</td>
-            <td>
-                <a href="/editar-professor/1" class="btn btn-warning btn-sm">Editar</a>
-                <a href="/deletar-professor/1" class="btn btn-danger btn-sm">Deletar</a>
-            </td>
-        </tr>
+        <th:block th:each="professor : ${professores}">
+            <tr>
+                <td th:text="${professor.id}">1</td>
+                <td th:text="${professor.nome}">Professor A</td>
+                <td th:text="${professor.email}">professorA@gmail.com</td>
+                <td th:text="${professor.dataNascimento}">1980-01-01</td>
+                <td>
+                    <a th:href="@{/editar-professor/{id}(id=${professor.id})}" class="btn btn-warning">Editar</a>
+                    <a th:href="@{/deletar-professor/{id}(id=${professor.id})}" class="btn btn-danger btn-sm">Deletar</a>
+                </td>
+            </tr>
+        </th:block>
         <!-- Adicione mais linhas conforme necessário -->
         </tbody>
     </table>
