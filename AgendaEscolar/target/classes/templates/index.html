@@ -38,6 +38,10 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Pricing</a>
                 </li>
+                <!-- Área Diretor - só aparece se o usuário for diretor -->
+                <li class="nav-item" th:if="${session.usuario != null && session.usuario.tipo == 3}">
+                    <a class="nav-link" th:href="@{/areaDiretor}">Área Diretor</a>
+                </li>
             </ul>
 
             <div th:if="${session.usuario == null}" class="d-flex align-items-center">
