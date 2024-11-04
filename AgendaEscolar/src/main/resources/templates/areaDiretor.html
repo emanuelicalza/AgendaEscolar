@@ -33,7 +33,7 @@
 
     <!-- Botão para criar perfil de professor -->
     <div class="mb-3">
-        <a href="/criarProfessor" class="btn btn-primary">Criar Perfil de Professor</a>
+        <button class="btn btn-primary" onclick="openProfessorModal()">Criar Perfil de Professor</button>
     </div>
 
     <!-- Tabela de professores cadastrados -->
@@ -49,7 +49,6 @@
         </tr>
         </thead>
         <tbody>
-        <!-- Aqui você deve preencher a tabela com os dados dos professores cadastrados -->
         <th:block th:each="professor : ${professores}">
             <tr>
                 <td th:text="${professor.id}">1</td>
@@ -57,18 +56,72 @@
                 <td th:text="${professor.email}">professorA@gmail.com</td>
                 <td th:text="${professor.dataNascimento}">1980-01-01</td>
                 <td>
-                    <a th:href="@{/editar-professor/{id}(id=${professor.id})}" class="btn btn-warning">Editar</a>
-                    <a th:href="@{/deletar-professor/{id}(id=${professor.id})}" class="btn btn-danger btn-sm">Deletar</a>
+                    <button class="btn btn-warning btn-sm" onclick="openProfessorModal([[${professor.id}]])">Editar</button>
+                    <button class="btn btn-danger btn-sm" onclick="openDeleteModal([[${professor.id}]])">Deletar</button>
                 </td>
             </tr>
         </th:block>
-        <!-- Adicione mais linhas conforme necessário -->
         </tbody>
     </table>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<!-- Modal para Criar/Editar Professor -->
+<div class="modal fade" id="professorModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Criar/Editar Professor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="professorForm" th:action="@{/criarProfessor}" method="post">
+                    <input type="hidden" id="professorId" name="id"/>
+                    <div class="form-group">
+                        <label for="nome">Nome:</label>
+                        <input type="text" class="form-control" id="nome" name="nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dataNascimento">Data de Nascimento:</label>
+                        <input type="date" class="form-control" id="dataNascimento" name="dataNascimento" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmação para Exclusão -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirmar Exclusão</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza de que deseja excluir este professor?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Excluir</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script src="usuario.js"></script>
+
 </body>
 </html>
