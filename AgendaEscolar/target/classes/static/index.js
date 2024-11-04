@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
         initialView: 'dayGridMonth',
         locale: 'pt-br', // Definir a localidade para português
         dateClick: function(info) {
-            // Abrir o modal ao clicar em um dia
             var modal = new bootstrap.Modal(document.getElementById('eventModal'));
             modal.show();
 
@@ -26,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     data: info.dateStr
                 };
 
-                // Fazer a requisição POST para o backend (controller)
                 fetch('/salvarprova', {
                     method: 'POST',
                     headers: {
@@ -34,27 +32,33 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     body: new URLSearchParams(eventData) // Serializando os dados
                 })
-                .then(response => response.text()) // Converter a resposta para texto
+                .then(response => response.text())
                 .then(data => {
-                    console.log(data); // Exibe a resposta do servidor (ex: "Prova salva com sucesso!")
+                    console.log(data);
 
                     // Adiciona o evento ao calendário
                     calendar.addEvent({
                         title: title + ' (' + type + ')',
                         start: info.dateStr,
-                        description: description
+                        description: description // Adicionando a descrição aqui para referência
                     });
 
-                    modal.hide(); // Fecha o modal após o envio
+                    // Fechar a modal após adicionar o evento
+                    modal.hide();
+
+                    // Limpar os campos do formulário
+                    document.getElementById('event-form').reset();
+
+                    // Exibir aviso
+                    exibirAviso(title, description, type, info.dateStr);
                 })
                 .catch(error => console.error('Erro ao salvar a prova:', error));
             };
         },
         events: function(fetchInfo, successCallback, failureCallback) {
-            fetch('/listarprovas') // Alterar para a rota que retorna os eventos do banco
+            fetch('/listarprovas')
                 .then(response => response.json())
                 .then(data => {
-                    // Formatar os dados para o FullCalendar
                     const events = data.map(event => ({
                         title: event.titulo + ' (' + event.type + ')',
                         start: event.data,
@@ -66,9 +70,32 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.error('Erro ao carregar eventos:', error);
                     failureCallback(error);
                 });
+        },
+        eventClick: function(info) {
+            // Abrir modal e preencher com dados do evento
+            document.getElementById('modalTitleDetails').innerText = info.event.title;
+            document.getElementById('eventDescriptionDetails').innerText = info.event.extendedProps.description;
+            document.getElementById('eventTypeDetails').innerText = info.event.extendedProps.type;
+            document.getElementById('eventDateDetails').innerText = info.event.start.toLocaleDateString('pt-BR');
+
+            // Mostrar a modal
+            var modalDetails = new bootstrap.Modal(document.getElementById('detailsModalNew'));
+            modalDetails.show();
         }
     });
 
     calendar.render();
-});
 
+    // Função para exibir o aviso após a adição da atividade
+    function exibirAviso(titulo, descricao, tipo, data) {
+        var avisoContainer = document.getElementById('avisosContainer');
+        var avisoHtml = `
+            <div class="alert alert-success" role="alert">
+                Nova atividade adicionada: <strong>${titulo}</strong> (${tipo})<br>
+                Descrição: ${descricao}<br>
+                Data: ${new Date(data).toLocaleDateString('pt-BR')}
+            </div>
+        `;
+        avisoContainer.innerHTML += avisoHtml;
+    }
+});
