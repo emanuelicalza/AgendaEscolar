@@ -1,0 +1,72 @@
+<!-- Aqui começa o código inserido -->
+<div class="container mt-4">
+    <h1>Avisos</h1>
+    <div id="provas-container" class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+        <!-- A tabela será preenchida dinamicamente -->
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Descrição</th>
+                <th>Data</th>
+                <th>Tipo</th>
+            </tr>
+            </thead>
+            <tbody id="provas-body">
+            <!-- Aqui as provas serão inseridas dinamicamente -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Script para buscar as provas via AJAX -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Faz a requisição para buscar as provas em JSON
+        fetch('/buscarProvasJson')
+            .then(response => response.json())
+            .then(data => {
+                const provasBody = document.getElementById('provas-body');
+
+                // Limpa o tbody antes de inserir novos dados
+                provasBody.innerHTML = '';
+
+                // Itera sobre cada prova e cria uma linha para cada uma
+                data.forEach(prova => {
+                    const row = document.createElement('tr');
+
+                    // Cria as colunas (td) para cada campo
+                    const colId = document.createElement('td');
+                    colId.textContent = prova.id;
+
+                    const colTitulo = document.createElement('td');
+                    colTitulo.textContent = prova.titulo;
+
+                    const colDescricao = document.createElement('td');
+                    colDescricao.textContent = prova.descricao;
+
+                    const colData = document.createElement('td');
+                    colData.textContent = prova.data;  // Certifique-se de que o formato da data está correto
+
+                    const colTipo = document.createElement('td');
+                    colTipo.textContent = prova.tipo;
+
+                    // Adiciona as colunas à linha
+                    row.appendChild(colId);
+                    row.appendChild(colTitulo);
+                    row.appendChild(colDescricao);
+                    row.appendChild(colData);
+                    row.appendChild(colTipo);
+
+                    // Adiciona a linha ao tbody
+                    provasBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao carregar as provas:', error);
+            });
+    });
+</script>
+<!-- Fim do código inserido -->
+</div>
