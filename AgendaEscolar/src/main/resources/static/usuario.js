@@ -1,15 +1,13 @@
-function salvarProfessor(element) {
-    // Verifica se estamos criando ou editando pelo valor do ID
-    let id = $("#professorId").val();
+// Função para salvar ou atualizar professor
+function salvarProfessor() {
+    let id = $("#professorId").val(); // Obtém o ID do campo oculto
     let nome = $("#nome").val();
     let email = $("#email").val();
     let dataNascimento = $("#dataNascimento").val();
 
-    let url = id ? `/editarProfessor/${id}` : "/criarProfessor"; // Define a URL com base no ID
-
     $.ajax({
-        url: url,
-        method: "post",
+        url: "/professores/salvar",
+        method: "POST",
         data: {
             id: id,
             nome: nome,
@@ -17,62 +15,132 @@ function salvarProfessor(element) {
             dataNascimento: dataNascimento
         },
         success: function(data) {
-            // Sucesso na operação: atualizar a lista de professores sem recarregar a página
-            $("#activity-container").html(data); // Atualize a tabela de professores
-            $("#professorModal").modal('hide'); // Fecha o modal
+            // Fecha o modal
+            $("#professorModal").modal('hide');
+
+            // Se for uma atualização
+            if (id) {
+                // Localiza a linha correspondente e atualiza os dados
+                let row = $(`#professor-${id}`);
+                row.find(".nome").text(nome);
+                row.find(".email").text(email);
+                row.find(".dataNascimento").text(dataNascimento);
+            } else {
+                // Se for uma criação, adiciona a nova linha na tabela
+                $("#professoresTabela tbody").append(
+                    `<tr id="professor-${data.id}">
+                        <td class="nome">${nome}</td>
+                        <td class="email">${email}</td>
+                        <td class="dataNascimento">${dataNascimento}</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="openProfessorModal(${data.id})">Editar</button>
+                            <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${data.id})">Deletar</button>
+                        </td>
+                    </tr>`
+                );
+            }
+
             // Limpa os campos do formulário para o próximo uso
-            $("#professorId").val('');
-            $("#nome").val('');
-            $("#email").val('');
-            $("#dataNascimento").val('');
+            limparCampos();
         },
-        error: function() {
-            alert("Erro ao salvar o professor. Tente novamente.");
+        error: function(xhr) {
+            alert("Erro ao salvar o professor: " + xhr.responseText);
         }
     });
 }
 
-// Abrir o modal de edição com os dados do professor selecionado
+// Função para abrir o modal de edição com os dados do professor
 function openProfessorModal(professorId = null) {
     if (professorId) {
-        // Carregar dados do professor para edição
-        $.get(`/obterProfessor/${professorId}`, function(professor) {
-            $('#professorId').val(professor.id);
-            $('#nome').val(professor.nome);
-            $('#email').val(professor.email);
-            $('#dataNascimento').val(professor.dataNascimento);
-            $('#modalLabel').text('Editar Professor');
-        });
-    } else {
-        // Abrir o modal para criação de novo professor
-        $('#professorId').val('');
-        $('#nome').val('');
-        $('#email').val('');
-        $('#dataNascimento').val('');
-        $('#modalLabel').text('Criar Professor');
-    }
-    $('#professorModal').modal('show');
-}
+        professorEditandoId = professorId; // Armazena o ID do professor para edição
+        $("#professorId").val(professorId); // Define o ID no campo oculto
 
-// Abrir o modal de confirmação de exclusão
-function openDeleteModal(professorId) {
-    $('#confirmDeleteBtn').off('click').on('click', function() {
         $.ajax({
-            url: `/deletar-professor/${professorId}`,
-            method: "get",
-            success: function() {
-                $("#activity-container").load("/areaDiretor #activity-container > *"); // Recarrega a tabela
-                $('#deleteModal').modal('hide');
+            url: `/professores/${professorId}`,
+            method: "GET",
+            success: function(data) {
+                // Preenche o modal com os dados do professor
+                $("#nome").val(data.nome);
+                $("#email").val(data.email);
+                $("#dataNascimento").val(data.dataNascimento);
+                $("#modalLabel").text("Editar Professor");
+                $("#professorModal").modal('show');
             },
-            error: function() {
-                alert("Erro ao excluir o professor.");
+            error: function(xhr) {
+                alert("Erro ao carregar os dados do professor: " + xhr.responseText);
             }
         });
-    });
-    $('#deleteModal').modal('show');
+    } else {
+        professorEditandoId = null; // Reseta o ID para criação de um novo professor
+        limparCampos();
+        $("#professorId").val(''); // Limpa o ID no campo oculto
+        $("#modalLabel").text("Criar Professor");
+        $("#professorModal").modal('show');
+    }
 }
 
-// Evento de botão de salvamento no modal
-$("#salvarProfessorBtn").on('click', function() {
-    salvarProfessor();
+// Função para limpar os campos do formulário
+function limparCampos() {
+    $("#nome").val('');
+    $("#email").val('');
+    $("#dataNascimento").val('');
+}
+
+// Função para abrir o modal de exclusão de professor
+function openDeleteModal(id) {
+    // Configura o botão de confirmação para excluir o professor com o ID passado
+    $("#confirmDeleteBtn").off('click').on('click', function() {
+        excluirProfessor(id); // Passa o ID do professor para a função de exclusão
+    });
+    $("#deleteModal").modal('show');
+}
+
+// Função para excluir professor
+function excluirProfessor(id) {
+    $.ajax({
+        type: 'DELETE',
+        url: `/professores/deletar/${id}`,  // Alterado para 'deletar' ao invés de 'excluir'
+        success: function() {
+            $('#deleteModal').modal('hide');
+            atualizarTabelaProfessores(); // Atualiza a tabela após exclusão
+        },
+        error: function(xhr, status, error) {
+            alert('Erro ao excluir professor.');
+            console.error("Erro ao excluir professor:", error);
+        }
+    });
+}
+
+// Função para atualizar a tabela de professores após a exclusão
+function atualizarTabelaProfessores() {
+    $.ajax({
+        url: "/professores/listar", // Rota para listar todos os professores
+        method: "GET",
+        success: function(data) {
+            let tabela = $("#professoresTabela tbody");
+            tabela.empty(); // Limpa a tabela antes de repovoar
+
+            data.forEach(professor => {
+                tabela.append(
+                    `<tr id="professor-${professor.id}">
+                        <td class="nome">${professor.nome}</td>
+                        <td class="email">${professor.email}</td>
+                        <td class="dataNascimento">${professor.dataNascimento}</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="openProfessorModal(${professor.id})">Editar</button>
+                            <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${professor.id})">Deletar</button>
+                        </td>
+                    </tr>`
+                );
+            });
+        },
+        error: function(xhr) {
+            alert("Erro ao carregar a lista de professores.");
+        }
+    });
+}
+
+$(document).ready(function() {
+    // Configuração do botão de salvar
+    $("#salvarProfessorBtn").click(salvarProfessor);
 });
