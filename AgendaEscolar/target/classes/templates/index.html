@@ -14,6 +14,8 @@
     <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.15/main.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.15/main.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/bootstrap5@6.1.15/main.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
@@ -62,8 +64,6 @@
 
 <div class="row">
     <div class="container mb-5 mt-5 col-3" id="avisosContainer">
-        <h2 class="text-center">AVISO</h2>
-        <!-- Modal para exibir detalhes do evento -->
         <div class="modal fade" id="detailsModalNew" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -82,7 +82,9 @@
                 </div>
             </div>
         </div>
-    </div>
+
+        <div th:insert="~{carregararquivos}"></div>
+
 
     <!-- Container do calendário -->
     <div class="container mt-5 col-9">

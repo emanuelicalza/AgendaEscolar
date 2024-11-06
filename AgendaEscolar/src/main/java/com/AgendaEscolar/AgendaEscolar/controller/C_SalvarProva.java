@@ -53,13 +53,9 @@ public class C_SalvarProva {
         List<M_SalvarProva> provas = s_salvarProva.buscarTodasProvas();
         return ResponseEntity.ok(provas);
     }
-
-    // Método para carregar a página do calendário com as provas
-    @GetMapping("/agenda")
-    public String carregarAgenda(Model model) {
-        // Carrega as provas e adiciona ao modelo
+    @GetMapping("/buscarProvasJson")
+    public ResponseEntity<List<M_SalvarProva>> buscarProvasJson() {
         List<M_SalvarProva> provas = s_salvarProva.buscarTodasProvas();
-        model.addAttribute("provas", provas);
-        return "agenda";  // Nome do template Thymeleaf da página do calendário
+        return ResponseEntity.ok(provas);
     }
 }
