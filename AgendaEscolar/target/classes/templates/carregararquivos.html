@@ -6,11 +6,10 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>ID</th>
                 <th>Título</th>
                 <th>Descrição</th>
-                <th>Data</th>
-                <th>Tipo</th>
+                <th>Data</th> <!-- Tipo vem antes -->
+                <th>Tipo</th> <!-- Data vem depois -->
             </tr>
             </thead>
             <tbody id="provas-body">
@@ -20,53 +19,80 @@
     </div>
 </div>
 
-<!-- Script para buscar as provas via AJAX -->
+<!-- Adicionando os scripts para WebSocket -->
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Faz a requisição para buscar as provas em JSON
+    // Função para conectar ao WebSocket e receber novos avisos
+    function connect() {
+        var socket = new SockJS('/ws'); // URL do endpoint do WebSocket no servidor
+        var stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            console.log('Conectado: ' + frame);
+
+            // Inscreva-se no tópico para receber atualizações de provas
+            stompClient.subscribe('/topic/provas', function (prova) {
+                var data = JSON.parse(prova.body);
+                exibirAviso(data.titulo, data.descricao, data.data, data.tipo);
+            });
+        });
+    }
+
+    // Função para exibir o aviso (prova) dinamicamente na tabela
+    function exibirAviso(titulo, descricao, data, tipo) {
+        const provasBody = document.getElementById('provas-body');
+
+        const row = document.createElement('tr');
+
+        // Criar as colunas (td) para cada campo
+        const colTitulo = document.createElement('td');
+        colTitulo.textContent = titulo;
+
+        const colDescricao = document.createElement('td');
+        colDescricao.textContent = descricao;
+
+        const colTipo = document.createElement('td');
+        colTipo.textContent = tipo; // Tipo vem primeiro
+
+        const colData = document.createElement('td');
+        colData.textContent = data; // Data vem depois
+
+        // Adicionar as colunas à linha
+        row.appendChild(colTitulo);
+        row.appendChild(colDescricao);
+        row.appendChild(colTipo); // Coloca o tipo antes
+        row.appendChild(colData); // Coloca a data depois
+
+        // Adicionar a linha ao tbody da tabela
+        provasBody.appendChild(row);
+    }
+
+    // Função para carregar as provas existentes ao carregar a página
+    function carregarProvas() {
         fetch('/buscarProvasJson')
             .then(response => response.json())
             .then(data => {
                 const provasBody = document.getElementById('provas-body');
 
-                // Limpa o tbody antes de inserir novos dados
+                // Limpar o tbody antes de inserir novos dados
                 provasBody.innerHTML = '';
 
-                // Itera sobre cada prova e cria uma linha para cada uma
+                // Iterar sobre cada prova e criar uma linha para cada uma
                 data.forEach(prova => {
-                    const row = document.createElement('tr');
-
-                    // Cria as colunas (td) para cada campo
-                    const colId = document.createElement('td');
-                    colId.textContent = prova.id;
-
-                    const colTitulo = document.createElement('td');
-                    colTitulo.textContent = prova.titulo;
-
-                    const colDescricao = document.createElement('td');
-                    colDescricao.textContent = prova.descricao;
-
-                    const colData = document.createElement('td');
-                    colData.textContent = prova.data;  // Certifique-se de que o formato da data está correto
-
-                    const colTipo = document.createElement('td');
-                    colTipo.textContent = prova.tipo;
-
-                    // Adiciona as colunas à linha
-                    row.appendChild(colId);
-                    row.appendChild(colTitulo);
-                    row.appendChild(colDescricao);
-                    row.appendChild(colData);
-                    row.appendChild(colTipo);
-
-                    // Adiciona a linha ao tbody
-                    provasBody.appendChild(row);
+                    exibirAviso(prova.titulo, prova.descricao, prova.tipo, prova.data); // Corrigido para tipo vir antes da data
                 });
             })
             .catch(error => {
                 console.error('Erro ao carregar as provas:', error);
             });
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        connect();      // Conectar ao WebSocket
+        carregarProvas();
     });
 </script>
+
 <!-- Fim do código inserido -->
 </div>
