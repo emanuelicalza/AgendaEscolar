@@ -86,16 +86,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     calendar.render();
 
-    // Função para exibir o aviso após a adição da atividade
-    function exibirAviso(titulo, descricao, tipo, data) {
-        var avisoContainer = document.getElementById('avisosContainer');
-        var avisoHtml = `
-            <div class="alert alert-success" role="alert">
-                Nova atividade adicionada: <strong>${titulo}</strong> (${tipo})<br>
-                Descrição: ${descricao}<br>
-                Data: ${new Date(data).toLocaleDateString('pt-BR')}
-            </div>
-        `;
-        avisoContainer.innerHTML += avisoHtml;
-    }
 });
