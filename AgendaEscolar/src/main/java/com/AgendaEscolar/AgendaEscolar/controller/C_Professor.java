@@ -3,15 +3,16 @@ package com.AgendaEscolar.AgendaEscolar.controller;
 import com.AgendaEscolar.AgendaEscolar.model.M_Usuarios;
 import com.AgendaEscolar.AgendaEscolar.service.S_Email;
 import com.AgendaEscolar.AgendaEscolar.service.S_Usuario;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
+@RequestMapping("/professores") // Agrupando endpoints relacionados
 public class C_Professor {
     private final S_Usuario s_usuario;
     private final S_Email s_email;
@@ -21,56 +22,66 @@ public class C_Professor {
         this.s_email = s_email;
     }
 
-    // Método para exibir o formulário de criação do professor
-    @GetMapping("/criarProfessor")
-    public String mostrarFormularioCriacaoProfessor(@SessionAttribute(name = "usuario", required = false) M_Usuarios usuario, Model model) {
-        if (usuario == null || usuario.getTipo() != 3) {
-            return "redirect:/"; // Redireciona para a home se não for um diretor
-        }
-        return "criarProfessor"; // Página do formulário para criar professor
-    }
-
-    // Método para processar o formulário de criação ou atualização do professor
-    @PostMapping("/criarProfessor")
-    public String salvarProfessor(
-            @RequestParam(required = false) Long id, // Adiciona um parâmetro opcional para ID
+    // Endpoint para criar ou atualizar professor via AJAX
+    @PostMapping("/salvar")
+    @ResponseBody
+    public ResponseEntity<M_Usuarios> salvarProfessor(
+            @RequestParam(required = false) Long id,
             @RequestParam String nome,
             @RequestParam String email,
-            @RequestParam String dataNascimento,
-            RedirectAttributes redirectAttributes) {
+            @RequestParam String dataNascimento) {
 
-        LocalDate dataNasc = LocalDate.parse(dataNascimento); // Lê a data corretamente
+        LocalDate dataNasc = LocalDate.parse(dataNascimento);
+        M_Usuarios professor;
 
-        if (id != null) { // Se o ID estiver presente, atualiza o professor
-            s_usuario.atualizarProfessor(id, nome, email, dataNasc); // Método para atualizar professor
-            redirectAttributes.addFlashAttribute("success", "Professor atualizado com sucesso.");
-        } else { // Se o ID não estiver presente, cria um novo professor
-            String senha = gerarSenha(); // Gera uma senha aleatória
-            s_usuario.cadastrarUsuario(nome, email, senha, senha, dataNasc, 2); // Passa tipo 2 para professor
-
-            // Envio de email
-            String tituloEmail = "Bem-vindo ao sistema!";
-            String mensagemEmail = "Sua senha é: " + senha;
-            s_email.enviaEmail(email, tituloEmail, mensagemEmail);
-
-            redirectAttributes.addFlashAttribute("success", "Professor criado com sucesso.");
+        if (id != null) {
+            // Atualiza professor existente
+            professor = s_usuario.atualizarProfessor(id, nome, email, dataNasc);
+            return ResponseEntity.ok(professor); // Retorna os dados do professor atualizado
+        } else {
+            // Cria um novo professor
+            String senha = gerarSenha();
+            professor = s_usuario.cadastrarUsuario(nome, email, senha, senha, dataNasc, 2);
+            s_email.enviaEmail(email, "Bem-vindo ao sistema!", "Sua senha é: " + senha);
+            return ResponseEntity.ok(professor); // Retorna os dados do novo professor
         }
-
-        return "redirect:/areaDiretor"; // Redireciona para a página da área do diretor
     }
+
+    // Endpoint para deletar professor
+    @DeleteMapping("/deletar/{id}")
+    @ResponseBody
+    public ResponseEntity<String> deletarProfessor(@PathVariable Long id) {
+        s_usuario.deletarProfessor(id);
+        return ResponseEntity.ok("Professor deletado com sucesso.");
+    }
+
+    // Endpoint para obter professor por ID
+    @GetMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity<M_Usuarios> obterProfessor(@PathVariable Long id) {
+        M_Usuarios professor = s_usuario.obterProfessorPorId(id);
+        if (professor != null) {
+            return ResponseEntity.ok(professor);
+        } else {
+            return ResponseEntity.notFound().build(); // Retorna 404 se não encontrar
+        }
+    }
+
+    // Endpoint para listar todos os professores
+    @GetMapping("/listar")
+    @ResponseBody
+    public ResponseEntity<List<M_Usuarios>> listarProfessores() {
+        List<M_Usuarios> professores = s_usuario.obterProfessores(); // Chama o método obterProfessores
+        if (professores.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Retorna 204 se não houver professores
+        } else {
+            return ResponseEntity.ok(professores); // Retorna a lista de professores
+        }
+    }
+
+
 
     private String gerarSenha() {
-        return UUID.randomUUID().toString().substring(0, 8); // Gera uma senha de 8 caracteres
-    }
-
-    @GetMapping("/editarProfessor/{id}")
-    public String editarProfessor(@PathVariable Long id, Model model) {
-        M_Usuarios professor = s_usuario.obterProfessorPorId(id); // Método para buscar professor pelo ID
-        if (professor == null) {
-            // Se o professor não for encontrado, redirecione ou lance um erro apropriado
-            return "redirect:/areaDiretor"; // Ajuste conforme necessário
-        }
-        model.addAttribute("professor", professor); // Adiciona o professor ao modelo
-        return "criarProfessor"; // Redireciona para a página de criarProfessor
+        return UUID.randomUUID().toString().substring(0, 8);
     }
 }

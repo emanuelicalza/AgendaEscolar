@@ -14,7 +14,7 @@ public class S_Usuario {
     @Autowired
     private R_Usuario r_usuario;
 
-    public M_Usuarios cadastrarUsuario(String nome, String email, String senha, String confirmarSenha, LocalDate dataNascimento,  int tipo) {
+    public M_Usuarios cadastrarUsuario(String nome, String email, String senha, String confirmarSenha, LocalDate dataNascimento, int tipo) {
         // Verifica se as senhas coincidem
         if (!senha.equals(confirmarSenha)) {
             throw new IllegalArgumentException("As senhas não coincidem.");
@@ -28,7 +28,7 @@ public class S_Usuario {
         usuario.setDataNascimento(dataNascimento);
         usuario.setTipo(tipo); // Define o tipo do usuário (1 para aluno)
 
-        // Salve o usuário no repositório
+        // Salva o usuário no repositório e retorna o objeto salvo
         return r_usuario.save(usuario);
     }
 
@@ -45,14 +45,24 @@ public class S_Usuario {
     }
 
     // Método para atualizar professor
-    public void atualizarProfessor(Long id, String nome, String email, LocalDate dataNascimento) {
+    public M_Usuarios atualizarProfessor(Long id, String nome, String email, LocalDate dataNascimento) {
         M_Usuarios professor = obterProfessorPorId(id);
         if (professor != null) {
             professor.setNome(nome);
             professor.setEmail(email);
             professor.setDataNascimento(dataNascimento);
-            r_usuario.save(professor); // Salva as alterações no repositório
+            return r_usuario.save(professor); // Salva as alterações no repositório e retorna o objeto atualizado
         }
+        return null; // Retorna null se o professor não for encontrado
     }
 
+    // Método para deletar professor por ID
+    public void deletarProfessor(Long id) {
+        Optional<M_Usuarios> professor = r_usuario.findById(id);
+        if (professor.isPresent() && professor.get().getTipo() == 2) { // Verifica se o usuário é um professor
+            r_usuario.deleteById(id);
+        } else {
+            throw new IllegalArgumentException("Professor não encontrado ou ID inválido.");
+        }
+    }
 }
