@@ -40,14 +40,20 @@ function salvarProfessor() {
                 );
             }
 
+
+            // Use `atualizarTabelaProfessores` para garantir a atualização completa da tabela
+            atualizarTabelaProfessores();
+
             // Limpa os campos do formulário para o próximo uso
             limparCampos();
+
         },
         error: function(xhr) {
             alert("Erro ao salvar o professor: " + xhr.responseText);
         }
     });
 }
+
 
 // Função para abrir o modal de edição com os dados do professor
 function openProfessorModal(professorId = null) {
@@ -65,6 +71,7 @@ function openProfessorModal(professorId = null) {
                 $("#dataNascimento").val(data.dataNascimento);
                 $("#modalLabel").text("Editar Professor");
                 $("#professorModal").modal('show');
+
             },
             error: function(xhr) {
                 alert("Erro ao carregar os dados do professor: " + xhr.responseText);

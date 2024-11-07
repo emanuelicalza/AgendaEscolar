@@ -28,8 +28,7 @@
 </nav>
 
 <div class="container mt-5">
-    <h1>Bem-vindo à Área do Diretor</h1>
-    <p>Aqui você pode gerenciar as informações da escola e criar perfis de professores.</p>
+    <h1>Área do Diretor</h1>
 
     <!-- Botão para criar perfil de professor -->
     <div class="mb-3">
@@ -57,7 +56,8 @@
                 <td>
                     <button class="btn btn-warning btn-sm"
                             th:attr="onclick='openProfessorModal(' + ${professor.id} + ')'" >Editar</button>
-                    <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${professor.id})">Deletar</button>
+                    <button class="btn btn-danger btn-sm"
+                            th:attr="onclick='openDeleteModal(' + ${professor.id} + ')'" >Deletar</button>
 
 
 
