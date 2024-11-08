@@ -34,6 +34,9 @@ public class M_SalvarProva {
         this.dataCriacao = LocalDateTime.now(); // Inicializa a data de criação
     }
 
+    public M_SalvarProva(boolean b, String atvdFoiDeArrasta) {
+    }
+
     // Getters e Setters
     public Long getId() {
         return id;

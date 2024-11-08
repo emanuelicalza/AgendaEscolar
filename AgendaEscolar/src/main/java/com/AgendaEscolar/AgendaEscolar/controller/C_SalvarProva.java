@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -53,9 +51,20 @@ public class C_SalvarProva {
         List<M_SalvarProva> provas = s_salvarProva.buscarTodasProvas();
         return ResponseEntity.ok(provas);
     }
+
     @GetMapping("/buscarProvasJson")
     public ResponseEntity<List<M_SalvarProva>> buscarProvasJson() {
         List<M_SalvarProva> provas = s_salvarProva.buscarTodasProvas();
         return ResponseEntity.ok(provas);
+    }
+
+    // Método para deletar a prova
+    @PostMapping("/deletarProva")
+    @ResponseBody
+    public M_SalvarProva deletarProva(@RequestParam("id") int id) {
+        if (S_SalvarProva.deletarProva(id)) {
+            return new M_SalvarProva(true, "atvd foi de arrasta");
+        }
+        return new M_SalvarProva(false, "erroooooo");
     }
 }

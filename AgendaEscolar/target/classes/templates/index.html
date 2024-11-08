@@ -64,24 +64,7 @@
 
 <div class="row">
     <div class="container mb-5 mt-5 col-3" id="avisosContainer">
-        <div class="modal fade" id="detailsModalNew" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalTitleDetails">Título do Evento</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p><strong>Descrição:</strong> <span id="eventDescriptionDetails"></span></p>
-                        <p><strong>Tipo:</strong> <span id="eventTypeDetails"></span></p>
-                        <p><strong>Data:</strong> <span id="eventDateDetails"></span></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div th:insert="~{modaldasatividade}"></div>
 
         <div th:insert="~{carregararquivos}"></div>
 
