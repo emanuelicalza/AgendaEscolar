@@ -20,8 +20,8 @@ public class C_Diretor {
     }
 
     // Método para exibir a área do diretor e listar professores cadastrados
-    @GetMapping("/areaDiretor")
-    public String areaDiretor(@SessionAttribute(name = "usuario", required = false) M_Usuarios usuario, Model model) {
+    @GetMapping("/gerirProfessores")
+    public String gerirProfessores(@SessionAttribute(name = "usuario", required = false) M_Usuarios usuario, Model model) {
         if (usuario == null || usuario.getTipo() != 3) {
             return "redirect:/"; // Redireciona para a home se não for um diretor
         }
@@ -32,7 +32,7 @@ public class C_Diretor {
         System.out.println("Professores encontrados: " + professores); // Log para ver se existem professores
 
         model.addAttribute("professores", professores); // Adiciona a lista de professores ao modelo
-        return "areaDiretor"; // Página da área do diretor
+        return "gerirProfessores"; // Página da área do diretor
     }
 
 

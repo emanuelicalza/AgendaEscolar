@@ -2,6 +2,7 @@ package com.AgendaEscolar.AgendaEscolar.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "usuarios")
@@ -19,9 +20,15 @@ public class M_Usuarios {
 
     private Integer tipo; // Usando Integer para representar o tipo
 
-    private LocalDate DataNascimento; // Usando LocalDate para data de nascimento
+    private LocalDate dataNascimento; // Usando LocalDate para data de nascimento
 
     private Long idDiretor; // Referência ao ID do diretor, se necessário
+
+    // Método para formatar a data de nascimento
+    public String getDataNascimentoFormatada() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return this.dataNascimento != null ? this.dataNascimento.format(formatter) : "";
+    }
 
     // Construtores
     public M_Usuarios() {
@@ -33,7 +40,7 @@ public class M_Usuarios {
         this.email = email;
         this.senha = senha;
         this.tipo = tipo;
-        this.DataNascimento = DataNascimento;
+        this.dataNascimento = nasc; // Correção aqui
         this.idDiretor = idDiretor;
     }
 
@@ -79,11 +86,11 @@ public class M_Usuarios {
     }
 
     public LocalDate getDataNascimento() {
-        return DataNascimento;
+        return dataNascimento;
     }
 
     public void setDataNascimento(LocalDate nasc) {
-        this.DataNascimento = nasc;
+        this.dataNascimento = nasc;
     }
 
     public Long getIdDiretor() {

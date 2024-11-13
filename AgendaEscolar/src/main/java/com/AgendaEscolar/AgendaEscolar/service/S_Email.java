@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
 import java.security.SecureRandom;
 
 @Service
@@ -17,15 +17,18 @@ public class S_Email {
         this.mailSender = mailSender;
     }
 
-    public void enviaEmail(String to, String title, String message) {
-        // Cria uma nova mensagem de e-mail
-        SimpleMailMessage email = new SimpleMailMessage();
-        email.setTo(to); // Define o destinatário
-        email.setSubject(title); // Define o assunto
-        email.setText(message); // Define o conteúdo do e-mail
 
-        // Envia a mensagem utilizando o mailSender
+
+    @Async
+    public void enviaEmail(String to, String title, String message) {
+
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(to);
+        email.setSubject(title);
+        email.setText(message);
+
         mailSender.send(email);
+
     }
 
     public String gerarSenha(int length) {
