@@ -3,6 +3,7 @@ package com.AgendaEscolar.AgendaEscolar.controller;
 import com.AgendaEscolar.AgendaEscolar.model.M_SalvarProva;
 import com.AgendaEscolar.AgendaEscolar.service.S_SalvarProva;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,7 +50,7 @@ public class C_SalvarProva {
     @GetMapping("/listarprovas")
     public ResponseEntity<List<M_SalvarProva>> listarProvasJson() {
         List<M_SalvarProva> provas = s_salvarProva.buscarTodasProvas();
-        return ResponseEntity.ok(provas);
+        return ResponseEntity.ok(provas);  // Certifique-se que o id está na lista retornada
     }
 
     @GetMapping("/buscarProvasJson")
@@ -58,13 +59,18 @@ public class C_SalvarProva {
         return ResponseEntity.ok(provas);
     }
 
-    // Método para deletar a prova
-    @PostMapping("/deletarProva")
-    @ResponseBody
-    public M_SalvarProva deletarProva(@RequestParam("id") int id) {
-        if (S_SalvarProva.deletarProva(id)) {
-            return new M_SalvarProva(true, "atvd foi de arrasta");
+    // Método para deletar uma prova pelo ID
+    @DeleteMapping("/evento/deletar/{id}")
+    public ResponseEntity<String> deletarProva(@PathVariable Long id) {
+        try {
+            s_salvarProva.deletarProva(id);  // Chama o serviço para deletar a prova
+            return ResponseEntity.ok("Prova deletada com sucesso");
+        } catch (Exception e) {
+            if (e.getMessage().equals("Prova não encontrada")) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao deletar a prova");
+            }
         }
-        return new M_SalvarProva(false, "erroooooo");
     }
 }

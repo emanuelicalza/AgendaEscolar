@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(response => response.json())
                 .then(data => {
                     const events = data.map(event => ({
+                        id: event.id,  // Assegure-se de que o ID do evento é incluído
                         title: event.titulo + ' (' + event.type + ')',
                         start: event.data,
                         description: event.descricao
@@ -72,11 +73,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
         },
         eventClick: function(info) {
-            // Abrir modal e preencher com dados do evento
+            // Testar se o ID está sendo recebido corretamente
+            console.log('Event ID:', info.event.id);  // Verifica o ID do evento no console
+
+            // Verifique se o ID realmente está sendo passado corretamente
+            if (info.event.id) {
+                console.log('ID do evento: ', info.event.id);  // Exibe o ID no console
+            } else {
+                console.log('ID do evento não encontrado!');
+            }
+
+            // Preenche os campos da modal com os dados do evento
             document.getElementById('modalTitleDetails').innerText = info.event.title;
             document.getElementById('eventDescriptionDetails').innerText = info.event.extendedProps.description;
             document.getElementById('eventTypeDetails').innerText = info.event.extendedProps.type;
             document.getElementById('eventDateDetails').innerText = info.event.start.toLocaleDateString('pt-BR');
+
+            // Definir o ID do evento no modal
+            document.getElementById('modalTitleDetails').setAttribute('data-event-id', info.event.id);
+            document.getElementById('eventIdDetails').innerText = info.event.id;  // Exibe o ID na modal
 
             // Mostrar a modal
             var modalDetails = new bootstrap.Modal(document.getElementById('detailsModalNew'));
@@ -85,5 +100,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     calendar.render();
-
 });

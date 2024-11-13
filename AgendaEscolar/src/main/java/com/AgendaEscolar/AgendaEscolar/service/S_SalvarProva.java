@@ -55,13 +55,14 @@ public class S_SalvarProva {
         return r_salvarProva.findAll();  // Chama o método do repositório para buscar todas as provas
     }
 
-    public static boolean deletarProva(int id) {
-        try {
-            r_salvarProva.deleteById(Long.valueOf(id));
-            return true;
-        } catch (Exception e) {
-            return false;
+    // Método para deletar uma prova pelo ID
+    public void deletarProva(Long id) throws Exception {
+        // Verifica se a prova existe no banco de dados
+        Optional<M_SalvarProva> prova = r_salvarProva.findById(id);
+        if (prova.isPresent()) {
+            r_salvarProva.deleteById(id);  // Deleta a prova se ela for encontrada
+        } else {
+            throw new Exception("Prova não encontrada");
         }
     }
-
 }
