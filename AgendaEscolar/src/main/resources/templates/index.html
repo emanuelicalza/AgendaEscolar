@@ -26,7 +26,7 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <!-- HOME -->
-        <a class="navbar-brand" href="#">Home</a>
+        <a class="navbar-brand" >Home</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -42,7 +42,7 @@
                 </li>
                 <!-- Área Diretor - só aparece se o usuário for diretor -->
                 <li class="nav-item" th:if="${session.usuario != null && session.usuario.tipo == 3}">
-                    <a class="nav-link" th:href="@{/areaDiretor}">Área Diretor</a>
+                    <a class="nav-link" th:href="@{/gerirProfessores}">Gerir Professores</a>
                 </li>
             </ul>
 
