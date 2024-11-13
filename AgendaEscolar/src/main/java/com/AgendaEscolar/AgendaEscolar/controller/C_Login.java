@@ -21,7 +21,7 @@ public class C_Login {
     @GetMapping("/login")
     public String getLogin(HttpSession session) {
         if (session.getAttribute("usuario") != null) {
-            return "";
+            return "redirect:/"; // Se o usuário já estiver logado, redireciona para a página principal
         }
         return "login";
     }
@@ -38,11 +38,11 @@ public class C_Login {
             M_Usuarios usuario = usuarioOpt.get();
             if (usuario.getSenha().equals(password)) {
                 session.setAttribute("usuario", usuario);
-                return "index";
+                return "index"; // Redireciona para a página principal
             }
         }
 
         model.addAttribute("error", "Email ou senha inválidos");
-        return "login";
+        return "login"; // Volta para a página de login com a mensagem de erro
     }
 }

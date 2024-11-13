@@ -11,9 +11,15 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import java.time.format.DateTimeFormatter;
+
+
+
+
 @Controller
 @RequestMapping("/professores") // Agrupando endpoints relacionados
 public class C_Professor {
+
     private final S_Usuario s_usuario;
     private final S_Email s_email;
 
@@ -34,6 +40,8 @@ public class C_Professor {
         LocalDate dataNasc = LocalDate.parse(dataNascimento);
         M_Usuarios professor;
 
+        long startTime = System.currentTimeMillis();
+
         if (id != null) {
             // Atualiza professor existente
             professor = s_usuario.atualizarProfessor(id, nome, email, dataNasc);
@@ -42,7 +50,23 @@ public class C_Professor {
             // Cria um novo professor
             String senha = gerarSenha();
             professor = s_usuario.cadastrarUsuario(nome, email, senha, senha, dataNasc, 2);
-            s_email.enviaEmail(email, "Bem-vindo ao sistema!", "Sua senha é: " + senha);
+
+            String mensagem = "Olá, " + nome + "!\n\n";
+            mensagem += "Seja bem-vindo ao nosso sistema! 🎉\n\n";
+            mensagem += "Estamos muito felizes em ter você conosco. Agora você pode acessar nossa plataforma e começar a explorar todas as funcionalidades que preparamos com muito carinho para você.\n\n";
+            mensagem += "Aqui estão suas informações de acesso:\n";
+            mensagem += "--------------------------------------------------\n";
+            mensagem += "Email: " + email + "\n";
+            mensagem += "Senha: " + senha + "\n";
+            mensagem += "--------------------------------------------------\n\n";
+            mensagem += "Por motivos de segurança, recomendamos que você altere sua senha após o primeiro acesso. 😉\n\n";
+            mensagem += "Aproveite o melhor do nosso sistema e tenha uma excelente experiência! 🚀\n\n";
+            mensagem += "Atenciosamente,\n";
+            mensagem += "Equipe do Sistema\n";
+            mensagem += "--------------------------------------------------\n";
+            mensagem += "P.S: Estamos ansiosos para ver o que você vai conquistar com a nossa plataforma!";
+
+            s_email.enviaEmail(email, "Bem-vindo ao sistema!", mensagem);
             return ResponseEntity.ok(professor); // Retorna os dados do novo professor
         }
     }
