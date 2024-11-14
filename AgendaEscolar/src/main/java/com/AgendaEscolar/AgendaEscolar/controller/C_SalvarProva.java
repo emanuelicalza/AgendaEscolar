@@ -43,7 +43,7 @@ public class C_SalvarProva {
         } else {
             model.addAttribute("mensagem", "Erro ao salvar a prova.");
         }
-        return "resultado";  // Nome do template Thymeleaf que mostrará a mensagem
+        return "listaprova";
     }
 
     // Método para retornar provas em formato JSON
