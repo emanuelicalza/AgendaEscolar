@@ -12,4 +12,5 @@ public interface R_Usuario extends JpaRepository<M_Usuarios, Long> {
     Optional<M_Usuarios> findByEmail(String email); // Adiciona busca por email
     List<M_Usuarios> findByTipo(int tipo); // Método para encontrar usuários pelo tipo
 
+
 }

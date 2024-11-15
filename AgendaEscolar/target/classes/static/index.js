@@ -38,6 +38,10 @@ dateClick: function(info) {
 
                 // Fechar a modal após o sucesso
                 modal.hide();
+<<<<<<< HEAD
+            });
+        },
+=======
 
                 // Limpar os campos da modal
                 $('#modal').find('input').val('');
@@ -59,6 +63,7 @@ dateClick: function(info) {
     });
 }
 
+>>>>>>> fc7e29c025c71243a480c93b69463f286a228625
 
         events: function (fetchInfo, successCallback, failureCallback) {
             $.ajax({

@@ -65,4 +65,9 @@ public class S_Usuario {
             throw new IllegalArgumentException("Professor não encontrado ou ID inválido.");
         }
     }
+    // Método para listar todos os professores
+    public List<M_Usuarios> listarProfessores() {
+        // Aqui assumimos que o tipo 2 representa "professor"
+        return r_usuario.findByTipo(2);
+    }
 }
