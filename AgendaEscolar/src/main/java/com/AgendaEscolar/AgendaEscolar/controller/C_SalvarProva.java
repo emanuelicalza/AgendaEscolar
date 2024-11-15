@@ -31,20 +31,19 @@ public class C_SalvarProva {
 
     // Método para salvar a prova
     @PostMapping("/salvarprova")
-    public String salvarProva(@RequestParam("titulo") String titulo,
-                              @RequestParam("descricao") String descricao,
-                              @RequestParam("data") String data,
-                              @RequestParam("type") String tipo,
-                              @RequestParam(name = "id", required = false) Long id,
-                              Model model) {
+    public ResponseEntity<M_SalvarProva> salvarProva(@RequestParam("titulo") String titulo,
+                                                     @RequestParam("descricao") String descricao,
+                                                     @RequestParam("data") String data,
+                                                     @RequestParam("type") String tipo,
+                                                     @RequestParam(name = "id", required = false) Long id) {
         M_SalvarProva prova = s_salvarProva.salvarProva(titulo, descricao, data, tipo, id);
         if (prova != null) {
-            model.addAttribute("mensagem", "Prova salva com sucesso!");
+            return ResponseEntity.ok(prova);  // Retorna o objeto salvo em formato JSON
         } else {
-            model.addAttribute("mensagem", "Erro ao salvar a prova.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return "listaprova";
     }
+
 
     // Método para retornar provas em formato JSON
     @GetMapping("/listarprovas")

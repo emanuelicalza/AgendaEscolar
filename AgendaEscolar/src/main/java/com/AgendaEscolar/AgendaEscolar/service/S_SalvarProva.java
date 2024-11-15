@@ -10,7 +10,8 @@ import java.util.Optional;
 
 @Service
 public class S_SalvarProva {
-    private static R_SalvarProva r_salvarProva;
+
+    private final R_SalvarProva r_salvarProva;
 
     public S_SalvarProva(R_SalvarProva r_salvarProva) {
         this.r_salvarProva = r_salvarProva;
@@ -22,14 +23,14 @@ public class S_SalvarProva {
         boolean podeSalvar = true;
 
         if (titulo == null || titulo.trim().isEmpty()) {
-            podeSalvar = false;
+            podeSalvar = false; // Validação básica do título
         } else {
             prova.setTitulo(titulo);
         }
 
         prova.setDescricao(descricao);
         prova.setTipo(tipo);
-        prova.setData(data);
+        prova.setData(data);  // Verificar se o formato de data está correto
 
         if (podeSalvar) {
             if (id != null) {
@@ -40,11 +41,11 @@ public class S_SalvarProva {
                     provaParaAtualizar.setDescricao(descricao);
                     provaParaAtualizar.setTipo(tipo);
                     provaParaAtualizar.setData(data);
-                    return r_salvarProva.save(provaParaAtualizar);
+                    return r_salvarProva.save(provaParaAtualizar);  // Atualiza prova existente
                 }
             } else {
-                prova.setDataCriacao(LocalDateTime.now());
-                return r_salvarProva.save(prova);
+                prova.setDataCriacao(LocalDateTime.now());  // Adiciona data de criação para nova prova
+                return r_salvarProva.save(prova);  // Salva nova prova
             }
         }
         return null;
@@ -52,17 +53,16 @@ public class S_SalvarProva {
 
     // Método para buscar todas as provas
     public List<M_SalvarProva> buscarTodasProvas() {
-        return r_salvarProva.findAll();  // Chama o método do repositório para buscar todas as provas
+        return r_salvarProva.findAll();  // Retorna todas as provas do banco de dados
     }
 
     // Método para deletar uma prova pelo ID
     public void deletarProva(Long id) throws Exception {
-        // Verifica se a prova existe no banco de dados
         Optional<M_SalvarProva> prova = r_salvarProva.findById(id);
         if (prova.isPresent()) {
-            r_salvarProva.deleteById(id);  // Deleta a prova se ela for encontrada
+            r_salvarProva.deleteById(id);  // Deleta prova se ela existir
         } else {
-            throw new Exception("Prova não encontrada");
+            throw new Exception("Prova não encontrada");  // Lança exceção se não encontrar
         }
     }
 }
