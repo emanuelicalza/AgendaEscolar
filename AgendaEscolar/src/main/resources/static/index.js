@@ -27,14 +27,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     method: 'POST',
                     data: eventData,
                     success: function(data) {
-                        // Evento salvo com sucesso, agora adiciona ao calendário
-                                                calendar.addEvent({
-                                                    id: data.id,  // ID retornado pela resposta do servidor
-                                                    title: data.titulo + ' (' + data.type + ')',  // Formato do título
-                                                    start: data.data,  // Data de início
-                                                    description: data.descricao,  // Descrição
-                                                    type: data.type  // Tipo do evento
-                                                });
+                        calendar.addEvent({
+                            id: data.id,
+                            title: data.titulo + ' (' + data.type + ')',
+                            start: data.data,  // Data de início
+                            description: data.descricao,
+                            type: data.type
+                        });
+                        exibirAviso(data);
+                        $('#event-form')[0].reset();
                     },
                     error: function(xhr, status, error) {
                         console.error('Erro ao salvar a prova:', error);
@@ -45,7 +46,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 var modal = bootstrap.Modal.getInstance(document.getElementById('modal'));
                 modal.hide();
             });
-
         },
 
         events: function (fetchInfo, successCallback, failureCallback) {

@@ -26,72 +26,44 @@
 <script>
     // Função para conectar ao WebSocket e receber novos avisos
     function connect() {
-        var socket = new SockJS('/ws'); // URL do endpoint do WebSocket no servidor
+        var socket = new SockJS('/ws');
         var stompClient = Stomp.over(socket);
-        stompClient.connect({}, function (frame) {
-            console.log('Conectado: ' + frame);
-
-            // Inscreva-se no tópico para receber atualizações de provas
+        stompClient.connect({}, function () {
             stompClient.subscribe('/topic/provas', function (prova) {
                 var data = JSON.parse(prova.body);
-                exibirAviso(data.titulo, data.descricao, data.data, data.tipo);
+                exibirAviso(data);
             });
         });
     }
 
     // Função para exibir o aviso (prova) dinamicamente na tabela
-    function exibirAviso(titulo, descricao, data, tipo) {
-        const provasBody = document.getElementById('provas-body');
-
+    function exibirAviso({titulo, descricao, data, tipo}) {
         const row = document.createElement('tr');
-
-        // Criar as colunas (td) para cada campo
-        const colTitulo = document.createElement('td');
-        colTitulo.textContent = titulo;
-
-        const colDescricao = document.createElement('td');
-        colDescricao.textContent = descricao;
-
-        const colTipo = document.createElement('td');
-        colTipo.textContent = tipo; // Tipo vem primeiro
-
-        const colData = document.createElement('td');
-        colData.textContent = data; // Data vem depois
-
-        // Adicionar as colunas à linha
-        row.appendChild(colTitulo);
-        row.appendChild(colDescricao);
-        row.appendChild(colTipo); // Coloca o tipo antes
-        row.appendChild(colData); // Coloca a data depois
-
-        // Adicionar a linha ao tbody da tabela
-        provasBody.appendChild(row);
+        row.innerHTML = `<td>${titulo}</td><td>${descricao}</td><td>${tipo}</td><td>${data}</td>`;
+        document.getElementById('provas-body').appendChild(row);
     }
 
     // Função para carregar as provas existentes ao carregar a página
     function carregarProvas() {
-        fetch('/buscarProvasJson')
-            .then(response => response.json())
-            .then(data => {
+        $.ajax({
+            url: '/buscarProvasJson',
+            method: 'GET',
+            success: function(data) {
                 const provasBody = document.getElementById('provas-body');
-
-                // Limpar o tbody antes de inserir novos dados
-                provasBody.innerHTML = '';
-
-                // Iterar sobre cada prova e criar uma linha para cada uma
-                data.forEach(prova => {
-                    exibirAviso(prova.titulo, prova.descricao, prova.tipo, prova.data); // Corrigido para tipo vir antes da data
-                });
-            })
-            .catch(error => {
+                provasBody.innerHTML = '';  // Limpar antes de inserir novos dados
+                data.forEach(prova => exibirAviso(prova)); // Exibir cada prova
+            },
+            error: function(error) {
                 console.error('Erro ao carregar as provas:', error);
-            });
+            }
+        });
     }
 
     document.addEventListener("DOMContentLoaded", function() {
         connect();      // Conectar ao WebSocket
-        carregarProvas();
+        carregarProvas();  // Carregar provas
     });
+
 </script>
 
 <!-- Fim do código inserido -->
