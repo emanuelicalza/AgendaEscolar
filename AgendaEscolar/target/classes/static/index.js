@@ -6,46 +6,59 @@ document.addEventListener('DOMContentLoaded', function() {
         initialView: 'dayGridMonth',
         locale: 'pt-br',
 
-        dateClick: function(info) {
-            var modal = new bootstrap.Modal(document.getElementById('modal')); // Abre a modal
-            modal.show();
+dateClick: function(info) {
+    var modal = new bootstrap.Modal(document.getElementById('modal')); // Abre a modal
+    modal.show();
 
-            // Salvar evento ao submeter o formulário
-            $('#event-form').submit(function(e) {
-                e.preventDefault();
+    // Salvar evento ao submeter o formulário
+    $('#event-form').submit(function(e) {
+        e.preventDefault();
 
-                var eventData = {
-                    titulo: $('#title').val(),
-                    descricao: $('#description').val(),
-                    type: $('#type').val(),
-                    data: info.dateStr
-                };
+        var eventData = {
+            titulo: $('#title').val(),
+            descricao: $('#description').val(),
+            type: $('#type').val(),
+            data: info.dateStr
+        };
 
-                // Envio de dados via AJAX
-                $.ajax({
-                    url: '/salvarprova',
-                    method: 'POST',
-                    data: eventData,
-                    success: function(data) {
-
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Erro ao salvar a prova:', error);
-                    }
+        // Envio de dados via AJAX
+        $.ajax({
+            url: '/salvarprova',
+            method: 'POST',
+            data: eventData,
+            success: function(data) {
+                // Evento salvo com sucesso, agora adiciona ao calendário
+                calendar.addEvent({
+                    id: data.id,  // ID retornado pela resposta do servidor
+                    title: data.titulo + ' (' + data.type + ')',  // Formato do título
+                    start: data.data,  // Data de início
+                    description: data.descricao,  // Descrição
+                    type: data.type  // Tipo do evento
                 });
-            });
-            $('#saveBtn').click(function() {
-                var modal = bootstrap.Modal.getInstance(document.getElementById('modal'));
+
+                // Fechar a modal após o sucesso
                 modal.hide();
 
-                return {
-                                            id: event.id,
-                                            title: event.titulo + ' (' + event.type + ')',
-                                            start: event.data,
-                                            description: event.descricao
-                                        };
-            });
-        },
+                // Limpar os campos da modal
+                $('#modal').find('input').val('');
+                $('#modal').find('textarea').val('');
+                $('#modal').find('select').val('');
+            },
+            error: function(xhr, status, error) {
+                console.error('Erro ao salvar a prova:', error);
+            }
+        });
+    });
+
+    // Limpar os campos da modal quando ela for fechada
+    $('#modal').on('hidden.bs.modal', function () {
+        // Limpa todos os campos de entrada dentro da modal
+        $(this).find('input').val('');
+        $(this).find('textarea').val('');
+        $(this).find('select').val('');
+    });
+}
+
 
         events: function (fetchInfo, successCallback, failureCallback) {
             $.ajax({
