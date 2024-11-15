@@ -37,13 +37,6 @@ document.addEventListener('DOMContentLoaded', function() {
             $('#saveBtn').click(function() {
                 var modal = bootstrap.Modal.getInstance(document.getElementById('modal'));
                 modal.hide();
-
-                return {
-                                            id: event.id,
-                                            title: event.titulo + ' (' + event.type + ')',
-                                            start: event.data,
-                                            description: event.descricao
-                                        };
             });
         },
 
