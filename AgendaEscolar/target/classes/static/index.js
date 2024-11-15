@@ -113,6 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         console.log('Evento deletado com sucesso');
                         $('#detailsModalNew').modal('hide'); // Fecha o modal após a exclusão
                         $("#atividade-" + eventId).remove(); // Remove o evento da interface
+                        exibirAviso(data);
                     },
                     error: function () {
                         console.log('Erro ao deletar o evento');
