@@ -1,12 +1,10 @@
 package com.AgendaEscolar.AgendaEscolar.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "materias")
 public class M_Materias {
 
     @Id
@@ -14,6 +12,10 @@ public class M_Materias {
     private Long id;
 
     private String nome;
+
+    @ManyToOne
+    private M_Usuarios professor;
+
 
     // Getters e Setters
     public Long getId() {
@@ -30,5 +32,13 @@ public class M_Materias {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public M_Usuarios getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(M_Usuarios professor) {
+        this.professor = professor;
     }
 }
