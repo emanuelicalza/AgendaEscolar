@@ -10,8 +10,10 @@ document.addEventListener('DOMContentLoaded', function() {
             var modal = new bootstrap.Modal(document.getElementById('modal')); // Abre a modal
             modal.show();
 
-            // Salvar evento ao submeter o formulário
-            $('#event-form').submit(function(e) {
+            // Limpar o formulário e habilitar novamente os elementos quando o modal for aberto
+            $('#event-form')[0].reset(); // Limpa o formulário
+            $('#saveBtn').prop('disabled', false); // Habilita o botão de salvar
+            $('#event-form').off('submit').on('submit', function(e) { // Usando .off() para garantir que a função de submit não seja anexada múltiplas vezes
                 e.preventDefault();
 
                 var eventData = {
@@ -20,6 +22,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     type: $('#type').val(),
                     data: info.dateStr
                 };
+
+                // Desabilita o botão de salvar para evitar múltiplos envios
+                $('#saveBtn').prop('disabled', true);
 
                 // Envio de dados via AJAX
                 $.ajax({
@@ -35,16 +40,15 @@ document.addEventListener('DOMContentLoaded', function() {
                             type: data.type
                         });
                         exibirAviso(data);
-                        $('#event-form')[0].reset();
+                        modal.hide(); // Fechar o modal corretamente
+
+                        $('#event-form')[0].reset(); // Limpar o formulário
                     },
                     error: function(xhr, status, error) {
                         console.error('Erro ao salvar a prova:', error);
+                        $('#saveBtn').prop('disabled', false); // Reabilitar o botão em caso de erro
                     }
                 });
-            });
-            $('#saveBtn').click(function() {
-                var modal = bootstrap.Modal.getInstance(document.getElementById('modal'));
-                modal.hide();
             });
         },
 
@@ -111,8 +115,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     method: 'DELETE',
                     success: function () {
                         console.log('Evento deletado com sucesso');
-                        $('#detailsModalNew').modal('hide'); // Fecha o modal após a exclusão
-                        $("#atividade-" + eventId).remove(); // Remove o evento da interface
+                        $('#detailsModalNew').modal('hide');
+                        $("#atividade-" + eventId).remove();
                     },
                     error: function () {
                         console.log('Erro ao deletar o evento');
