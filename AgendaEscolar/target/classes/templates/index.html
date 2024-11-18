@@ -5,6 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <title>Agenda de Professores</title>
 
     <!-- Bootstrap CSS -->
@@ -56,14 +57,17 @@
                     <a class="btn btn-sm btn-secondary me-3" href="cadastro">Cadastrar</a>
                 </div>
 
+
                 <!-- Nome do Usuário com Ícone ao Lado -->
                 <div th:if="${session.usuario != null}" class="d-flex align-items-center">
-                    <form id="formMaterias" class="me-3">
-                        <select name="materias" class="form-select" aria-label="Selecionar matéria">
-                            <option selected>Escolha a Matéria</option>
-                            <option th:each="materia : ${materias}" th:value="${materia.id}" th:text="${materia.nome}"></option>
-                        </select>
-                    </form>
+                    <!-- Select visível apenas para professores (tipo 2) e diretores (tipo 3) -->
+                    <div th:if="${session.usuario != null and (session.usuario.tipo == 2 or session.usuario.tipo == 3)}" class="d-flex align-items-center">
+                        <form id="formMaterias" class="me-3">
+                            <select id="materiasSelect" class="form-select" aria-label="Selecionar matéria">
+                                <option selected>Escolha a Matéria</option>
+                            </select>
+                        </form>
+                    </div>
 
                     <!-- Ícone ao Lado do Nome -->
                     <i class="fas fa-user-circle me-2"></i> <!-- Ícone de usuário -->
@@ -135,6 +139,7 @@
     <!-- Custom JS -->
     <script src="index.js"></script>
     <script src="usuario.js"></script>
+    <script src="materias.js"></script>
 
     <!-- Modal JS -->
     <script src="modal-loader.js"></script>

@@ -47,5 +47,9 @@ public class S_Materia {
         r_materia.deleteById(id); // Exclui a matéria pelo ID
     }
 
+    public List<M_Materias> listarMateriasPorProfessor(Long professorId) {
+        return r_materia.findByProfessorId(professorId);
+    }
+
 
 }
