@@ -29,7 +29,6 @@ public class C_SalvarProva {
         return "listaProvas";  // Nome do template Thymeleaf que vai exibir os dados
     }
 
-    // Método para salvar a prova
     @PostMapping("/salvarprova")
     public ResponseEntity<M_SalvarProva> salvarProva(@RequestParam("titulo") String titulo,
                                                      @RequestParam("descricao") String descricao,
@@ -38,7 +37,7 @@ public class C_SalvarProva {
                                                      @RequestParam(name = "id", required = false) Long id) {
         M_SalvarProva prova = s_salvarProva.salvarProva(titulo, descricao, data, tipo, id);
         if (prova != null) {
-            return ResponseEntity.ok(prova);  // Retorna o objeto salvo em formato JSON
+            return ResponseEntity.ok(prova);
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
