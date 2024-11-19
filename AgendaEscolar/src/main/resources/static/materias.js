@@ -101,4 +101,24 @@ $('#formExcluirMateria').on('submit', function(e) {
     });
 });
 
+$(document).ready(function () {
+    // Faz uma requisição para obter as matérias
+    $.ajax({
+        url: '/obterMateriasUsuario',
+        method: 'GET',
+        success: function (materias) {
+
+            let select = $('#materiasSelect');
+            materias.forEach(materia => {
+                select.append(new Option(materia.nome, materia.id));
+            });
+
+        },
+        error: function () {
+            alert('Erro ao carregar as matérias.');
+        }
+    });
+});
+
+
 

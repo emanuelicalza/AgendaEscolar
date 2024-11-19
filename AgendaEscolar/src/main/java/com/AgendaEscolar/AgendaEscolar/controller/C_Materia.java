@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -95,4 +96,22 @@ public class C_Materia {
         s_materia.excluirMateria(id);
         return "sucesso"; // Retorna sucesso
     }
+
+    @GetMapping("/obterMateriasUsuario")
+    @ResponseBody
+    public List<M_Materias> obterMateriasUsuario(@SessionAttribute(name = "usuario", required = false) M_Usuarios usuario) {
+        if (usuario == null) {
+            return new ArrayList<>(); // Retorna lista vazia se não houver usuário logado
+        }
+        System.out.println("Usuário logado: " + usuario.getNome());
+
+        if (usuario.getTipo() == 3) {
+            return s_materia.listarMaterias(); // Diretor vê todas as matérias
+        } else if (usuario.getTipo() == 2) {
+            return s_materia.listarMateriasPorProfessor(usuario.getId()); // Professor vê suas matérias
+        }
+
+        return new ArrayList<>(); // Retorna lista vazia para outros casos
+    }
+
 }
