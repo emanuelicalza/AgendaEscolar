@@ -127,5 +127,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             });
         });
+         $('#editEventButton').click(function () {
+             var eventId = $('#modalTitleDetails').attr('data-event-id'); // Pega o ID do evento
+             var eventTitle = $('#modalTitleDetails').text(); // Título do evento
+             var eventDescription = $('#eventDescriptionDetails').text(); // Descrição do evento
+             var eventType = $('#eventTypeDetails').text(); // Tipo do evento
+             var eventDate = $('#eventDateDetails').text(); // Data do evento
+
+             // Preenche os campos da modal de edição
+             $('#editEventId').val(eventId);
+             $('#editTitle').val(eventTitle);
+             $('#editDescription').val(eventDescription);
+             $('#editType').val(eventType);
+             $('#editDate').val(new Date(eventDate).toISOString().split('T')[0]); // Converte a data para o formato YYYY-MM-DD
+
+             // Abre a modal de edição
+             var editModal = new bootstrap.Modal(document.getElementById('editModal'));
+             editModal.show();
+         });
+
     calendar.render();
 });

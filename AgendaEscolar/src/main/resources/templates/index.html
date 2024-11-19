@@ -131,6 +131,49 @@
         </div>
 
 
+
+
+        <!-- Modal de Edição -->
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Editar Evento</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editEventForm">
+                            <div class="mb-3">
+                                <label for="editTitle" class="form-label">Título</label>
+                                <input type="text" class="form-control" id="editTitle" name="title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editDescription" class="form-label">Descrição</label>
+                                <textarea class="form-control" id="editDescription" name="description" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editType" class="form-label">Tipo</label>
+                                <select class="form-select" id="editType" name="type" required>
+                                    <option value="prova">Prova</option>
+                                    <option value="trabalho">Trabalho</option>
+                                    <option value="aviso">Aviso</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editDate" class="form-label">Data</label>
+                                <input type="date" class="form-control" id="editDate" name="date" required>
+                            </div>
+                            <input type="hidden" id="editEventId">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="saveEditBtn">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Bootstrap JS -->
