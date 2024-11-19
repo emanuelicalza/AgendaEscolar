@@ -107,7 +107,7 @@ $(document).ready(function () {
         url: '/obterMateriasUsuario',
         method: 'GET',
         success: function (materias) {
-       
+
             let select = $('#materiasSelect');
             materias.forEach(materia => {
                 select.append(new Option(materia.nome, materia.id));
