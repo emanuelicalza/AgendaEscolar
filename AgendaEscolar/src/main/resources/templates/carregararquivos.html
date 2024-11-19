@@ -24,26 +24,13 @@
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 
 <script>
-    // Função para conectar ao WebSocket e receber novos avisos
-    function connect() {
-        var socket = new SockJS('/ws');
-        var stompClient = Stomp.over(socket);
-        stompClient.connect({}, function () {
-            stompClient.subscribe('/topic/provas', function (prova) {
-                var data = JSON.parse(prova.body);
-                exibirAviso(data);
-            });
-        });
-    }
-
-    // Função para exibir o aviso (prova) dinamicamente na tabela
     function exibirAviso({titulo, descricao, data, tipo}) {
         const row = document.createElement('tr');
         row.innerHTML = `<td>${titulo}</td><td>${descricao}</td><td>${tipo}</td><td>${data}</td>`;
         document.getElementById('provas-body').appendChild(row);
     }
 
-    // Função para carregar as provas existentes ao carregar a página
+
     function carregarProvas() {
         $.ajax({
             url: '/buscarProvasJson',
@@ -58,12 +45,6 @@
             }
         });
     }
-
-    document.addEventListener("DOMContentLoaded", function() {
-        connect();      // Conectar ao WebSocket
-        carregarProvas();  // Carregar provas
-    });
-
 </script>
 
 <!-- Fim do código inserido -->

@@ -63,10 +63,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             title: event.titulo + ' (' + event.type + ')',
                             start: event.data,
                             description: event.descricao
+
                         };
                     });
                     successCallback(events);
-
+                    carregarProvas();
                 },
                 error: function(xhr, status, error) {
                     console.error('Erro ao carregar eventos:', error);
@@ -117,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         console.log('Evento deletado com sucesso');
                         $('#detailsModalNew').modal('hide');
                         $("#atividade-" + eventId).remove();
+                        carregarProvas();
                     },
                     error: function () {
                         console.log('Erro ao deletar o evento');
