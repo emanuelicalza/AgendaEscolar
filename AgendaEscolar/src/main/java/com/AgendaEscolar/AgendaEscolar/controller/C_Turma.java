@@ -65,14 +65,16 @@ public class C_Turma {
 
     // Atualizar turma
     @PostMapping("/gerirTurmas/atualizarTurma")
+    @ResponseBody  // Retorna resposta simples
     public String atualizarTurma(@ModelAttribute M_Turmas turma, @SessionAttribute(name = "usuario") M_Usuarios usuario) {
         if (usuario == null || usuario.getTipo() != 3) {
-            return "redirect:/"; // Redireciona para a home se não for um diretor
+            return "erro"; // Retorna erro se não for diretor
         }
 
         s_turma.atualizarTurma(turma); // Atualiza a turma
-        return "redirect:/gerirTurmas"; // Redireciona para a página de turmas
+        return "sucesso"; // Retorna sucesso
     }
+
 
     // Excluir turma
     @PostMapping("/gerirTurmas/excluirTurma")

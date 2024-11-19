@@ -75,7 +75,7 @@
                     </div>
                     <div class="form-group">
                         <label for="anoTurma">Ano</label>
-                        <input type="text" class="form-control" id="anoTurma" name="ano" required>
+                        <input type="number" class="form-control" id="anoTurma" name="ano" min="2000" max="2100" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -90,7 +90,7 @@
 <!-- Modal Editar Turma -->
 <div class="modal fade" id="modalEditarTurma" tabindex="-1" role="dialog" aria-labelledby="modalEditarTurmaLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content ">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalEditarTurmaLabel">Editar Turma</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
@@ -98,19 +98,19 @@
                 </button>
             </div>
             <form id="formEditarTurma">
-                <div class="modal-body">
+                <div class="modal-body row">
                     <input type="hidden" id="idTurmaEditar" name="id">
-                    <div class="form-group">
+                    <div class="form-group col-6">
                         <label for="serieTurmaEditar">Série</label>
                         <input type="text" class="form-control" id="serieTurmaEditar" name="serie" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-6">
                         <label for="tipoTurmaEditar">Turma</label>
                         <input type="text" class="form-control" id="tipoTurmaEditar" name="tipo" required>
                     </div>
                     <div class="form-group">
                         <label for="anoTurmaEditar">Ano</label>
-                        <input type="text" class="form-control" id="anoTurmaEditar" name="ano" required>
+                        <input type="number" class="form-control" id="anoTurmaEditar" name="ano" min="2000" max="2100" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -121,6 +121,8 @@
         </div>
     </div>
 </div>
+
+
 
 <!-- Modal Excluir Turma -->
 <div class="modal fade" id="modalExcluirTurma" tabindex="-1" role="dialog" aria-labelledby="modalExcluirTurmaLabel" aria-hidden="true">
