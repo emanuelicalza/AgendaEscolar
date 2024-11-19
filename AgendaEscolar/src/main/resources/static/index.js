@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             title: data.titulo + ' (' + data.type + ')',
                             start: data.data,  // Data de início
                             description: data.descricao,
-                            type: data.type
+                            type: data.tipo
                         });
                         exibirAviso(data);
                         modal.hide(); // Fechar o modal corretamente
@@ -62,7 +62,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             id: event.id,
                             title: event.titulo + ' (' + event.type + ')',
                             start: event.data,
-                            description: event.descricao
+                            description: event.descricao,
+                            type: event.tipo
 
                         };
                     });
