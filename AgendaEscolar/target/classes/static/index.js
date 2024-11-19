@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         },
 
-        events: function (fetchInfo, successCallback, failureCallback) {
+        events: function(fetchInfo, successCallback, failureCallback) {
             $.ajax({
                 url: '/listarprovas',
                 method: 'GET',
@@ -64,7 +64,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             start: event.data,
                             description: event.descricao,
                             type: event.tipo
-
                         };
                     });
                     successCallback(events);
@@ -78,9 +77,9 @@ document.addEventListener('DOMContentLoaded', function() {
         },
 
         eventDidMount: function(info) {
-                var eventElement = $(info.el);
-                eventElement.attr('id', 'atividade-' + info.event.id);
-            },
+            var eventElement = $(info.el);
+            eventElement.attr('id', 'atividade-' + info.event.id);
+        },
 
         eventClick: function(info) {
             $('#modalTitleDetails').text(info.event.title);
@@ -94,57 +93,63 @@ document.addEventListener('DOMContentLoaded', function() {
             modalDetails.show();
         }
     });
-       $(document).ready(function () {
-            // Captura o evento de abertura do modal
-            $('#detailsModalNew').on('show.bs.modal', function (event) {
-                var button = $(event.relatedTarget); // Botão que disparou o modal
-                var eventId = button.data('event-id'); // Extrai o ID da atividade do botão
 
-                // Atribui o ID da atividade ao título do modal
-                $(this).find('#modalTitleDetails').attr('data-event-id', eventId);
-                $(this).find('#eventIdDetails').text(eventId);  // Exibe o ID no <span> dentro do modal
-            });
+    $(document).ready(function () {
+        // Captura o evento de abertura do modal
+        $('#detailsModalNew').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Botão que disparou o modal
+            var eventId = button.data('event-id'); // Extrai o ID da atividade do botão
 
-            // Manipulador de evento para o botão de deletar
-            $('#deleteEventButton').click(function () {
-                var eventId = $('#eventIdDetails').text(); // Pega o ID do evento diretamente do <span>
-
-                console.log('ID do Evento:', eventId); // Verifique se o ID está sendo extraído corretamente
-
-                // Requisição AJAX para deletar o evento
-                $.ajax({
-                    url: '/evento/deletar/' + eventId,
-                    method: 'DELETE',
-                    success: function () {
-                        console.log('Evento deletado com sucesso');
-                        $('#detailsModalNew').modal('hide');
-                        $("#atividade-" + eventId).remove();
-                        carregarProvas();
-                    },
-                    error: function () {
-                        console.log('Erro ao deletar o evento');
-                    }
-                });
-            });
+            // Atribui o ID da atividade ao título do modal
+            $(this).find('#modalTitleDetails').attr('data-event-id', eventId);
+            $(this).find('#eventIdDetails').text(eventId);  // Exibe o ID no <span> dentro do modal
         });
-         $('#editEventButton').click(function () {
-             var eventId = $('#modalTitleDetails').attr('data-event-id'); // Pega o ID do evento
-             var eventTitle = $('#modalTitleDetails').text(); // Título do evento
-             var eventDescription = $('#eventDescriptionDetails').text(); // Descrição do evento
-             var eventType = $('#eventTypeDetails').text(); // Tipo do evento
-             var eventDate = $('#eventDateDetails').text(); // Data do evento
 
-             // Preenche os campos da modal de edição
-             $('#editEventId').val(eventId);
-             $('#editTitle').val(eventTitle);
-             $('#editDescription').val(eventDescription);
-             $('#editType').val(eventType);
-             $('#editDate').val(new Date(eventDate).toISOString().split('T')[0]); // Converte a data para o formato YYYY-MM-DD
+        // Função para deletar um evento
+        function deleteEvent(eventId) {
+            console.log('ID do Evento:', eventId); // Verifique se o ID está sendo extraído corretamente
 
-             // Abre a modal de edição
-             var editModal = new bootstrap.Modal(document.getElementById('editModal'));
-             editModal.show();
-         });
+            // Requisição AJAX para deletar o evento
+            $.ajax({
+                url: '/evento/deletar/' + eventId,
+                method: 'DELETE',
+                success: function () {
+                    console.log('Evento deletado com sucesso');
+                    $('#detailsModalNew').modal('hide');
+                    $("#atividade-" + eventId).remove();
+                    carregarProvas();
+                },
+                error: function () {
+                    console.log('Erro ao deletar o evento');
+                }
+            });
+        }
+
+        // Manipulador de evento para o botão de deletar
+        $('#deleteEventButton').click(function () {
+            var eventId = $('#eventIdDetails').text(); // Pega o ID do evento diretamente do <span>
+            deleteEvent(eventId); // Chama a função deleteEvent
+        });
+
+        $('#editEventButton').click(function () {
+            var eventId = $('#modalTitleDetails').attr('data-event-id'); // Pega o ID do evento
+            var eventTitle = $('#modalTitleDetails').text(); // Título do evento
+            var eventDescription = $('#eventDescriptionDetails').text(); // Descrição do evento
+            var eventType = $('#eventTypeDetails').text(); // Tipo do evento
+            var eventDate = $('#eventDateDetails').text(); // Data do evento
+
+            // Preenche os campos da modal de edição
+            $('#editEventId').val(eventId);
+            $('#editTitle').val(eventTitle);
+            $('#editDescription').val(eventDescription);
+            $('#editType').val(eventType);
+            $('#editDate').val(new Date(eventDate).toISOString().split('T')[0]); // Converte a data para o formato YYYY-MM-DD
+
+            // Abre a modal de edição
+            var editModal = new bootstrap.Modal(document.getElementById('editModal'));
+            editModal.show();
+        });
+    });
 
     calendar.render();
 });
