@@ -148,8 +148,34 @@ document.addEventListener('DOMContentLoaded', function() {
             // Abre a modal de edição
             var editModal = new bootstrap.Modal(document.getElementById('editModal'));
             editModal.show();
+
+               $('#edita').click(function () {
+                    deleteEvent(eventId);
+                    editModal.hide();
+                    $.ajax({
+                        url: '/salvarprova',
+                        method: 'POST',
+                        data: eventData,
+                        success: function(data) {
+                            calendar.addEvent({
+                                id: data.id,
+                                title: data.titulo + ' (' + data.type + ')',
+                                start: data.data,  // Data de início
+                                description: data.descricao,
+                                type: data.tipo
+                            });
+                            exibirAviso(data);
+                            modal.hide(); // Fechar o modal corretamente
+
+                            $('#event-form')[0].reset(); // Limpar o formulário
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Erro ao salvar a prova:', error);
+                            $('#saveBtn').prop('disabled', false); // Reabilitar o botão em caso de erro
+                        }
+                    });
+                });
         });
     });
-
     calendar.render();
 });
