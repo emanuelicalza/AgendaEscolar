@@ -13,67 +13,9 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <!-- HOME -->
-        <a class="navbar-brand">Home</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
 
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <!-- Navbar links -->
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
-                </li>
-                <!-- Área Diretor - Links para Gerir Professores e Gerir Matérias -->
-                <li class="nav-item" th:if="${session.usuario != null && session.usuario.tipo == 3}">
-                    <a class="nav-link" th:href="@{/gerirProfessores}">Gerir Professores</a>
-                </li>
-                <li class="nav-item" th:if="${session.usuario != null && session.usuario.tipo == 3}">
-                    <a class="nav-link" th:href="@{/gerirMaterias}">Gerir Matérias</a>
-                </li>
-                <li class="nav-item" th:if="${session.usuario != null && session.usuario.tipo == 3}">
-                    <a class="nav-link" th:href="@{/gerirTurmas}">Gerir Turmas</a>
-                </li>
-            </ul>
-
-            <!-- Links de Login/Cadastro ou Nome do Usuário -->
-            <div class="d-flex align-items-center">
-                <div th:if="${session.usuario == null}">
-                    <a class="btn btn-sm btn-primary me-2" href="login">Login</a>
-                    <a class="btn btn-sm btn-secondary me-3" href="cadastro">Cadastrar</a>
-                </div>
-
-
-                <!-- Nome do Usuário com Ícone ao Lado -->
-                <div th:if="${session.usuario != null}" class="d-flex align-items-center">
-                    <!-- Select visível apenas para professores (tipo 2) e diretores (tipo 3) -->
-                    <div th:if="${session.usuario != null and (session.usuario.tipo == 2 or session.usuario.tipo == 3)}" class="d-flex align-items-center">
-                        <form id="formMaterias" class="me-3">
-                            <select id="materiasSelect" class="form-select" aria-label="Selecionar matéria">
-                                <option selected>Escolha a Matéria</option>
-                            </select>
-                        </form>
-                    </div>
-
-                    <!-- Ícone ao Lado do Nome -->
-                    <i class="fas fa-user-circle me-2"></i> <!-- Ícone de usuário -->
-                    <span class="navbar-text">
-                        <a th:href="@{/perfil}" th:text="${session.usuario.nome}" class="text-decoration-none">
-                        <!-- Nome do usuário será exibido aqui -->
-                        </a>
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-</nav>
+<!-- Incluindo o fragmento da navbar -->
+<div th:insert="~{navbar}"></div>
 
 <div class="container mt-5">
     <h2>Gerir Matérias</h2>
