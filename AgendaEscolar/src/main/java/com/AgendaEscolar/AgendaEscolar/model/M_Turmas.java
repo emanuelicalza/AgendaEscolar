@@ -1,6 +1,5 @@
 package com.AgendaEscolar.AgendaEscolar.model;
 
-
 import jakarta.persistence.*;
 
 @Entity
@@ -14,6 +13,7 @@ public class M_Turmas {
     private String serie;  // Exemplo: 1º Ano, 2º Ano, etc.
     private String tipo;   // Exemplo: A, B, C
     private int ano;       // Exemplo: 2024
+    private String nivel;  // Exemplo: Fundamental ou Médio
 
     // Getters e Setters
     public Long getId() {
@@ -46,5 +46,13 @@ public class M_Turmas {
 
     public void setAno(int ano) {
         this.ano = ano;
+    }
+
+    public String getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(String nivel) {
+        this.nivel = nivel;
     }
 }

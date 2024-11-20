@@ -27,7 +27,9 @@
             <th>Série</th>
             <th>Turma</th>
             <th>Ano</th>
+            <th>Nível</th>
             <th>Ações</th>
+
         </tr>
         </thead>
         <tbody>
@@ -37,10 +39,12 @@
             <td th:text="${turma.serie}"></td>
             <td th:text="${turma.tipo}"></td>
             <td th:text="${turma.ano}"></td>
+            <td th:text="${turma.nivel}"></td>
+
             <td>
                 <button class="btn btn-warning" data-toggle="modal" data-target="#modalEditarTurma"
                         th:data-id="${turma.id}" th:data-serie="${turma.serie}"
-                        th:data-tipo="${turma.tipo}" th:data-ano="${turma.ano}">
+                        th:data-tipo="${turma.tipo}" th:data-ano="${turma.ano}" th:data-nivel="${turma.nivel}">
                     <i class="fas fa-edit"></i> Editar
                 </button>
                 <button class="btn btn-danger" data-toggle="modal" data-target="#modalExcluirTurma"
@@ -64,19 +68,28 @@
                 </button>
             </div>
             <form action="/gerirTurmas/criarTurma" method="POST">
-                <div class="modal-body">
-                    <div class="form-group">
+                <div class="modal-body row">
+                    <div class="form-group col-6">
                         <label for="serieTurma">Série</label>
                         <input type="text" class="form-control" id="serieTurma" name="serie" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-6">
                         <label for="tipoTurma">Turma</label>
                         <input type="text" class="form-control" id="tipoTurma" name="tipo" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-6">
                         <label for="anoTurma">Ano</label>
                         <input type="number" class="form-control" id="anoTurma" name="ano" min="2000" max="2100" required>
                     </div>
+                    <div class="form-group col-6">
+                        <label for="nivelTurma">Nível</label>
+                        <select class="form-control" id="nivelTurma" name="nivel" required>
+                            <option value="" disabled selected>Selecione</option>
+                            <option value="Fundamental">Fundamental</option>
+                            <option value="Médio">Médio</option>
+                        </select>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
@@ -108,10 +121,18 @@
                         <label for="tipoTurmaEditar">Turma</label>
                         <input type="text" class="form-control" id="tipoTurmaEditar" name="tipo" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-6">
                         <label for="anoTurmaEditar">Ano</label>
                         <input type="number" class="form-control" id="anoTurmaEditar" name="ano" min="2000" max="2100" required>
                     </div>
+                    <div class="form-group col-6">
+                        <label for="nivelTurmaEditar">Nível</label>
+                        <select class="form-control" id="nivelTurmaEditar" name="nivel" required>
+                            <option value="Fundamental">Fundamental</option>
+                            <option value="Médio">Médio</option>
+                        </select>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
