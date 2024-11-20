@@ -1,6 +1,5 @@
 package com.AgendaEscolar.AgendaEscolar.model;
 
-
 import jakarta.persistence.*;
 
 @Entity
@@ -16,6 +15,8 @@ public class M_Materias {
     @ManyToOne
     private M_Usuarios professor;
 
+    @ManyToOne
+    private M_Turmas turma; // Relacionamento com turma
 
     // Getters e Setters
     public Long getId() {
@@ -40,5 +41,13 @@ public class M_Materias {
 
     public void setProfessor(M_Usuarios professor) {
         this.professor = professor;
+    }
+
+    public M_Turmas getTurma() {
+        return turma;
+    }
+
+    public void setTurma(M_Turmas turma) {
+        this.turma = turma;
     }
 }

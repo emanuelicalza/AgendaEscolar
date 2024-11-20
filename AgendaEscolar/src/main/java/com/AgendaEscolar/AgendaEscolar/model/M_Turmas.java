@@ -55,4 +55,9 @@ public class M_Turmas {
     public void setNivel(String nivel) {
         this.nivel = nivel;
     }
+
+    // Método personalizado para formatar o nome da turma
+    public String getNomeFormatado() {
+        return serie + tipo + " " + (nivel.startsWith("F") ? "F" : "M");
+    }
 }
