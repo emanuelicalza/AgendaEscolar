@@ -50,4 +50,9 @@ public class M_Materias {
     public void setTurma(M_Turmas turma) {
         this.turma = turma;
     }
+
+    // Método para combinar nome da matéria e turma
+    public String getDescricaoComTurma() {
+        return nome + " - " + (turma != null ? turma.getNomeFormatado() : "Sem Turma");
+    }
 }

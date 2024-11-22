@@ -14,6 +14,9 @@
 </head>
 <body>
 
+<!-- Incluindo o fragmento da navbar -->
+<div th:insert="~{navbar}"></div>
+
 <div class="container mt-5">
     <h2>Gerir Matérias</h2>
     <div class="mb-3">
@@ -29,6 +32,7 @@
             <th>#</th>
             <th>Nome</th>
             <th>Professor</th>
+            <th>Turma</th>
             <th>Ações</th>
         </tr>
         </thead>
@@ -40,14 +44,14 @@
             <td>
                 <span th:text="${materia.professor != null ? materia.professor.nome : 'Sem professor'}"></span>
             </td>
+            <td th:text="${materia.turma.nomeFormatado}"></td>
             <td>
                 <!-- Passa os dados da matéria para o modal de edição -->
                 <button class="btn btn-warning" data-toggle="modal" data-target="#modalEditarMateria"
-                        th:data-id="${materia.id}" th:data-nome="${materia.nome}"
+                        th:data-id="${materia.id}" th:data-nome="${materia.nome}" th:data-turma="${materia.turma}"
                         th:data-professor-id="${materia.professor != null ? materia.professor.id : ''}">
                     <i class="fas fa-edit"></i> Editar
                 </button>
-                <!-- Passa o ID da matéria para o modal de exclusão -->
                 <button class="btn btn-danger" data-toggle="modal" data-target="#modalExcluirMateria"
                         th:data-id="${materia.id}">
                     <i class="fas fa-trash"></i> Excluir
@@ -83,10 +87,18 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="turmaMateria">Turma</label>
+                    <select class="form-control" id="turmaMateria" name="turma.id" required>
+                        <option th:each="turma : ${turmas}" th:value="${turma.id}" th:text="${turma.nomeFormatado}"></option>
+                    </select>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                     <button type="submit" class="btn btn-primary">Criar Matéria</button>
                 </div>
+
+
             </form>
         </div>
     </div>
@@ -116,10 +128,19 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="turmaMateriaEditar">Turma</label>
+                    <select class="form-control" id="turmaMateriaEditar" name="turma.id" required>
+                        <option th:each="turma : ${turmas}" th:value="${turma.id}" th:text="${turma.nomeFormatado}"></option>
+                    </select>
+                </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                     <button type="submit" class="btn btn-primary">Salvar Alterações</button>
                 </div>
+
+
             </form>
         </div>
     </div>

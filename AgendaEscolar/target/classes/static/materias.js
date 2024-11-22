@@ -29,13 +29,16 @@ $('#modalEditarMateria').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget);
     var id = button.data('id');
     var nome = button.data('nome');
+    var turma = button.data('turma'); // Novo atributo
     var professorId = button.data('professor-id');
 
     var modal = $(this);
     modal.find('#idMateriaEditar').val(id);
     modal.find('#nomeMateriaEditar').val(nome);
+    modal.find('#turmaMateriaEditar').val(turma); // Preenche o campo 'turma'
     modal.find('#professorMateriaEditar').val(professorId);
 });
+
 
 // Intercepta o envio do formulário de edição e envia via AJAX
 $('#formEditarMateria').on('submit', function(e) {

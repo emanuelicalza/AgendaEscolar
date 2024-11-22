@@ -37,9 +37,15 @@
                         <form id="formMaterias" class="me-3">
                             <select id="materiasSelect" class="form-select" aria-label="Selecionar matéria">
                                 <option selected>Escolha a Matéria</option>
+                                <option th:each="materia : ${materias}"
+                                        th:value="${materia.id}"
+                                        th:text="${materia.descricaoComTurma}">
+                                </option>
                             </select>
                         </form>
                     </div>
+
+
 
                     <!-- Ícone ao Lado do Nome -->
                     <i class="fas fa-user-circle me-2"></i> <!-- Ícone de usuário -->
