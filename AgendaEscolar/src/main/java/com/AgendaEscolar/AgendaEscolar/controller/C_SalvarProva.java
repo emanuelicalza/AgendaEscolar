@@ -43,6 +43,24 @@ public class C_SalvarProva {
         }
     }
 
+    // Método para atualizar uma prova
+    @PostMapping("/atualizarprova")
+    public ResponseEntity<String> atualizarProva(@RequestParam("id") Long id,
+                                                 @RequestParam("titulo") String titulo,
+                                                 @RequestParam("descricao") String descricao,
+                                                 @RequestParam("data") String data,
+                                                 @RequestParam("type") String tipo) {
+        try {
+            boolean updated = s_salvarProva.atualizarProva(id, titulo, descricao, data, tipo);  // Atualiza a prova
+            if (updated) {
+                return ResponseEntity.ok("Prova atualizada com sucesso");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar a prova");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar a prova: " + e.getMessage());
+        }
+    }
 
     // Método para retornar provas em formato JSON
     @GetMapping("/listarprovas")

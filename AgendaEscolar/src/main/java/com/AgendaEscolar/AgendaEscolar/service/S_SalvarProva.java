@@ -17,7 +17,7 @@ public class S_SalvarProva {
         this.r_salvarProva = r_salvarProva;
     }
 
-    // Método para salvar a prova
+    // Método para salvar ou atualizar a prova
     public M_SalvarProva salvarProva(String titulo, String descricao, String data, String tipo, Long id) {
         M_SalvarProva prova = new M_SalvarProva();
         boolean podeSalvar = true;
@@ -49,6 +49,21 @@ public class S_SalvarProva {
             }
         }
         return null;
+    }
+
+    // Método para atualizar uma prova (refatorado)
+    public boolean atualizarProva(Long id, String titulo, String descricao, String data, String tipo) {
+        Optional<M_SalvarProva> provaExistente = r_salvarProva.findById(id);
+        if (provaExistente.isPresent()) {
+            M_SalvarProva provaParaAtualizar = provaExistente.get();
+            provaParaAtualizar.setTitulo(titulo);
+            provaParaAtualizar.setDescricao(descricao);
+            provaParaAtualizar.setTipo(tipo);
+            provaParaAtualizar.setData(data);
+            r_salvarProva.save(provaParaAtualizar);  // Atualiza a prova existente
+            return true;
+        }
+        return false;  // Retorna false se a prova não for encontrada
     }
 
     // Método para buscar todas as provas
