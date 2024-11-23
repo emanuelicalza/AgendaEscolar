@@ -102,11 +102,12 @@ document.addEventListener('DOMContentLoaded', function() {
 $('#editEventButton').click(function() {
     var modal = new bootstrap.Modal(document.getElementById('editModal')); // Abre o modal
     modal.show();
-        var eventId = $('#modalTitleDetails').attr('data-event-id');
-        var eventTitle = $('#modalTitleDetails').text();
-        var eventDescription = $('#eventDescriptionDetails').text();
-        var eventType = $('#eventTypeDetails').text();
-        var eventDate = $('#eventDateDetails').text();
+
+    var eventId = $('#modalTitleDetails').attr('data-event-id');
+    var eventTitle = $('#modalTitleDetails').text();
+    var eventDescription = $('#eventDescriptionDetails').text();
+    var eventType = $('#eventTypeDetails').text();
+    var eventDate = $('#eventDateDetails').text();
 
     // Preenche os campos do modal de edição
     $('#editEventId').val(eventId);
@@ -115,19 +116,26 @@ $('#editEventButton').click(function() {
     $('#editType').val(eventType);
     $('#editDate').val(new Date(eventDate).toISOString().split('T')[0]);
 
-    // Evento para salvar a edição
-    $('#edita').click(function() {
-        // Obtém os valores dos campos de edição
+
+});
+// Evento para salvar a edição
+    $('#salvaredit').click(function(event) {
+        // Impede o comportamento padrão do botão de submit
+        event.preventDefault();
+
+        console.log('Botão de salvar clicado!');
+        alert('Botão de salvar clicado!');
+
         var updatedEventId = $('#editEventId').val();
         var updatedTitle = $('#editTitle').val();
         var updatedDescription = $('#editDescription').val();
         var updatedType = $('#editType').val();
         var updatedDate = $('#editDate').val();
 
-        // Chama a função AJAX para enviar os dados
+        // Chama a função updateAtividade com os dados editados
         updateAtividade(updatedEventId, updatedTitle, updatedDescription, updatedType, updatedDate);
     });
-});
+
 
 
 
@@ -185,6 +193,9 @@ function deleteEvent(eventId) {
 }
 
 function updateAtividade(eventId, title, description, type, date) {
+    // Exibir os dados recebidos pela função
+    alert('ID: ' + eventId + '\nTítulo: ' + title + '\nDescrição: ' + description + '\nTipo: ' + type + '\nData: ' + date);
+
     $.ajax({
         url: '/salvarprova',  // URL correta que chama o método POST do controller
         type: 'POST',
@@ -197,21 +208,19 @@ function updateAtividade(eventId, title, description, type, date) {
         },
         success: function(response) {
             if (response) {  // Verifica se a resposta foi bem-sucedida
-                // Se a edição for bem-sucedida, você pode atualizar o calendário ou fazer outras ações necessárias
                 alert('Evento atualizado com sucesso!');
-                // Aqui você pode adicionar o código para atualizar o FullCalendar ou outros componentes
                 $('#editEventModal').modal('hide');  // Fechar o modal de edição
             } else {
                 alert('Erro ao atualizar o evento!');
             }
         },
         error: function(xhr, status, error) {
-            // Caso ocorra um erro durante a requisição AJAX
             console.error('Erro ao editar o evento: ', error);
             alert('Houve um erro ao editar o evento. Tente novamente.');
         }
     });
 }
+
 
 
 
