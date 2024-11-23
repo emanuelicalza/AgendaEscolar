@@ -1,21 +1,27 @@
+// Aguarda o DOM ser completamente carregado
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
 
+    // Inicializa o calendário FullCalendar com opções específicas
     var calendar = new FullCalendar.Calendar(calendarEl, {
         themeSystem: 'bootstrap5',
         initialView: 'dayGridMonth',
-        locale: 'pt-br',
+        locale: 'pt-br', // Configura a linguagem do calendário
 
+        // Evento disparado ao clicar em uma data
         dateClick: function(info) {
-            var modal = new bootstrap.Modal(document.getElementById('modal')); // Abre a modal
+            var modal = new bootstrap.Modal(document.getElementById('modal')); // Abre o modal
             modal.show();
 
-            // Limpar o formulário e habilitar novamente os elementos quando o modal for aberto
-            $('#event-form')[0].reset(); // Limpa o formulário
-            $('#saveBtn').prop('disabled', false); // Habilita o botão de salvar
-            $('#event-form').off('submit').on('submit', function(e) { // Usando .off() para garantir que a função de submit não seja anexada múltiplas vezes
+            // Limpa o formulário e habilita o botão de salvar
+            $('#event-form')[0].reset();
+            $('#saveBtn').prop('disabled', false);
+
+            // Evento de envio do formulário para salvar nova prova
+            $('#event-form').off('submit').on('submit', function(e) {
                 e.preventDefault();
 
+                // Coleta os dados do formulário
                 var eventData = {
                     titulo: $('#title').val(),
                     descricao: $('#description').val(),
@@ -26,32 +32,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Desabilita o botão de salvar para evitar múltiplos envios
                 $('#saveBtn').prop('disabled', true);
 
-                // Envio de dados via AJAX
-                $.ajax({
-                    url: '/salvarprova',
-                    method: 'POST',
-                    data: eventData,
-                    success: function(data) {
-                        calendar.addEvent({
-                            id: data.id,
-                            title: data.titulo + ' (' + data.type + ')',
-                            start: data.data,  // Data de início
-                            description: data.descricao,
-                            type: data.tipo
-                        });
-                        exibirAviso(data);
-                        modal.hide(); // Fechar o modal corretamente
-
-                        $('#event-form')[0].reset(); // Limpar o formulário
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Erro ao salvar a prova:', error);
-                        $('#saveBtn').prop('disabled', false); // Reabilitar o botão em caso de erro
-                    }
-                });
+                // Chama a função para salvar a prova via AJAX
+                salvarProva(eventData, modal, calendar);
             });
         },
 
+        // Carrega eventos de provas existentes via AJAX
         events: function(fetchInfo, successCallback, failureCallback) {
             $.ajax({
                 url: '/listarprovas',
@@ -66,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             type: event.tipo
                         };
                     });
-                    successCallback(events);
+                    successCallback(events); // Retorna os eventos carregados
                     carregarProvas();
                 },
                 error: function(xhr, status, error) {
@@ -76,12 +62,15 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         },
 
+        // Executa quando um evento é montado no calendário
         eventDidMount: function(info) {
             var eventElement = $(info.el);
-            eventElement.attr('id', 'atividade-' + info.event.id);
+            eventElement.attr('id', 'atividade-' + info.event.id); // Atribui um ID ao elemento do evento
         },
 
+        // Evento disparado ao clicar em um evento existente
         eventClick: function(info) {
+            // Preenche os campos da modal com os detalhes do evento
             $('#modalTitleDetails').text(info.event.title);
             $('#eventDescriptionDetails').text(info.event.extendedProps.description);
             $('#eventTypeDetails').text(info.event.extendedProps.type);
@@ -89,96 +78,140 @@ document.addEventListener('DOMContentLoaded', function() {
             $('#modalTitleDetails').attr('data-event-id', info.event.id);
             $('#eventIdDetails').text(info.event.id);
 
+            // Abre a modal de detalhes do evento
             var modalDetails = new bootstrap.Modal(document.getElementById('detailsModalNew'));
             modalDetails.show();
         }
     });
 
-    $(document).ready(function () {
-        // Captura o evento de abertura do modal
-        $('#detailsModalNew').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget); // Botão que disparou o modal
-            var eventId = button.data('event-id'); // Extrai o ID da atividade do botão
-
-            // Atribui o ID da atividade ao título do modal
+    // Manipula a abertura do modal de detalhes
+    $(document).ready(function() {
+        $('#detailsModalNew').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var eventId = button.data('event-id');
             $(this).find('#modalTitleDetails').attr('data-event-id', eventId);
-            $(this).find('#eventIdDetails').text(eventId);  // Exibe o ID no <span> dentro do modal
+            $(this).find('#eventIdDetails').text(eventId);
         });
 
-        // Função para deletar um evento
-        function deleteEvent(eventId) {
-            console.log('ID do Evento:', eventId); // Verifique se o ID está sendo extraído corretamente
-
-            // Requisição AJAX para deletar o evento
-            $.ajax({
-                url: '/evento/deletar/' + eventId,
-                method: 'DELETE',
-                success: function () {
-                    console.log('Evento deletado com sucesso');
-                    $('#detailsModalNew').modal('hide');
-                    $("#atividade-" + eventId).remove();
-                    carregarProvas();
-                },
-                error: function () {
-                    console.log('Erro ao deletar o evento');
-                }
-            });
-        }
-
-        // Manipulador de evento para o botão de deletar
-        $('#deleteEventButton').click(function () {
-            var eventId = $('#eventIdDetails').text(); // Pega o ID do evento diretamente do <span>
-            deleteEvent(eventId); // Chama a função deleteEvent
+        // Evento de clique para deletar evento
+        $('#deleteEventButton').click(function() {
+            var eventId = $('#eventIdDetails').text(); // Obtém o ID do evento
+            deleteEvent(eventId); // Chama a função de deleção
         });
 
-        $('#editEventButton').click(function () {
-            var eventId = $('#modalTitleDetails').attr('data-event-id'); // Pega o ID do evento
-            var eventTitle = $('#modalTitleDetails').text(); // Título do evento
-            var eventDescription = $('#eventDescriptionDetails').text(); // Descrição do evento
-            var eventType = $('#eventTypeDetails').text(); // Tipo do evento
-            var eventDate = $('#eventDateDetails').text(); // Data do evento
+$('#editEventButton').click(function() {
+    var modal = new bootstrap.Modal(document.getElementById('editModal')); // Abre o modal
+    modal.show();
+        var eventId = $('#modalTitleDetails').attr('data-event-id');
+        var eventTitle = $('#modalTitleDetails').text();
+        var eventDescription = $('#eventDescriptionDetails').text();
+        var eventType = $('#eventTypeDetails').text();
+        var eventDate = $('#eventDateDetails').text();
 
-            // Preenche os campos da modal de edição
-            $('#editEventId').val(eventId);
-            $('#editTitle').val(eventTitle);
-            $('#editDescription').val(eventDescription);
-            $('#editType').val(eventType);
-            $('#editDate').val(new Date(eventDate).toISOString().split('T')[0]); // Converte a data para o formato YYYY-MM-DD
+    // Preenche os campos do modal de edição
+    $('#editEventId').val(eventId);
+    $('#editTitle').val(eventTitle);
+    $('#editDescription').val(eventDescription);
+    $('#editType').val(eventType);
+    $('#editDate').val(new Date(eventDate).toISOString().split('T')[0]);
 
-            // Abre a modal de edição
-            var editModal = new bootstrap.Modal(document.getElementById('editModal'));
-            editModal.show();
+    // Evento para salvar a edição
+    $('#edita').click(function() {
+        // Obtém os valores dos campos de edição
+        var updatedEventId = $('#editEventId').val();
+        var updatedTitle = $('#editTitle').val();
+        var updatedDescription = $('#editDescription').val();
+        var updatedType = $('#editType').val();
+        var updatedDate = $('#editDate').val();
 
-               $('#edita').click(function () {
-
-
-
-                                    $.ajax({
-                                        url: '/salvarprova',
-                                        method: 'POST',
-                                        data: eventData,
-                                        success: function(data) {
-                                            calendar.addEvent({
-                                                id: data.id,
-                                                title: data.titulo + ' (' + data.type + ')',
-                                                start: data.data,  // Data de início
-                                                description: data.descricao,
-                                                type: data.tipo
-                                            });
-                                            exibirAviso(data);
-                                            modal.hide(); // Fechar o modal corretamente
-
-                                            $('#event-form')[0].reset(); // Limpar o formulário
-                                        },
-                                        error: function(xhr, status, error) {
-                                            console.error('Erro ao salvar a prova:', error);
-                                            $('#saveBtn').prop('disabled', false); // Reabilitar o botão em caso de erro
-                                        }
-                                    });
-                                    deleteEvent(eventId);
-                                                     editModal.hide();
-                });
-        });
+        // Chama a função AJAX para enviar os dados
+        updateAtividade(updatedEventId, updatedTitle, updatedDescription, updatedType, updatedDate);
     });
+});
+
+
+
+
+
+    });
+
+    // Renderiza o calendário na tela
     calendar.render();
 });
+
+// Função AJAX para salvar uma prova
+function salvarProva(eventData, modal, calendar) {
+    $.ajax({
+        url: '/salvarprova',
+        method: 'POST',
+        data: eventData,
+        success: function(data) {
+            // Adiciona o novo evento ao calendário
+            calendar.addEvent({
+                id: data.id,
+                title: data.titulo + ' (' + data.type + ')',
+                start: data.data,
+                description: data.descricao,
+                type: data.tipo
+            });
+            exibirAviso(data); // Exibe uma mensagem de aviso/sucesso
+            modal.hide(); // Fecha o modal
+            $('#event-form')[0].reset(); // Limpa o formulário
+        },
+        error: function(xhr, status, error) {
+            console.error('Erro ao salvar a prova:', error);
+            $('#saveBtn').prop('disabled', false); // Habilita o botão de salvar novamente em caso de erro
+        }
+    });
+}
+
+// Função AJAX para deletar um evento
+function deleteEvent(eventId) {
+    console.log('ID do Evento:', eventId);
+
+    $.ajax({
+        url: '/evento/deletar/' + eventId,
+        method: 'DELETE',
+        success: function() {
+            console.log('Evento deletado com sucesso');
+            $('#detailsModalNew').modal('hide');
+            $("#atividade-" + eventId).remove(); // Remove o evento da tela
+            carregarProvas();
+        },
+        error: function() {
+            console.log('Erro ao deletar o evento');
+        }
+    });
+}
+
+function updateAtividade(eventId, title, description, type, date) {
+    $.ajax({
+        url: '/salvarprova',  // URL correta que chama o método POST do controller
+        type: 'POST',
+        data: {
+            id: eventId,  // Envia o ID do evento para ser atualizado
+            titulo: title,  // Envia o título (nome no controller: 'titulo')
+            descricao: description,  // Envia a descrição
+            type: type,  // Envia o tipo
+            data: date  // Envia a data
+        },
+        success: function(response) {
+            if (response) {  // Verifica se a resposta foi bem-sucedida
+                // Se a edição for bem-sucedida, você pode atualizar o calendário ou fazer outras ações necessárias
+                alert('Evento atualizado com sucesso!');
+                // Aqui você pode adicionar o código para atualizar o FullCalendar ou outros componentes
+                $('#editEventModal').modal('hide');  // Fechar o modal de edição
+            } else {
+                alert('Erro ao atualizar o evento!');
+            }
+        },
+        error: function(xhr, status, error) {
+            // Caso ocorra um erro durante a requisição AJAX
+            console.error('Erro ao editar o evento: ', error);
+            alert('Houve um erro ao editar o evento. Tente novamente.');
+        }
+    });
+}
+
+
+
