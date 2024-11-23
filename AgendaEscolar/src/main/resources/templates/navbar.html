@@ -1,4 +1,3 @@
-
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
@@ -10,7 +9,6 @@
 
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <!-- Área Diretor - Links para Gerir Professores e Gerir Matérias -->
                 <li class="nav-item" th:if="${session.usuario != null && session.usuario.tipo == 3}">
                     <a class="nav-link" th:href="@{/gerirProfessores}">Gerir Professores</a>
                 </li>
@@ -22,40 +20,41 @@
                 </li>
             </ul>
 
-            <!-- Links de Login/Cadastro ou Nome do Usuário -->
             <div class="d-flex align-items-center">
                 <div th:if="${session.usuario == null}">
                     <a class="btn btn-sm btn-primary me-2" href="login">Login</a>
                     <a class="btn btn-sm btn-secondary me-3" href="cadastro">Cadastrar</a>
                 </div>
 
-
                 <!-- Nome do Usuário com Ícone ao Lado -->
                 <div th:if="${session.usuario != null}" class="d-flex align-items-center">
-                    <!-- Select visível apenas para professores (tipo 2) e diretores (tipo 3) -->
-                    <div th:if="${session.usuario != null and (session.usuario.tipo == 2 or session.usuario.tipo == 3)}" class="d-flex align-items-center">
-                        <form id="formMaterias" class="me-3">
-                            <select id="materiasSelect" class="form-select" aria-label="Selecionar matéria">
-                                <option selected>Escolha a Matéria</option>
+                    <div th:if="${#httpServletRequest.requestURI == '/'}">
+                        <!-- Exibe o select de matérias apenas se for na página inicial -->
+                        <form id="formMaterias" class="me-3" action="/selecionarMateria" method="GET">
+                            <select id="materiasSelect" class="form-select" aria-label="Selecionar matéria" name="materiaId" required>
+                                <option value="" disabled selected>Escolha a Matéria</option>
                                 <option th:each="materia : ${materias}"
                                         th:value="${materia.id}"
-                                        th:text="${materia.descricaoComTurma}">
+                                        th:text="${materia.nome} + ' - ' + ${materia.turma.nomeFormatado}">
                                 </option>
                             </select>
                         </form>
                     </div>
 
 
-
-                    <!-- Ícone ao Lado do Nome -->
-                    <i class="fas fa-user-circle me-2"></i> <!-- Ícone de usuário -->
+                    <i class="fas fa-user-circle me-2"></i>
                     <span class="navbar-text">
-                        <a th:href="@{/perfil}" th:text="${session.usuario.nome}" class="text-decoration-none">
-                        <!-- Nome do usuário será exibido aqui -->
-                        </a>
+                        <a th:href="@{/perfil}" th:text="${session.usuario.nome}" class="text-decoration-none"></a>
                     </span>
                 </div>
             </div>
         </div>
     </div>
 </nav>
+
+<script>
+    // Enviar o formulário automaticamente quando o usuário selecionar uma matéria
+    document.getElementById('materiasSelect').addEventListener('change', function() {
+        this.form.submit();
+    });
+</script>

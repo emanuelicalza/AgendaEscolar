@@ -2,6 +2,8 @@ package com.AgendaEscolar.AgendaEscolar.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "materias")
 public class M_Materias {
@@ -12,11 +14,13 @@ public class M_Materias {
 
     private String nome;
 
-    @ManyToOne
-    private M_Usuarios professor;
+    @ManyToOne(fetch = FetchType.EAGER) // Carregamento antecipado da turma
+    @JoinColumn(name = "turma_id")
+    private M_Turmas turma;
 
-    @ManyToOne
-    private M_Turmas turma; // Relacionamento com turma
+    @ManyToOne (fetch = FetchType.EAGER)
+    @JoinColumn(name = "professor_id")
+    private M_Usuarios professor;
 
     // Getters e Setters
     public Long getId() {
@@ -55,4 +59,6 @@ public class M_Materias {
     public String getDescricaoComTurma() {
         return nome + " - " + (turma != null ? turma.getNomeFormatado() : "Sem Turma");
     }
+
+
 }

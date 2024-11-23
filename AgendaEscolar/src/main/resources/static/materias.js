@@ -23,21 +23,26 @@ $('#formCriarMateria').on('submit', function (e) {
     });
 });
 
-
 // Captura o evento de abertura do modal de edição para preencher os campos
 $('#modalEditarMateria').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget);
+    var button = $(event.relatedTarget); // O botão que ativou o modal
     var id = button.data('id');
     var nome = button.data('nome');
-    var turma = button.data('turma'); // Novo atributo
+    var turma = button.data('turma'); // Aqui deve vir o objeto de turma
     var professorId = button.data('professor-id');
 
     var modal = $(this);
     modal.find('#idMateriaEditar').val(id);
     modal.find('#nomeMateriaEditar').val(nome);
-    modal.find('#turmaMateriaEditar').val(turma); // Preenche o campo 'turma'
+
+    // Preencher o campo de turma com o nomeFormatado da turma
+    if (turma && turma.nomeFormatado) {
+        modal.find('#turmaMateriaEditar').val(turma.nomeFormatado); // Preenche o campo da turma
+    }
+
     modal.find('#professorMateriaEditar').val(professorId);
 });
+
 
 
 // Intercepta o envio do formulário de edição e envia via AJAX
@@ -51,7 +56,6 @@ $('#formEditarMateria').on('submit', function(e) {
         type: 'POST',  // Usando POST, mas vamos simular PUT via _method
         data: formData,  // Envia os dados do formulário
         success: function(response) {
-            // Lógica após o sucesso da atualização
             $('#modalEditarMateria').modal('hide');  // Fecha o modal
             window.location.href = '/gerirMaterias';  // Redireciona para a lista de matérias
         },
@@ -59,16 +63,6 @@ $('#formEditarMateria').on('submit', function(e) {
             alert('Erro ao editar a matéria!');
         }
     });
-});
-
-
-// Passa o ID da matéria para o modal de exclusão
-$('#modalExcluirMateria').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget); // Botão que ativou o modal
-    var id = button.data('id'); // ID da matéria
-
-    var modal = $(this);
-    modal.find('#idMateriaExcluir').val(id); // Preenche o campo oculto com o ID da matéria
 });
 
 // Passa o ID da matéria para o modal de exclusão
@@ -91,7 +85,6 @@ $('#formExcluirMateria').on('submit', function(e) {
         data: { id: idMateria },  // Envia o ID da matéria
         success: function(response) {
             if (response === 'sucesso') {
-                // Lógica após o sucesso da exclusão
                 $('#modalExcluirMateria').modal('hide');  // Fecha o modal
                 location.reload();  // Recarrega a página para refletir a exclusão
             } else {
@@ -104,24 +97,21 @@ $('#formExcluirMateria').on('submit', function(e) {
     });
 });
 
+
 $(document).ready(function () {
-    // Faz uma requisição para obter as matérias
     $.ajax({
-        url: '/obterMateriasUsuario',
+        url: '/obterMateriasUsuario', // Endpoint para obter as matérias
         method: 'GET',
         success: function (materias) {
-
             let select = $('#materiasSelect');
             materias.forEach(materia => {
-                select.append(new Option(materia.nome, materia.id));
+                // Adiciona as opções ao select
+                select.append(new Option(materia.descricaoComTurma, materia.id)); // Exibe a matéria com a turma
             });
-
         },
         error: function () {
             alert('Erro ao carregar as matérias.');
         }
     });
 });
-
-
-
+});

@@ -146,15 +146,19 @@ public class C_Materia {
         return new ArrayList<>(); // Retorna lista vazia para outros casos
     }
 
-    @GetMapping("/selecionarMateria")
-    public String selecionarMateria(@SessionAttribute(name = "usuario", required = false) M_Usuarios usuario, Model model) {
-        if (usuario == null || usuario.getTipo() < 2) { // Apenas professores e diretores
-            return "redirect:/";
-        }
 
-        List<M_Materias> materias = s_materia.listarMaterias();
-        model.addAttribute("materias", materias);
-        return "selecionarMateria";
+    @GetMapping("/")
+    public String selecionarMateria(@SessionAttribute(name = "usuario", required = false) M_Usuarios usuario, Model model) {
+        if (usuario != null) {
+            // Adicionando a lista de matérias apenas se o usuário for professor ou diretor
+            if (usuario.getTipo() == 2 || usuario.getTipo() == 3) {
+                List<M_Materias> materias = s_materia.listarMateriasPorProfessor(usuario.getId());
+                model.addAttribute("materias", materias);
+            }
+        }
+        model.addAttribute("usuario", usuario); // Adicionando o usuário logado ao modelo
+        return "index"; // Retorna a página inicial
     }
+
 
 }
