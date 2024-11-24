@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @Controller
 public class C_SalvarProva {
 
@@ -44,14 +43,14 @@ public class C_SalvarProva {
     }
 
     // Método para atualizar uma prova
-    @PostMapping("/atualizarprova")
+    @PostMapping("/atualizarProva")
     public ResponseEntity<String> atualizarProva(@RequestParam("id") Long id,
                                                  @RequestParam("titulo") String titulo,
                                                  @RequestParam("descricao") String descricao,
-                                                 @RequestParam("data") String data,
-                                                 @RequestParam("type") String tipo) {
+                                                 @RequestParam("tipo") String tipo,
+                                                @RequestParam("data") String data) {
         try {
-            boolean updated = s_salvarProva.atualizarProva(id, titulo, descricao, data, tipo);  // Atualiza a prova
+            boolean updated = s_salvarProva.atualizarProva(id, titulo, descricao, tipo,data);  // Atualiza a prova
             if (updated) {
                 return ResponseEntity.ok("Prova atualizada com sucesso");
             } else {
