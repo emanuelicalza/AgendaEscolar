@@ -32,7 +32,7 @@ public class C_SalvarProva {
     public ResponseEntity<M_SalvarProva> salvarProva(@RequestParam("titulo") String titulo,
                                                      @RequestParam("descricao") String descricao,
                                                      @RequestParam("data") String data,
-                                                     @RequestParam("type") String tipo,
+                                                     @RequestParam("tipo") String tipo,
                                                      @RequestParam(name = "id", required = false) Long id) {
         M_SalvarProva prova = s_salvarProva.salvarProva(titulo, descricao, data, tipo, id);
         if (prova != null) {

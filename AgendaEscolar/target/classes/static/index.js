@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 var dadosEvento = {
                     titulo: $('#title').val(),
                     descricao: $('#description').val(),
-                    type: $('#type').val(),
+                    tipo: $('#type').val(),
                     data: infoData.dateStr
                 };
 
@@ -94,13 +94,17 @@ document.addEventListener('DOMContentLoaded', function() {
             var tituloEvento = $('#modalTitleDetails').text();
             var descricaoEvento = $('#eventDescriptionDetails').text();
             var tipoEvento = $('#eventTypeDetails').text();
-            var dataEvento = $('#eventDateDetails').text();
+            var dataEvento = $('#eventDateDetails').text(); // formato dd/mm/aaaa
+
+            // Converter a data do formato brasileiro para o formato ISO
+            var partesData = dataEvento.split('/');
+            var dataFormatada = `${partesData[2]}-${partesData[1].padStart(2, '0')}-${partesData[0].padStart(2, '0')}`;
 
             $('#editEventId').val(idEvento);
             $('#editTitle').val(tituloEvento);
             $('#editDescription').val(descricaoEvento);
             $('#editType').val(tipoEvento);
-            $('#editDate').val(new Date(dataEvento).toISOString().split('T')[0]);
+            $('#editDate').val(dataFormatada);
         });
 
         $('#salvaredit').click(function() {
