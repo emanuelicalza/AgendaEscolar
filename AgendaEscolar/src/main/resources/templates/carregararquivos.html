@@ -8,8 +8,8 @@
             <tr>
                 <th>Título</th>
                 <th style="width: 100ch;">Descrição</th>
-                <th>Data</th> <!-- Tipo vem antes -->
-                <th>Tipo</th> <!-- Data vem depois -->
+                <th>Tipo</th> <!-- Tipo vem antes -->
+                <th>Data</th> <!-- Data vem depois -->
             </tr>
             </thead>
             <tbody id="provas-body">
@@ -32,19 +32,25 @@
 
 
     function carregarProvas() {
-        $.ajax({
-            url: '/buscarProvasJson',
-            method: 'GET',
-            success: function(data) {
-                const provasBody = document.getElementById('provas-body');
-                provasBody.innerHTML = '';  // Limpar antes de inserir novos dados
-                data.forEach(prova => exibirAviso(prova)); // Exibir cada prova
-            },
-            error: function(error) {
-                console.error('Erro ao carregar as provas:', error);
-            }
-        });
-    }
+    $.ajax({
+        url: '/buscarProvasJson',
+        method: 'GET',
+        success: function(data) {
+            const provasBody = document.getElementById('provas-body');
+            provasBody.innerHTML = '';  // Limpar antes de inserir novos dados
+
+            // Ordenar as provas pela data mais próxima
+            data.sort((a, b) => new Date(a.data) - new Date(b.data));
+
+            // Exibir cada prova, já ordenada
+            data.forEach(prova => exibirAviso(prova));
+        },
+        error: function(error) {
+            console.error('Erro ao carregar as provas:', error);
+        }
+    });
+}
+
 </script>
 
 <!-- Fim do código inserido -->
