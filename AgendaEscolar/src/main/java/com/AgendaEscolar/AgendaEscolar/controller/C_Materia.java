@@ -129,36 +129,30 @@ public class C_Materia {
         return "sucesso"; // Retorna sucesso
     }
 
-    @GetMapping("/obterMateriasUsuario")
-    @ResponseBody
-    public List<M_Materias> obterMateriasUsuario(@SessionAttribute(name = "usuario", required = false) M_Usuarios usuario) {
+    @GetMapping("/")
+    public String exibirPaginaInicial(@SessionAttribute(name = "usuario", required = false) M_Usuarios usuario, Model model) {
         if (usuario == null) {
-            return new ArrayList<>(); // Retorna lista vazia se não houver usuário logado
+            model.addAttribute("materias", new ArrayList<>()); // Lista vazia caso não haja usuário logado
+            model.addAttribute("usuario", null);
+            return "index"; // Retorna a página inicial sem usuário logado
         }
+
         System.out.println("Usuário logado: " + usuario.getNome());
 
+        List<M_Materias> materias;
         if (usuario.getTipo() == 3) {
-            return s_materia.listarMaterias(); // Diretor vê todas as matérias
+            materias = s_materia.listarMaterias(); // Diretor vê todas as matérias
         } else if (usuario.getTipo() == 2) {
-            return s_materia.listarMateriasPorProfessor(usuario.getId()); // Professor vê suas matérias
+            materias = s_materia.listarMateriasPorProfessor(usuario.getId()); // Professor vê suas matérias
+        } else {
+            materias = new ArrayList<>(); // Outros usuários não visualizam matérias
         }
 
-        return new ArrayList<>(); // Retorna lista vazia para outros casos
-    }
-
-
-    @GetMapping("/")
-    public String selecionarMateria(@SessionAttribute(name = "usuario", required = false) M_Usuarios usuario, Model model) {
-        if (usuario != null) {
-            // Adicionando a lista de matérias apenas se o usuário for professor ou diretor
-            if (usuario.getTipo() == 2 || usuario.getTipo() == 3) {
-                List<M_Materias> materias = s_materia.listarMateriasPorProfessor(usuario.getId());
-                model.addAttribute("materias", materias);
-            }
-        }
-        model.addAttribute("usuario", usuario); // Adicionando o usuário logado ao modelo
+        model.addAttribute("materiasMenu", materias);
+        model.addAttribute("usuario", usuario); // Adicionando o usuário ao modelo
         return "index"; // Retorna a página inicial
     }
+
 
 
 }

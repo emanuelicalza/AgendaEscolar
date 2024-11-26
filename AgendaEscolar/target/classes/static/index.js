@@ -126,3 +126,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     calendar.render();
 });
+
+// Enviar o formulário automaticamente quando o usuário selecionar uma matéria
+    document.getElementById('materiasSelect').addEventListener('change', function() {
+        this.form.submit();
+    });
