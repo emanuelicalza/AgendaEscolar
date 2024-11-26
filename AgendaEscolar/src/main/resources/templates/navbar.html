@@ -31,7 +31,7 @@
                     <div th:if="${materiasMenu != null}">
                         <!-- Exibe o select de matérias apenas se for na página inicial -->
                         <form id="formMaterias" class="me-3" action="/selecionarMateria" method="GET">
-                            <select id="materiasSelect" class="form-select" aria-label="Selecionar matéria" name="materiaId" required>
+                            <select id="materiasSelect" class="form-select" aria-label="Selecionar materia" name="materiaId" required>
                                 <option value="" disabled selected>Escolha a Matéria</option>
                                 <option th:each="materia : ${materiasMenu}"
                                         th:value="${materia.id}"
@@ -41,17 +41,38 @@
                         </form>
                     </div>
 
-
                     <i class="fas fa-user-circle me-2"></i>
-                    <span class="navbar-text">
+                    <span class="navbar-text me-2">
                         <a th:href="@{/perfil}" th:text="${session.usuario.nome}" class="text-decoration-none"></a>
                     </span>
+
+                    <!-- Botão de Logout com Modal -->
+                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                        <i class="fas fa-sign-out-alt me-1"></i>Sair
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 </nav>
 
-<script>
-
-</script>
+<!-- Modal de Confirmação de Logout -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="logoutModalLabel">Confirmação de Logout</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Tem certeza que deseja sair da sua conta?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form th:action="@{/logout}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-danger">Sair</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

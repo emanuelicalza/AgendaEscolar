@@ -196,3 +196,11 @@ function atualizarAtividade(idEvento, titulo, descricao, tipo, data) {
     document.getElementById('materiasSelect').addEventListener('change', function() {
         this.form.submit();
     });
+
+// Opcional: Adicione este script se quiser personalizar o comportamento da modal
+    document.addEventListener('DOMContentLoaded', function() {
+        var logoutModal = document.getElementById('logoutModal');
+        logoutModal.addEventListener('show.bs.modal', function (event) {
+            // Você pode adicionar lógicas personalizadas antes de mostrar a modal, se necessário
+        });
+    });
