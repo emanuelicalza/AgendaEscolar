@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @Controller
 public class C_SalvarProva {
 
@@ -33,7 +32,7 @@ public class C_SalvarProva {
     public ResponseEntity<M_SalvarProva> salvarProva(@RequestParam("titulo") String titulo,
                                                      @RequestParam("descricao") String descricao,
                                                      @RequestParam("data") String data,
-                                                     @RequestParam("type") String tipo,
+                                                     @RequestParam("tipo") String tipo,
                                                      @RequestParam(name = "id", required = false) Long id) {
         M_SalvarProva prova = s_salvarProva.salvarProva(titulo, descricao, data, tipo, id);
         if (prova != null) {
@@ -43,6 +42,24 @@ public class C_SalvarProva {
         }
     }
 
+    // Método para atualizar uma prova
+    @PostMapping("/atualizarProva")
+    public ResponseEntity<String> atualizarProva(@RequestParam("id") Long id,
+                                                 @RequestParam("titulo") String titulo,
+                                                 @RequestParam("descricao") String descricao,
+                                                 @RequestParam("tipo") String tipo,
+                                                @RequestParam("data") String data) {
+        try {
+            boolean updated = s_salvarProva.atualizarProva(id, titulo, descricao, tipo,data);  // Atualiza a prova
+            if (updated) {
+                return ResponseEntity.ok("Prova atualizada com sucesso");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar a prova");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar a prova: " + e.getMessage());
+        }
+    }
 
     // Método para retornar provas em formato JSON
     @GetMapping("/listarprovas")

@@ -8,8 +8,8 @@
             <tr>
                 <th>Título</th>
                 <th style="width: 100ch;">Descrição</th>
-                <th>Data</th> <!-- Tipo vem antes -->
-                <th>Tipo</th> <!-- Data vem depois -->
+                <th>Tipo</th> <!-- Tipo vem antes -->
+                <th>Data</th> <!-- Data vem depois -->
             </tr>
             </thead>
             <tbody id="provas-body">
@@ -24,45 +24,32 @@
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 
 <script>
-    // Função para conectar ao WebSocket e receber novos avisos
-    function connect() {
-        var socket = new SockJS('/ws');
-        var stompClient = Stomp.over(socket);
-        stompClient.connect({}, function () {
-            stompClient.subscribe('/topic/provas', function (prova) {
-                var data = JSON.parse(prova.body);
-                exibirAviso(data);
-            });
-        });
-    }
-
-    // Função para exibir o aviso (prova) dinamicamente na tabela
     function exibirAviso({titulo, descricao, data, tipo}) {
         const row = document.createElement('tr');
         row.innerHTML = `<td>${titulo}</td><td>${descricao}</td><td>${tipo}</td><td>${data}</td>`;
         document.getElementById('provas-body').appendChild(row);
     }
 
-    // Função para carregar as provas existentes ao carregar a página
-    function carregarProvas() {
-        $.ajax({
-            url: '/buscarProvasJson',
-            method: 'GET',
-            success: function(data) {
-                const provasBody = document.getElementById('provas-body');
-                provasBody.innerHTML = '';  // Limpar antes de inserir novos dados
-                data.forEach(prova => exibirAviso(prova)); // Exibir cada prova
-            },
-            error: function(error) {
-                console.error('Erro ao carregar as provas:', error);
-            }
-        });
-    }
 
-    document.addEventListener("DOMContentLoaded", function() {
-        connect();      // Conectar ao WebSocket
-        carregarProvas();  // Carregar provas
+    function carregarProvas() {
+    $.ajax({
+        url: '/buscarProvasJson',
+        method: 'GET',
+        success: function(data) {
+            const provasBody = document.getElementById('provas-body');
+            provasBody.innerHTML = '';  // Limpar antes de inserir novos dados
+
+            // Ordenar as provas pela data mais próxima
+            data.sort((a, b) => new Date(a.data) - new Date(b.data));
+
+            // Exibir cada prova, já ordenada
+            data.forEach(prova => exibirAviso(prova));
+        },
+        error: function(error) {
+            console.error('Erro ao carregar as provas:', error);
+        }
     });
+}
 
 </script>
 
