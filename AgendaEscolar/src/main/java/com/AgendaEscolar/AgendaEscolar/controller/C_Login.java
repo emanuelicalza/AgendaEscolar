@@ -34,11 +34,14 @@ public class C_Login {
 
         Optional<M_Usuarios> usuarioOpt = usuarioRepository.findByEmail(email);
 
+        model.addAttribute("eNois", "podcrê");
+
+
         if (usuarioOpt.isPresent()) {
             M_Usuarios usuario = usuarioOpt.get();
             if (usuario.getSenha().equals(password)) {
                 session.setAttribute("usuario", usuario);
-                return "index"; // Redireciona para a página principal
+                return "redirect:/"; // Redireciona para a página principal
             }
         }
 
