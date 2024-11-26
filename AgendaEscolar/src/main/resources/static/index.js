@@ -191,3 +191,8 @@ function atualizarAtividade(idEvento, titulo, descricao, tipo, data) {
         }
     });
 }
+
+// Enviar o formulário automaticamente quando o usuário selecionar uma matéria
+    document.getElementById('materiasSelect').addEventListener('change', function() {
+        this.form.submit();
+    });
