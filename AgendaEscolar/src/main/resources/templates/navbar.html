@@ -28,7 +28,7 @@
 
                 <!-- Nome do Usuário com Ícone ao Lado -->
                 <div th:if="${session.usuario != null}" class="d-flex align-items-center">
-                    <div th:if="${materias != null}">
+                    <div th:if="${exibirFormularioMaterias}">
                         <!-- Exibe o select de matérias apenas se for na página inicial -->
                         <form id="formMaterias" class="me-3" action="/selecionarMateria" method="GET">
                             <select id="materiasSelect" class="form-select" aria-label="Selecionar materia" name="materiaId" required>

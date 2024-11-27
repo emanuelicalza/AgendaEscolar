@@ -147,6 +147,7 @@ public class C_Materia {
         } else {
             materias = new ArrayList<>(); // Outros usuários não visualizam matérias
         }
+        model.addAttribute("exibirFormularioMaterias", true);
 
         model.addAttribute("materias", materias);
         model.addAttribute("usuario", usuario); // Adicionando o usuário ao modelo
