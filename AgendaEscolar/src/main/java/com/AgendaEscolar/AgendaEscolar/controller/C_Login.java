@@ -48,4 +48,12 @@ public class C_Login {
         model.addAttribute("error", "Email ou senha inválidos");
         return "login"; // Volta para a página de login com a mensagem de erro
     }
+
+    @PostMapping("/logout")
+    public String logout(HttpSession session) {
+        // Invalida a sessão atual
+        session.invalidate();
+        // Redireciona para a página de login
+        return "redirect:/login?logout";
+    }
 }
