@@ -1,5 +1,6 @@
 // Declaração global do calendário
 var calendario;
+var usuarioTipo = document.getElementById('info-usuario').getAttribute('data-usuario-tipo');
 
 document.addEventListener('DOMContentLoaded', function() {
     var elementoCalendario = document.getElementById('calendar');
@@ -10,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
         locale: 'pt-br',
 
         dateClick: function(infoData) {
+        if (usuarioTipo == 2 || usuarioTipo==3){
             var modal = new bootstrap.Modal(document.getElementById('modal'));
             modal.show();
 
@@ -30,6 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 salvarProva(dadosEvento, modal, calendario);
             });
+            }else{
+            };
         },
 
         events: function(infoRequisicao, sucessoCallback, erroCallback) {

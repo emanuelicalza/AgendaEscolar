@@ -25,6 +25,8 @@
 </head>
 <body>
 
+<div id="info-usuario" th:data-usuario-tipo="${session.usuario != null ? session.usuario.tipo : 0}"></div>
+
 
 <!-- Incluindo o fragmento da navbar -->
 <div th:insert="~{navbar}"></div>
