@@ -21,15 +21,17 @@
 <div th:insert="~{navbar}"></div>
 
 <div class="container mt-5">
-    <h1>Área do Diretor</h1>
+    <h2>Gerir Professores</h2>
+
 
     <!-- Botão para criar perfil de professor -->
     <div class="mb-3">
-        <button class="btn btn-primary" onclick="openProfessorModal()">Criar Perfil de Professor</button>
+        <button class="btn btn-primary" onclick="openProfessorModal()">
+            <i class="fas fa-plus"></i> Criar Professor
+        </button>
     </div>
 
     <!-- Tabela de professores cadastrados -->
-    <h2>Professores Cadastrados</h2>
     <table class="table table-bordered" id="professoresTabela">
         <thead>
         <tr>
@@ -48,9 +50,13 @@
                 <td  th:text="${professor.dataNascimento}">1980-01-01</td>
                 <td>
                     <button class="btn btn-warning btn-sm"
-                            th:attr="onclick='openProfessorModal(' + ${professor.id} + ')'" >Editar</button>
+                            th:attr="onclick='openProfessorModal(' + ${professor.id} + ')'" >
+                        <i class="fas fa-edit"></i> Editar
+                    </button>
                     <button class="btn btn-danger btn-sm"
-                            th:attr="onclick='openDeleteModal(' + ${professor.id} + ')'" >Deletar</button>
+                            th:attr="onclick='openDeleteModal(' + ${professor.id} + ')'" >
+                        <i class="fas fa-trash"></i> Deletar
+                    </button>
 
 
 

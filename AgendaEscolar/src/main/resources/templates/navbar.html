@@ -13,10 +13,10 @@
                     <a class="nav-link" th:href="@{/gerirProfessores}">Gerir Professores</a>
                 </li>
                 <li class="nav-item" th:if="${session.usuario != null && session.usuario.tipo == 3}">
-                    <a class="nav-link" th:href="@{/gerirMaterias}">Gerir Matérias</a>
+                    <a class="nav-link" th:href="@{/gerirTurmas}">Gerir Turmas</a>
                 </li>
                 <li class="nav-item" th:if="${session.usuario != null && session.usuario.tipo == 3}">
-                    <a class="nav-link" th:href="@{/gerirTurmas}">Gerir Turmas</a>
+                    <a class="nav-link" th:href="@{/gerirMaterias}">Gerir Matérias</a>
                 </li>
             </ul>
 
