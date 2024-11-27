@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+<div id="tipoUsuario" class="d-none" th:if="${usuario}" th:text="${usuario.tipo}"></div>
 
 <!-- Incluindo o fragmento da navbar -->
 <div th:insert="~{navbar}"></div>
@@ -117,6 +117,20 @@
                 </div>
             </div>
         </div>
+
+
+
+    <h1>Detalhes do Usuário</h1>
+
+    <div th:if="${session.usuario != null}">
+        <p>Nome: <span th:text="${session.usuario.nome}">Nome do Usuário</span></p>
+        <p>Email: <span th:text="${session.usuario.email}">Email do Usuário</span></p>
+        <p>Tipo: <span th:text="${session.usuario.tipo}">Tipo de Usuário</span></p>
+    </div>
+
+    <div th:if="${session.usuario == null}">
+        <p>Nenhum usuário logado</p>
+    </div>
 
         <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

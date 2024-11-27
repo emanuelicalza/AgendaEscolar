@@ -1,6 +1,7 @@
 // Declaração global do calendário
 var calendario;
 
+
 document.addEventListener('DOMContentLoaded', function() {
     var elementoCalendario = document.getElementById('calendar');
 
@@ -10,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
         locale: 'pt-br',
 
         dateClick: function(infoData) {
+
             var modal = new bootstrap.Modal(document.getElementById('modal'));
             modal.show();
 
