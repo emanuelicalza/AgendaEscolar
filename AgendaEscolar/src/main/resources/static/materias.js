@@ -103,7 +103,7 @@ $('#formExcluirMateria').on('submit', function(e) {
 
 $(document).ready(function () {
     $.ajax({
-        url: '/obterMateriasUsuario', // Endpoint para obter as matérias
+        url: '/', // Endpoint para obter as matérias
         method: 'GET',
         success: function (materias) {
             let select = $('#materiasSelect');
@@ -117,4 +117,4 @@ $(document).ready(function () {
         }
     });
 });
-});
+
