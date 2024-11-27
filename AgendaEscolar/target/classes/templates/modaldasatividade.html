@@ -6,15 +6,16 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
             </div>
             <div class="modal-body">
-                <p><strong>ID do Evento:</strong> <span id="eventIdDetails"></span></p> <!-- Aqui deve aparecer o ID -->
                 <p><strong>Descrição:</strong> <span id="eventDescriptionDetails"></span></p>
                 <p><strong>Tipo:</strong> <span id="eventTypeDetails"></span></p>
                 <p><strong>Data:</strong> <span id="eventDateDetails"></span></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-primary" id="editEventButton">Editar</button>
-                <button type="button" class="btn btn-danger" id="deleteEventButton">Deletar</button>
+                    <div th:if="${session.usuario != null && (session.usuario.tipo == 2 || session.usuario.tipo == 3)}">
+                        <button type="button" class="btn btn-primary" id="editEventButton">Editar</button>
+                        <button type="button" class="btn btn-danger" id="deleteEventButton">Deletar</button>
+                    </div>
             </div>
         </div>
     </div>
