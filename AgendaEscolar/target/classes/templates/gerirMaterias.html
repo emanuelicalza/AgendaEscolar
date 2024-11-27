@@ -29,7 +29,6 @@
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th>#</th>
             <th>Nome</th>
             <th>Professor</th>
             <th>Turma</th>
@@ -39,7 +38,6 @@
         <tbody>
         <!-- Loop para exibir as matérias -->
         <tr th:each="materia : ${materias}">
-            <td th:text="${materia.id}"></td>
             <td th:text="${materia.nome}"></td>
             <td>
                 <span th:text="${materia.professor != null ? materia.professor.nome : 'Sem professor'}"></span>
@@ -47,11 +45,16 @@
             <td th:text="${materia.turma.nomeFormatado}"></td>
             <td>
                 <!-- Passa os dados da matéria para o modal de edição -->
-                <button class="btn btn-warning" data-toggle="modal" data-target="#modalEditarMateria"
-                        th:data-id="${materia.id}" th:data-nome="${materia.nome}" th:data-turma="${materia.turma}"
+                <button class="btn btn-warning"
+                        data-toggle="modal"
+                        data-target="#modalEditarMateria"
+                        th:data-id="${materia.id}"
+                        th:data-nome="${materia.nome != null ? materia.nome : 'Sem Nome'}"
+                        th:data-turma="${materia.turma.nomeFormatado}"
                         th:data-professor-id="${materia.professor != null ? materia.professor.id : ''}">
                     <i class="fas fa-edit"></i> Editar
                 </button>
+
                 <button class="btn btn-danger" data-toggle="modal" data-target="#modalExcluirMateria"
                         th:data-id="${materia.id}">
                     <i class="fas fa-trash"></i> Excluir
@@ -86,13 +89,14 @@
                                     th:text="${professor.nome}"></option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="turmaMateria">Turma</label>
+                        <select class="form-control" id="turmaMateria" name="turma.id" required>
+                            <option th:each="turma : ${turmas}" th:value="${turma.id}" th:text="${turma.nomeFormatado}"></option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="turmaMateria">Turma</label>
-                    <select class="form-control" id="turmaMateria" name="turma.id" required>
-                        <option th:each="turma : ${turmas}" th:value="${turma.id}" th:text="${turma.nomeFormatado}"></option>
-                    </select>
-                </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                     <button type="submit" class="btn btn-primary">Criar Matéria</button>
@@ -127,13 +131,14 @@
                             <option th:each="professor : ${professores}" th:value="${professor.id}" th:text="${professor.nome}"></option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="turmaMateriaEditar">Turma</label>
+                        <select class="form-control" id="turmaMateriaEditar" name="turma.id" required>
+                            <option th:each="turma : ${turmas}" th:value="${turma.id}" th:text="${turma.nomeFormatado}"></option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="turmaMateriaEditar">Turma</label>
-                    <select class="form-control" id="turmaMateriaEditar" name="turma.id" required>
-                        <option th:each="turma : ${turmas}" th:value="${turma.id}" th:text="${turma.nomeFormatado}"></option>
-                    </select>
-                </div>
+
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
