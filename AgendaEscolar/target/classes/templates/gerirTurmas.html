@@ -30,7 +30,6 @@
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th>#</th>
             <th>Série</th>
             <th>Turma</th>
             <th>Ano</th>
@@ -42,7 +41,6 @@
         <tbody>
         <!-- Loop para exibir as turmas -->
         <tr th:each="turma : ${turmas}">
-            <td th:text="${turma.id}"></td>
             <td th:text="${turma.serie}"></td>
             <td th:text="${turma.tipo}"></td>
             <td th:text="${turma.ano}"></td>
@@ -56,7 +54,10 @@
                 </button>
                 <button class="btn btn-danger" data-toggle="modal" data-target="#modalExcluirTurma"
                         th:data-id="${turma.id}">
-                    <i class="fas fa-trash"></i> Excluir
+                    <i class="fas fa-trash"></i> Deletar
+                </button>
+                <button class="btn btn-info copiar-link" th:data-id="${turma.id}">
+                    <i class="fas fa-link"></i> Copiar Link
                 </button>
             </td>
         </tr>

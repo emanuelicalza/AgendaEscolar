@@ -29,7 +29,6 @@
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th>#</th>
             <th>Nome</th>
             <th>Professor</th>
             <th>Turma</th>
@@ -39,7 +38,6 @@
         <tbody>
         <!-- Loop para exibir as matérias -->
         <tr th:each="materia : ${materias}">
-            <td th:text="${materia.id}"></td>
             <td th:text="${materia.nome}"></td>
             <td>
                 <span th:text="${materia.professor != null ? materia.professor.nome : 'Sem professor'}"></span>

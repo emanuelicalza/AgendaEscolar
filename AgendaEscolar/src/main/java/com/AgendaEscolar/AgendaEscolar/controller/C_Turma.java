@@ -5,6 +5,8 @@ import com.AgendaEscolar.AgendaEscolar.model.M_Usuarios;
 import com.AgendaEscolar.AgendaEscolar.service.S_Turma;
 import com.AgendaEscolar.AgendaEscolar.service.S_Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -87,4 +89,16 @@ public class C_Turma {
         s_turma.excluirTurma(id); // Exclui a turma
         return "sucesso"; // Retorna sucesso
     }
+
+    @GetMapping("/turmas/{id}")
+    @ResponseBody
+    public ResponseEntity<?> acessarTurmaAjax(@PathVariable Long id) {
+        M_Turmas turma = s_turma.buscarTurmaPorId(id);
+        if (turma == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Turma não encontrada.");
+        }
+
+        return ResponseEntity.ok("Turma encontrada.");
+    }
+
 }

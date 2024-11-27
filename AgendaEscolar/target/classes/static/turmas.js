@@ -123,3 +123,35 @@ $('#tipoTurmaEditar').on('input', function () {
 $('#modalEditarTurma').on('show.bs.modal', function (event) {
     console.log("Evento 'show.bs.modal' acionado."); // Log inicial
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const copiarLinkButtons = document.querySelectorAll(".copiar-link");
+
+    copiarLinkButtons.forEach(button => {
+        button.addEventListener("click", (e) => {
+            const turmaId = e.target.closest("button").getAttribute("data-id");
+
+            // Enviar requisição AJAX para validar o link
+            $.ajax({
+                url: `/turmas/${turmaId}`,
+                type: "GET",
+                success: (response) => {
+                    // O link é gerado com base na URL atual e o ID da turma
+                    const link = `${window.location.origin}/turmas/${turmaId}`;
+
+                    // Copiar o link para o clipboard
+                    navigator.clipboard.writeText(link).then(() => {
+                        alert("Link copiado para o clipboard!");
+                    }).catch(err => {
+                        console.error("Erro ao copiar o link: ", err);
+                    });
+                },
+                error: (xhr) => {
+                    alert("Erro ao acessar a turma. Verifique se ela existe.");
+                    console.error(`Erro: ${xhr.status} - ${xhr.statusText}`);
+                }
+            });
+        });
+    });
+});
+
