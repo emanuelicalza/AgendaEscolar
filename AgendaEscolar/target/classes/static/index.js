@@ -50,51 +50,51 @@ document.addEventListener('DOMContentLoaded', function() {
         },
 
         // Função para carregar eventos do servidor
-events: function(infoRequisicao, sucessoCallback, erroCallback) {
-    $.ajax({
-        url: '/listarprovas',
-        method: 'GET',
-        success: function(dados) {
-            const eventos = dados.map(function(evento) {
-                let backgroundColor, borderColor;
-                switch(evento.tipo.toLowerCase()) {
-                    case 'prova':
-                        backgroundColor = '#FF5252';  // Vermelho vivo
-                        borderColor = '#D32F2F';      // Vermelho escuro
-                        break;
-                    case 'trabalho':
-                        backgroundColor = '#FF9800';  // Laranja vivo
-                        borderColor = '#F57C00';      // Laranja escuro
-                        break;
-                    case 'aviso':
-                        backgroundColor = '#FFEB3B';  // Amarelo vivo
-                        borderColor = '#FBC02D';      // Amarelo escuro
-                        break;
-                    default:
-                        backgroundColor = '#9C27B0';  // Roxo vivo para outros tipos
-                        borderColor = '#6A1B9A';      // Roxo escuro
-                }
+        events: function(infoRequisicao, sucessoCallback, erroCallback) {
+            $.ajax({
+                url: '/listarprovas',
+                method: 'GET',
+                success: function(dados) {
+                    const eventos = dados.map(function(evento) {
+                        let backgroundColor, borderColor;
+                        switch(evento.tipo.toLowerCase()) {
+                            case 'prova':
+                                backgroundColor = '#FF5252';  // Vermelho vivo
+                                borderColor = '#D32F2F';      // Vermelho escuro
+                                break;
+                            case 'trabalho':
+                                backgroundColor = '#FF9800';  // Laranja vivo
+                                borderColor = '#F57C00';      // Laranja escuro
+                                break;
+                            case 'aviso':
+                                backgroundColor = '#FFEB3B';  // Amarelo vivo
+                                borderColor = '#FBC02D';      // Amarelo escuro
+                                break;
+                            default:
+                                backgroundColor = '#9C27B0';  // Roxo vivo para outros tipos
+                                borderColor = '#6A1B9A';      // Roxo escuro
+                        }
 
-                return {
-                    id: evento.id,
-                    title: evento.titulo + ' (' + evento.tipo + ')',
-                    start: evento.data,
-                    description: evento.descricao,
-                    type: evento.tipo,
-                    backgroundColor: backgroundColor,
-                    borderColor: borderColor,
-                    textColor: '#000000' // Agora em preto
-                };
+                        return {
+                            id: evento.id,
+                            title: evento.titulo + ' (' + evento.tipo + ')',
+                            start: evento.data,
+                            description: evento.descricao,
+                            type: evento.tipo,
+                            backgroundColor: backgroundColor,
+                            borderColor: borderColor,
+                            textColor: '#000000' // Agora em preto
+                        };
+                    });
+                    sucessoCallback(eventos);
+                    carregarProvas();
+                },
+                error: function(xhr, status, erro) {
+                    console.error('Erro ao carregar eventos:', erro);
+                    erroCallback(erro);
+                }
             });
-            sucessoCallback(eventos);
-            carregarProvas();
         },
-        error: function(xhr, status, erro) {
-            console.error('Erro ao carregar eventos:', erro);
-            erroCallback(erro);
-        }
-    });
-},
 
         // Evento disparado após a montagem de cada evento no calendário
         eventDidMount: function(infoEvento) {
