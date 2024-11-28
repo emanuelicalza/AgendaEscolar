@@ -124,17 +124,10 @@ public class C_Materia {
             return "redirect:/"; // Redireciona para a home se não for um diretor
         }
 
-        // Verifique se a matéria tem dependências (por exemplo, turmas ou alunos associados)
-        List<M_Turmas> turmasAssociadas = s_turma.listarTurmasPorMateria(id);  // Exemplificando que turmas podem depender da matéria
-        if (!turmasAssociadas.isEmpty()) {
-            return "Tem dependências, deseja excluir as turmas associadas também?";  // Aqui você retornaria uma mensagem para o usuário
-        }
-
         // Chama o serviço para excluir a matéria
         s_materia.excluirMateria(id);
         return "sucesso"; // Retorna sucesso
     }
-
 
     @GetMapping("/")
     public String exibirPaginaInicial(@SessionAttribute(name = "usuario", required = false) M_Usuarios usuario, Model model) {
