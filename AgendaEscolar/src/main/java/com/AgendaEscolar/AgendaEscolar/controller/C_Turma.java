@@ -1,7 +1,9 @@
 package com.AgendaEscolar.AgendaEscolar.controller;
 
+import com.AgendaEscolar.AgendaEscolar.model.M_Materias;
 import com.AgendaEscolar.AgendaEscolar.model.M_Turmas;
 import com.AgendaEscolar.AgendaEscolar.model.M_Usuarios;
+import com.AgendaEscolar.AgendaEscolar.service.S_Materia;
 import com.AgendaEscolar.AgendaEscolar.service.S_Turma;
 import com.AgendaEscolar.AgendaEscolar.service.S_Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +20,13 @@ public class C_Turma {
 
     private final S_Turma s_turma;
     private final S_Usuario s_usuario;
+    private final S_Materia s_materia;
 
     @Autowired
-    public C_Turma(S_Turma s_turma, S_Usuario s_usuario) {
+    public C_Turma(S_Turma s_turma, S_Usuario s_usuario, S_Materia s_materia) {
         this.s_turma = s_turma;
         this.s_usuario = s_usuario;
+        this.s_materia = s_materia;
     }
 
     // Exibir a página de gerenciamento de turmas
@@ -86,9 +90,17 @@ public class C_Turma {
             return "redirect:/"; // Redireciona para a home se não for um diretor
         }
 
-        s_turma.excluirTurma(id); // Exclui a turma
+        // Verificar se existem professores ou matérias associadas à turma
+        List<M_Materias> materiasAssociadas = s_materia.listarMateriasPorTurma(id);  // Exemplificando que matérias podem depender da turma
+        if (!materiasAssociadas.isEmpty()) {
+            return "Tem dependências, deseja excluir as matérias associadas também?"; // Mensagem para o usuário
+        }
+
+        // Exclui a turma
+        s_turma.excluirTurma(id);
         return "sucesso"; // Retorna sucesso
     }
+
 
     @GetMapping("/turmas/{id}")
     @ResponseBody

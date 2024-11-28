@@ -1,8 +1,11 @@
 package com.AgendaEscolar.AgendaEscolar.controller;
 
+import com.AgendaEscolar.AgendaEscolar.model.M_Turmas;
 import com.AgendaEscolar.AgendaEscolar.model.M_Usuarios;
 import com.AgendaEscolar.AgendaEscolar.service.S_Email;
+import com.AgendaEscolar.AgendaEscolar.service.S_Turma;
 import com.AgendaEscolar.AgendaEscolar.service.S_Usuario;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +25,12 @@ public class C_Professor {
 
     private final S_Usuario s_usuario;
     private final S_Email s_email;
+    private final S_Turma s_turma;
 
-    public C_Professor(S_Usuario s_usuario, S_Email s_email) {
+    public C_Professor(S_Usuario s_usuario, S_Email s_email, S_Turma s_turma) {
         this.s_usuario = s_usuario;
         this.s_email = s_email;
+        this.s_turma = s_turma;
     }
 
     // Endpoint para criar ou atualizar professor via AJAX
@@ -75,9 +80,17 @@ public class C_Professor {
     @DeleteMapping("/deletar/{id}")
     @ResponseBody
     public ResponseEntity<String> deletarProfessor(@PathVariable Long id) {
+        // Verificar se o professor está associado a turmas ou matérias
+        List<M_Turmas> turmasAssociadas = s_turma.listarTurmasPorProfessor(id);  // Verifica se há turmas associadas
+        if (!turmasAssociadas.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Este professor está associado a turmas. Deseja excluir as turmas também?");
+        }
+
+        // Excluir o professor
         s_usuario.deletarProfessor(id);
         return ResponseEntity.ok("Professor deletado com sucesso.");
     }
+
 
     // Endpoint para obter professor por ID
     @GetMapping("/{id}")
