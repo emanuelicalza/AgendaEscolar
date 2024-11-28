@@ -154,6 +154,10 @@ public class C_Materia {
         return "index"; // Retorna a página inicial
     }
 
+    @GetMapping("/selecionarMateria")
+    public String teste(@RequestParam("materiaId") int materiaId){
+        return null;
+    }
 
 
 }

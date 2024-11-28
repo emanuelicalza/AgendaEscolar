@@ -3,10 +3,10 @@ var calendario;
 var usuarioTipo = document.getElementById('info-usuario').getAttribute('data-usuario-tipo');
 var nomeMateria = document.getElementById('nome-materia').getAttribute('data-nome-materia');
 
-console.log(nomeMateria);
+alert(nomeMateria);
 
 
-// Evento disparado quando o DOM é totalmente carregado
+// Evento disparado quando o DOM é totalmente carregado 
 document.addEventListener('DOMContentLoaded', function() {
     // Seleciona o elemento do calendário
     var elementoCalendario = document.getElementById('calendar');
@@ -17,6 +17,14 @@ document.addEventListener('DOMContentLoaded', function() {
         themeSystem: 'bootstrap5',
         initialView: 'dayGridMonth',
         locale: 'pt-br',
+        headerToolbar: {
+                left: '',  // "today" será traduzido para "Hoje"
+                center: 'title',
+                right: 'prev,today,next'
+            },
+            buttonText: {
+                        today: 'Hoje'  // Renomeia manualmente o botão 'today' para 'Hoje'
+                    },
 
         // Evento de clique em uma data do calendário
         dateClick: function(infoData) {
