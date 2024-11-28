@@ -18,11 +18,10 @@
 <body>
 
 <!-- Incluindo o fragmento da navbar -->
-<div th:insert="~{navbar}"></div>
+<div th:replace="~{navbar}"></div>
 
 <div class="container mt-5">
     <h2>Gerir Professores</h2>
-
 
     <!-- Botão para criar perfil de professor -->
     <div class="mb-3">
@@ -122,9 +121,12 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="usuario.js"></script>
 <script src="materias.js"></script>
 <script src="index.js"></script>
+
+<!-- Modal JS -->
+<script src="modal-loader.js"></script>
 </body>
 </html>
