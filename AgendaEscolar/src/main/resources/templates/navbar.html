@@ -2,7 +2,6 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <!-- HOME -->
-
         <a class="navbar-brand" href="/">Home</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -22,27 +21,29 @@
             </ul>
 
             <div class="d-flex align-items-center">
+                <!-- Login/Cadastro para usuários não autenticados -->
                 <div th:if="${session.usuario == null}">
                     <a class="btn btn-sm btn-primary me-2" href="login">Login</a>
                     <a class="btn btn-sm btn-secondary me-3" href="cadastro">Cadastrar</a>
                 </div>
 
-                <!-- Nome do Usuário com Ícone ao Lado -->
-                <div th:if="${session.usuario != null}" class="d-flex align-items-center">
-                    <div th:if="${(exibirFormularioMaterias != null ? exibirFormularioMaterias : false)
-                        and session.usuario != null and (session.usuario.tipo == 2 or session.usuario.tipo == 3)}">
-                        <!-- Exibe o select de matérias apenas se for na página inicial -->
-                        <form id="formMaterias" class="me-3" action="/selecionarMateria" method="GET">
-                            <select id="materiasSelect" class="form-select" aria-label="Selecionar materia" name="materiaId" required>
-                                <option value="" disabled selected>Escolha a Matéria</option>
-                                <option th:each="materia : ${materias}"
-                                        th:value="${materia.id}"
-                                        th:text="${materia.nome} + ' - ' + ${materia.turma.nomeFormatado}">
-                                </option>
-                            </select>
-                        </form>
-                    </div>
+                <!-- Formulário de seleção de matérias - só aparece para tipos 2 e 3 -->
+                <form th:if="${session.usuario != null && (session.usuario.tipo == 2 || session.usuario.tipo == 3)}"
+                      th:action="@{/}" method="get" class="d-flex align-items-center me-2">
+                    <select id="materiasSelect" class="form-select" aria-label="Selecionar materia" name="materiaId" required
+                            onchange="this.form.submit()"
+                            th:with="selectedMateriaId=${param.materiaId != null ? param.materiaId : (session.selectedMateriaId != null ? session.selectedMateriaId : '')}">
+                        <option value="" disabled th:selected="${selectedMateriaId == ''}">Escolha a Matéria</option>
+                        <option th:each="materia : ${materias}"
+                                th:value="${materia.id}"
+                                th:selected="${materia.id == selectedMateriaId}"
+                                th:text="${materia.nome} + ' - ' + ${materia.turma.nomeFormatado}">
+                        </option>
+                    </select>
+                </form>
 
+                <!-- Seção de usuário autenticado -->
+                <div th:if="${session.usuario != null}" class="d-flex align-items-center">
                     <i class="fas fa-user-circle me-2"></i>
                     <span class="navbar-text me-2">
                         <a th:href="@{/perfil}" th:text="${session.usuario.nome}" class="text-decoration-none"></a>

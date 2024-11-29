@@ -9,10 +9,12 @@ import com.AgendaEscolar.AgendaEscolar.repository.R_Usuario;
 import com.AgendaEscolar.AgendaEscolar.service.S_Materia;
 import com.AgendaEscolar.AgendaEscolar.service.S_Turma;
 import com.AgendaEscolar.AgendaEscolar.service.S_Usuario;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -155,9 +157,11 @@ public class C_Materia {
     }
 
     @GetMapping("/selecionarMateria")
-    public String teste(@RequestParam("materiaId") int materiaId){
-        return null;
+    public String selecionarMateria(@RequestParam Long materiaId, HttpSession session, RedirectAttributes redirectAttributes) {
+        // Store the selected materia ID in the session
+        session.setAttribute("selectedMateriaId", materiaId);
+
+        // Redirect back to the page (probably the home page or dashboard)
+        return "redirect:/";
     }
-
-
 }
