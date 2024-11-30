@@ -52,6 +52,7 @@ public class C_Materia {
         List<M_Usuarios> professores = s_usuario.listarProfessores();
         List<M_Turmas> turmas = s_turma.listarTurmas(); // Lista as turmas
 
+        // Adiciona as turmas e as matérias ao modelo
         model.addAttribute("materias", materias);
         model.addAttribute("professores", professores);
         model.addAttribute("turmas", turmas); // Adiciona as turmas ao modelo
@@ -86,7 +87,6 @@ public class C_Materia {
         return "redirect:/gerirMaterias"; // Redireciona para a página de gestão de matérias
     }
 
-
     // Método para exibir o formulário de edição de matéria
     @GetMapping("/gerirMaterias/editarMateria")
     public String editarMateria(@RequestParam("id") Long id, @SessionAttribute(name = "usuario", required = false) M_Usuarios usuario, Model model) {
@@ -117,7 +117,6 @@ public class C_Materia {
         s_materia.atualizarMateria(materia); // Agora atualiza o campo 'turma'
         return "redirect:/gerirMaterias";
     }
-
 
     @PostMapping("/gerirMaterias/excluirMateria")
     @ResponseBody
