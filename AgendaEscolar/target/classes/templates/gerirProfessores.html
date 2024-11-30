@@ -51,9 +51,11 @@
                         <i class="fas fa-edit"></i> Editar
                     </button>
                     <button class="btn btn-danger btn-sm"
-                            th:attr="onclick='openDeleteModal(' + ${professor.id} + ')'" >
+                            onclick="openDeleteModal('Professor', /*{professor.id}*/ 123)">
                         <i class="fas fa-trash"></i> Deletar
                     </button>
+
+
                 </td>
             </tr>
         </th:block>
@@ -92,24 +94,8 @@
     </div>
 </div>
 
-<!-- Modal de Confirmação para Exclusão -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Confirmar Exclusão</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Tem certeza de que deseja excluir este professor?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Excluir</button>
-            </div>
-        </div>
-    </div>
-</div>
+<div th:insert="~{deleteModal}"></div>
+
 
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -120,5 +106,7 @@
 <script src="materias.js"></script>
 <script src="index.js"></script>
 <script src="modal-loader.js"></script>
+<script src="delete.js"></script>
+
 </body>
 </html>

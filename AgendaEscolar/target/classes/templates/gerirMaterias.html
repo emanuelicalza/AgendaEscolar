@@ -45,16 +45,15 @@
             </td>
             <td th:text="${materia.turma.nomeFormatado}"></td>
             <td>
-                <!-- Passa os dados da matéria para o modal de edição -->
                 <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalEditarMateria"
-                        th:attr="data-id=${materia.id},
-            data-nome=${materia.nome},
-            data-turma-id=${materia.turma.id},
-            data-turma-nome=${materia.turma.nomeFormatado},
-            data-professor-id=${materia.professor != null ? materia.professor.id : ''},
-            data-professor-nome=${materia.professor != null ? materia.professor.nome : ''}">
+                        th:data-id="${materia.id}"
+                        th:data-nome="${materia.nome}"
+                        th:data-turma="${materia.turma.id}"
+                        th:data-professor-id="${materia.professor != null ? materia.professor.id : ''}">
                     <i class="fas fa-edit"></i> Editar
                 </button>
+
+
                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalExcluirMateria"
                         th:data-bs-id="${materia.id}">
                     <i class="fas fa-trash"></i> Excluir
@@ -166,8 +165,8 @@
 </div>
 
 <!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
 <script src="materias.js"></script>
 <script src="index.js"></script>
 <script src="turmas.js"></script>

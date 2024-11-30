@@ -26,25 +26,26 @@ $('#formCriarMateria').on('submit', function (e) {
 // Captura o evento de abertura do modal de edição para preencher os campos
 $('#modalEditarMateria').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget); // O botão que ativou o modal
-    var id = button.data('id');
-    var nome = button.data('nome'); // Aqui estamos capturando o nome
-    var turma = button.data('turma');
-    var professorId = button.data('professor-id');
+    var id = button.data('id'); // ID da matéria
+    var nome = button.data('nome'); // Nome da matéria
+    var turmaId = button.data('turma'); // ID da turma
+    var professorId = button.data('professor-id'); // ID do professor
+
+    // Logs para depuração
+    console.log("ID da Matéria:", id);
+    console.log("Nome da Matéria:", nome);
+    console.log("ID da Turma:", turmaId);
+    console.log("ID do Professor:", professorId);
 
     var modal = $(this);
 
-    // Verifique se o nome da matéria está sendo capturado corretamente
-    console.log("Nome da Matéria: ", nome); // Verifique se o nome está sendo capturado
-
-    modal.find('#idMateriaEditar').val(id);
-    modal.find('#nomeMateriaEditar').val(nome); // Preenchendo o campo com o nome
-
-    if (turma) {
-        modal.find('#turmaMateriaEditar').val(turma); // Preenchendo a turma
-    }
-
-    modal.find('#professorMateriaEditar').val(professorId);
+    // Preenchendo os campos do modal
+    modal.find('#idMateriaEditar').val(id); // Campo oculto com o ID da matéria
+    modal.find('#nomeMateriaEditar').val(nome); // Campo de texto com o nome da matéria
+    modal.find('#turmaMateriaEditar').val(turmaId); // Seleciona a turma correspondente
+    modal.find('#professorMateriaEditar').val(professorId); // Seleciona o professor correspondente
 });
+
 
 
 
