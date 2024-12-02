@@ -30,13 +30,19 @@
                 <!-- Formulário de seleção de matérias - só aparece para tipos 2 e 3 -->
                 <form th:if="${session.usuario != null && (session.usuario.tipo == 2 || session.usuario.tipo == 3)}"
                       th:action="@{/}" method="get" class="d-flex align-items-center me-2">
-                    <select id="materiasSelect" class="form-select" aria-label="Selecionar materia" name="materiaId" required
-                            onchange="this.form.submit()"
-                            th:with="selectedMateriaId=${param.materiaId != null ? param.materiaId : (session.selectedMateriaId != null ? session.selectedMateriaId : '')}">
-                        <option value="" disabled th:selected="${selectedMateriaId == ''}">Escolha a Matéria</option>
+                    <select id="materiasSelect"
+                            class="form-select"
+                            aria-label="Selecionar materia"
+                            name="materiaId"
+                            required
+                            onchange="this.form.submit()">
+                        <option value="" disabled
+                                th:selected="${#strings.isEmpty(param.materiaId) && session.selectedMateriaId == null}">
+                            Escolha a Matéria
+                        </option>
                         <option th:each="materia : ${materias}"
                                 th:value="${materia.id}"
-                                th:selected="${materia.id == selectedMateriaId}"
+                                th:selected="${materia.id == param.materiaId || materia.id == session.selectedMateriaId}"
                                 th:text="${materia.nome} + ' - ' + ${materia.turma.nomeFormatado}">
                         </option>
                     </select>

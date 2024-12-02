@@ -52,5 +52,8 @@ public class S_Materia {
     }
 
 
-
+    public M_Materias findById(Long id) {
+        return r_materia.findById(id)
+                .orElse(null); // Retorna null se a matéria não for encontrada
+    }
 }

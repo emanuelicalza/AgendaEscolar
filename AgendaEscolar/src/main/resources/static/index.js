@@ -1,9 +1,7 @@
 // Declaração global do calendário e tipo de usuário
 var calendario;
 var usuarioTipo = document.getElementById('info-usuario').getAttribute('data-usuario-tipo');
-var nomeMateria = document.getElementById('nome-materia').getAttribute('data-nome-materia');
 
-alert(nomeMateria);
 
 
 // Evento disparado quando o DOM é totalmente carregado 
@@ -63,9 +61,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Função para carregar eventos do servidor
 events: function(infoRequisicao, sucessoCallback, erroCallback) {
+    // Obtém o ID da matéria da sessão ou de algum outro lugar
+    const materiaId = $('#materiasSelect').val() || ''; // Assume que você tem um select com ID materiasSelect
+
     $.ajax({
         url: '/listarprovas',
         method: 'GET',
+        data: {
+            materiaId: materiaId
+        },
         success: function(dados) {
             const eventos = dados.map(function(evento) {
                 let backgroundColor, borderColor;

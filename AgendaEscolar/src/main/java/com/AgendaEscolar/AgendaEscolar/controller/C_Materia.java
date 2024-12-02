@@ -131,36 +131,42 @@ public class C_Materia {
     }
 
     @GetMapping("/")
-    public String exibirPaginaInicial(@SessionAttribute(name = "usuario", required = false) M_Usuarios usuario, Model model) {
+    public String exibirPaginaInicial(
+            @SessionAttribute(name = "usuario", required = false) M_Usuarios usuario,
+            @RequestParam(name = "materiaId", required = false) Long materiaId,
+            HttpSession session,
+            Model model) {
+
         if (usuario == null) {
-            model.addAttribute("materias", new ArrayList<>()); // Lista vazia caso não haja usuário logado
+            model.addAttribute("materias", new ArrayList<>());
             model.addAttribute("usuario", null);
-            return "index"; // Retorna a página inicial sem usuário logado
+            return "index";
         }
 
         System.out.println("Usuário logado: " + usuario.getNome());
 
         List<M_Materias> materias;
         if (usuario.getTipo() == 3) {
-            materias = s_materia.listarMaterias(); // Diretor vê todas as matérias
+            materias = s_materia.listarMaterias();
         } else if (usuario.getTipo() == 2) {
-            materias = s_materia.listarMateriasPorProfessor(usuario.getId()); // Professor vê suas matérias
+            materias = s_materia.listarMateriasPorProfessor(usuario.getId());
         } else {
-            materias = new ArrayList<>(); // Outros usuários não visualizam matérias
+            materias = new ArrayList<>();
         }
         model.addAttribute("exibirFormularioMaterias", true);
-
         model.addAttribute("materias", materias);
-        model.addAttribute("usuario", usuario); // Adicionando o usuário ao modelo
-        return "index"; // Retorna a página inicial
-    }
+        model.addAttribute("usuario", usuario);
 
-    @GetMapping("/selecionarMateria")
-    public String selecionarMateria(@RequestParam Long materiaId, HttpSession session, RedirectAttributes redirectAttributes) {
-        // Store the selected materia ID in the session
-        session.setAttribute("selectedMateriaId", materiaId);
+        // Lógica para selecionar matéria
+        if (materiaId != null) {
+            M_Materias materiaSelecionada = s_materia.findById(materiaId);
+            if (materiaSelecionada != null) {
+                session.setAttribute("selectedMateriaId", materiaId);
+                model.addAttribute("materiaSelecionada", materiaSelecionada);
+                // Adicione aqui a lógica para carregar dados específicos da matéria selecionada
+            }
+        }
 
-        // Redirect back to the page (probably the home page or dashboard)
-        return "redirect:/";
+        return "index";
     }
 }

@@ -86,4 +86,16 @@ public class M_SalvarProva {
         this.dataCriacao = dataCriacao;
     }
 
+
+
+        @ManyToOne
+        @JoinColumn(name = "materia_id")
+        private M_Materias materia;
+
+        @ManyToOne
+        @JoinColumn(name = "usuario_id")
+        private M_Usuarios usuario;
+
+        // Getters e setters
+    }
 }

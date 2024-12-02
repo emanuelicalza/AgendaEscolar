@@ -1,9 +1,7 @@
 // Declaração global do calendário e tipo de usuário
 var calendario;
 var usuarioTipo = document.getElementById('info-usuario').getAttribute('data-usuario-tipo');
-var nomeMateria = document.getElementById('nome-materia').getAttribute('data-nome-materia');
 
-alert(nomeMateria);
 
 
 // Evento disparado quando o DOM é totalmente carregado 
