@@ -72,11 +72,13 @@ public class C_Professor {
     }
 
     // Endpoint para deletar professor
-    @DeleteMapping("/deletar/{id}")
-    @ResponseBody
-    public ResponseEntity<String> deletarProfessor(@PathVariable Long id) {
-        s_usuario.deletarProfessor(id);
-        return ResponseEntity.ok("Professor deletado com sucesso.");
+    @DeleteMapping("/professor/{id}")
+    public ResponseEntity<Void> deleteProfessor(@PathVariable Long id) {
+        boolean deleted = s_usuario.deleteProfessor(id);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
     // Endpoint para obter professor por ID

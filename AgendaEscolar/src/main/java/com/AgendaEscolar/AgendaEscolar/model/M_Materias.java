@@ -18,7 +18,7 @@ public class M_Materias {
     @JoinColumn(name = "turma_id")
     private M_Turmas turma;
 
-    @ManyToOne (fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "professor_id")
     private M_Usuarios professor;
 

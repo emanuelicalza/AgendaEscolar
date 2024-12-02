@@ -93,23 +93,31 @@ function limparCampos() {
     $("#dataNascimento").val('');
 }
 
-// Função para abrir o modal de exclusão de professor
+// Função para abrir o modal de confirmação de exclusão
 function openDeleteModal(id) {
-    // Configura o botão de confirmação para excluir o professor com o ID passado
-    $("#confirmDeleteBtn").off('click').on('click', function() {
-        excluirProfessor(id); // Passa o ID do professor para a função de exclusão
-    });
-    $("#deleteModal").modal('show');
+    // Atualiza o texto de confirmação na modal
+    const deleteModalText = document.getElementById('deleteModalText');
+    deleteModalText.textContent = `Tem certeza de que deseja excluir este professor?`;
+
+    // Configura a ação de exclusão ao clicar no botão "Excluir"
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    confirmDeleteBtn.onclick = function() {
+        excluirProfessor(id); // Chama a função para excluir o professor
+    };
+
+    // Exibe a modal
+    $('#deleteModal').modal('show');
 }
+
 
 // Função para excluir professor
 function excluirProfessor(id) {
     $.ajax({
         type: 'DELETE',
-        url: `/professores/deletar/${id}`,  // Alterado para 'deletar' ao invés de 'excluir'
+        url: `/professores/deletar/${id}`,  // Verifique se essa URL está correta
         success: function() {
-            $('#deleteModal').modal('hide');
-            atualizarTabelaProfessores(); // Atualiza a tabela após exclusão
+            $('#deleteModal').modal('hide');  // Fecha o modal de exclusão
+            atualizarTabelaProfessores();     // Atualiza a tabela após exclusão
         },
         error: function(xhr, status, error) {
             alert('Erro ao excluir professor.');
@@ -117,6 +125,7 @@ function excluirProfessor(id) {
         }
     });
 }
+
 
 // Função para atualizar a tabela de professores após a exclusão
 function atualizarTabelaProfessores() {

@@ -57,14 +57,15 @@ public class S_Usuario {
     }
 
     // Método para deletar professor por ID
-    public void deletarProfessor(Long id) {
-        Optional<M_Usuarios> professor = r_usuario.findById(id);
-        if (professor.isPresent() && professor.get().getTipo() == 2) { // Verifica se o usuário é um professor
+    public boolean deleteProfessor(Long id) {
+        if (r_usuario.existsById(id)) {
             r_usuario.deleteById(id);
-        } else {
-            throw new IllegalArgumentException("Professor não encontrado ou ID inválido.");
+            return true;
         }
+        return false;
     }
+
+
     // Método para listar todos os professores
     public List<M_Usuarios> listarProfessores() {
         // Aqui assumimos que o tipo 2 representa "professor"

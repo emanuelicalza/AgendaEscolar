@@ -3,6 +3,7 @@ package com.AgendaEscolar.AgendaEscolar.model;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Entity
 @Table(name = "usuarios")
@@ -23,6 +24,9 @@ public class M_Usuarios {
     private LocalDate dataNascimento; // Usando LocalDate para data de nascimento
 
     private Long idDiretor; // Referência ao ID do diretor, se necessário
+
+    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL, orphanRemoval = true) // Relacionamento com as matérias
+    private List<M_Materias> materias;
 
     // Método para formatar a data de nascimento
     public String getDataNascimentoFormatada() {
@@ -99,5 +103,13 @@ public class M_Usuarios {
 
     public void setIdDiretor(Long idDiretor) {
         this.idDiretor = idDiretor;
+    }
+
+    public List<M_Materias> getMaterias() {
+        return materias;
+    }
+
+    public void setMaterias(List<M_Materias> materias) {
+        this.materias = materias;
     }
 }
