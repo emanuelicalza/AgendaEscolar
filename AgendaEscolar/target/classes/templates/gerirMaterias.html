@@ -43,7 +43,7 @@
             <td>
                 <span th:text="${materia.professor != null ? materia.professor.nome : 'Sem professor'}"></span>
             </td>
-            <td th:text="${materia.turma.nomeFormatado}"></td>
+            <td th:text="${turma != null ? turma.nomeFormatado : 'Turma não definida'}"></td>
             <td>
                 <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalEditarMateria"
                         th:data-id="${materia.id}"

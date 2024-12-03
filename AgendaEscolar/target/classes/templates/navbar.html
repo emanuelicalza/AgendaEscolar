@@ -40,11 +40,11 @@
                                 th:selected="${#strings.isEmpty(param.materiaId) && session.selectedMateriaId == null}">
                             Escolha a Matéria
                         </option>
-                        <option th:each="materia : ${materias}"
+                        <option
+                                th:each="materia : ${materias}"
                                 th:value="${materia.id}"
                                 th:selected="${materia.id == param.materiaId || materia.id == session.selectedMateriaId}"
-                                th:text="${materia.nome} + ' - ' + ${materia.turma.nomeFormatado}">
-                        </option>
+                                th:text="|${materia.nome} - ${(materia.turma != null ? materia.turma.nomeFormatado : 'Sem Turma')}|">
                     </select>
                 </form>
 
