@@ -117,6 +117,7 @@ function excluirProfessor(id) {
         url: `/professores/professor/${id}`,
         success: function() {
             $('#deleteModal').modal('hide');
+            confirmDeleteBtn.onclick = null; // Remove o evento anterior
             atualizarTabelaProfessores();
         },
         error: function(xhr, status, error) {
