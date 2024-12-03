@@ -114,14 +114,14 @@ function openDeleteModal(id) {
 function excluirProfessor(id) {
     $.ajax({
         type: 'DELETE',
-        url: `/professores/deletar/${id}`,  // Verifique se essa URL está correta
+        url: `/professores/professor/${id}`,
         success: function() {
-            $('#deleteModal').modal('hide');  // Fecha o modal de exclusão
-            atualizarTabelaProfessores();     // Atualiza a tabela após exclusão
+            $('#deleteModal').modal('hide');
+            atualizarTabelaProfessores();
         },
         error: function(xhr, status, error) {
-            alert('Erro ao excluir professor.');
-            console.error("Erro ao excluir professor:", error);
+            console.error("Erro ao excluir professor:", xhr.status, xhr.responseText, error);
+            alert(`Erro ao excluir professor: ${xhr.responseText}`);
         }
     });
 }
