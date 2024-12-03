@@ -18,7 +18,7 @@ public class S_SalvarProva {
     }
 
     // Método para salvar ou atualizar a prova
-    public M_SalvarProva salvarProva(String titulo, String descricao, String data, String tipo, Long id) {
+    public M_SalvarProva salvarProva(String titulo, String descricao, String data, String tipo,String materia, Long id) {
         M_SalvarProva prova = new M_SalvarProva();
         boolean podeSalvar = true;
 
@@ -32,6 +32,7 @@ public class S_SalvarProva {
         // Definindo os outros campos
         prova.setDescricao(descricao);
         prova.setTipo(tipo);
+        prova.setMateria(materia);
         prova.setData(data); // Verificar se o formato de data está correto
 
         if (podeSalvar) {
@@ -43,6 +44,7 @@ public class S_SalvarProva {
                     provaParaAtualizar.setTitulo(titulo);
                     provaParaAtualizar.setDescricao(descricao);
                     provaParaAtualizar.setTipo(tipo);
+                    provaParaAtualizar.setMateria(materia);
                     provaParaAtualizar.setData(data);
                     return r_salvarProva.save(provaParaAtualizar); // Atualiza prova existente
                 }

@@ -2,9 +2,11 @@
 var calendario;
 var usuarioTipo = document.getElementById('info-usuario').getAttribute('data-usuario-tipo');
 
+var infoMateria = document.getElementById('info-materia');
+var materiaSelecionada = infoMateria ? infoMateria.getAttribute('data-materia-nome') : '';
+console.log('bah',materiaSelecionada);
 
-
-// Evento disparado quando o DOM é totalmente carregado 
+// Evento disparado quando o DOM é totalmente carregado
 document.addEventListener('DOMContentLoaded', function() {
     // Seleciona o elemento do calendário
     var elementoCalendario = document.getElementById('calendar');
@@ -45,7 +47,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         titulo: $('#title').val(),
                         descricao: $('#description').val(),
                         tipo: $('#type').val(),
-                        data: infoData.dateStr
+                        data: infoData.dateStr,
+                        materia: materiaSelecionada
                     };
 
                     // Desabilita o botão de salvar para evitar múltiplos envios
@@ -93,7 +96,7 @@ events: function(infoRequisicao, sucessoCallback, erroCallback) {
 
                 return {
                     id: evento.id,
-                    title: evento.titulo + ' (' + evento.tipo + ')',
+                    title: evento.materia + ' (' + evento.tipo + ' - ' + evento.titulo + ')',
                     start: evento.data,
                     description: evento.descricao,
                     type: evento.tipo,

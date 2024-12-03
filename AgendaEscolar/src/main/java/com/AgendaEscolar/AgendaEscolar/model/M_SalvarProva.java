@@ -15,6 +15,7 @@ public class M_SalvarProva {
     private String descricao;
 
     private String tipo;
+    private String materia;
 
     private String data; // Você pode considerar usar LocalDate ou LocalDateTime para melhor gerenciamento de datas.
 
@@ -25,11 +26,12 @@ public class M_SalvarProva {
         this.dataCriacao = LocalDateTime.now(); // Inicializa a data de criação
     }
 
-    public M_SalvarProva(Long id, String titulo, String descricao, String tipo, String data) {
+    public M_SalvarProva(Long id, String titulo, String descricao, String tipo,String materia, String data) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
         this.tipo = tipo;
+        this.materia = materia;
         this.data = data;
         this.dataCriacao = LocalDateTime.now(); // Inicializa a data de criação
     }
@@ -86,4 +88,11 @@ public class M_SalvarProva {
         this.dataCriacao = dataCriacao;
     }
 
+    public String getMateria() {
+        return materia;
+    }
+
+    public void setMateria(String materia) {
+        this.materia = materia;
+    }
 }
