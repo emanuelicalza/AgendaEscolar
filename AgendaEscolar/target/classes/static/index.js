@@ -61,9 +61,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Função para carregar eventos do servidor
 events: function(infoRequisicao, sucessoCallback, erroCallback) {
+    // Obtém o ID da matéria da sessão ou de algum outro lugar
+    const materiaId = $('#materiasSelect').val() || ''; // Assume que você tem um select com ID materiasSelect
+
     $.ajax({
         url: '/listarprovas',
         method: 'GET',
+        data: {
+            materiaId: materiaId
+        },
         success: function(dados) {
             const eventos = dados.map(function(evento) {
                 let backgroundColor, borderColor;
