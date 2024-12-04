@@ -40,10 +40,9 @@ public class S_Turma {
 
     // Excluir uma turma
     public void excluirTurma(Long id) {
-        if (r_turma.existsById(id)) {
-            r_turma.deleteById(id);
-        } else {
-            throw new IllegalArgumentException("Turma não encontrada.");
-        }
+        M_Turmas turma = r_turma.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Turma não encontrada."));
+        r_turma.delete(turma);
     }
+
 }
