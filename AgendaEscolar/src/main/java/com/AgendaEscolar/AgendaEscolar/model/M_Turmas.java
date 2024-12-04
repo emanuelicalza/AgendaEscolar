@@ -3,6 +3,8 @@ package com.AgendaEscolar.AgendaEscolar.model;
 import jakarta.persistence.*;
 import java.util.List;
 
+import java.util.List;
+
 @Entity
 @Table(name = "turmas")
 public class M_Turmas {
@@ -19,7 +21,18 @@ public class M_Turmas {
     @OneToMany(mappedBy = "turma", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<M_Materias> materias; // Turma é responsável por suas matérias
 
+    @OneToMany(mappedBy = "turma", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<M_Materias> materias;
+
     // Getters e Setters
+    public List<M_Materias> getMaterias() {
+        return materias;
+    }
+
+    public void setMaterias(List<M_Materias> materias) {
+        this.materias = materias;
+    }
+
     public Long getId() {
         return id;
     }
