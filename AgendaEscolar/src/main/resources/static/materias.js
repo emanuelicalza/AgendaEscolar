@@ -119,3 +119,26 @@ $(document).ready(function () {
     });
 });
 
+
+document.addEventListener("DOMContentLoaded", () => {
+    const copiarLinkButtons = document.querySelectorAll(".copiar-link-materia");
+
+    copiarLinkButtons.forEach(button => {
+        button.addEventListener("click", (e) => {
+            const materiaId = e.target.closest("button").getAttribute("data-id");
+
+            // Gera o link baseado no ID da matéria
+            const link = `${window.location.origin}/materias/${materiaId}`;
+
+            // Copiar o link para o clipboard
+            navigator.clipboard.writeText(link).then(() => {
+                alert("Link copiado para o clipboard!");
+            }).catch(err => {
+                console.error("Erro ao copiar o link: ", err);
+            });
+        });
+    });
+});
+
+
+
