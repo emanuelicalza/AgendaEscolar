@@ -16,8 +16,8 @@
 <!-- Incluindo o fragmento da navbar -->
 <div th:insert="~{navbar}"></div>
 
-<div class="container mt-5">
-    <h2>Gerir Matérias</h2>
+<div class="container mt-5">h2>Gerir Matérias</h2>
+    <
     <div class="mb-3">
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCriarMateria">
             <i class="fas fa-plus"></i> Criar Matéria
@@ -57,6 +57,10 @@
                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalExcluirMateria"
                         th:data-bs-id="${materia.id}">
                     <i class="fas fa-trash"></i> Excluir
+                </button>
+
+                <button class="btn btn-info copiar-link-materia" th:data-id="${materia.id}">
+                    <i class="fas fa-link"></i> Copiar Link
                 </button>
             </td>
         </tr>
