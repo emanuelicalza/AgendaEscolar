@@ -14,21 +14,16 @@ public class M_Usuarios {
     private Long id;
 
     private String nome;
-
     private String email;
-
     private String senha;
+    private Integer tipo;
+    private LocalDate dataNascimento;
 
-    private Integer tipo; // Usando Integer para representar o tipo
+    private Long idDiretor; // Opcional: ID do diretor que o criou
 
-    private LocalDate dataNascimento; // Usando LocalDate para data de nascimento
-
-    private Long idDiretor; // Referência ao ID do diretor, se necessário
-
-    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL, orphanRemoval = true) // Relacionamento com as matérias
+    @OneToMany(mappedBy = "professor") // Professores não têm dependência direta de matérias
     private List<M_Materias> materias;
 
-    // Método para formatar a data de nascimento
     public String getDataNascimentoFormatada() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return this.dataNascimento != null ? this.dataNascimento.format(formatter) : "";
@@ -44,7 +39,7 @@ public class M_Usuarios {
         this.email = email;
         this.senha = senha;
         this.tipo = tipo;
-        this.dataNascimento = nasc; // Correção aqui
+        this.dataNascimento = nasc;
         this.idDiretor = idDiretor;
     }
 

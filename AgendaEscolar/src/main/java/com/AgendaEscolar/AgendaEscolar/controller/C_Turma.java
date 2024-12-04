@@ -83,12 +83,17 @@ public class C_Turma {
     @ResponseBody
     public String excluirTurma(@RequestParam("id") Long id, @SessionAttribute(name = "usuario") M_Usuarios usuario) {
         if (usuario == null || usuario.getTipo() != 3) {
-            return "redirect:/"; // Redireciona para a home se não for um diretor
+            return "erro";
         }
 
-        s_turma.excluirTurma(id); // Exclui a turma
-        return "sucesso"; // Retorna sucesso
+        try {
+            s_turma.excluirTurma(id);
+            return "sucesso";
+        } catch (Exception e) {
+            return "erro: " + e.getMessage();
+        }
     }
+
 
     @GetMapping("/turmas/{id}")
     @ResponseBody

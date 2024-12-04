@@ -1,6 +1,7 @@
 package com.AgendaEscolar.AgendaEscolar.model;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "turmas")
@@ -10,10 +11,13 @@ public class M_Turmas {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String serie;  // Exemplo: 1º Ano, 2º Ano, etc.
-    private String tipo;   // Exemplo: A, B, C
-    private int ano;       // Exemplo: 2024
-    private String nivel;  // Exemplo: Fundamental ou Médio
+    private String serie;
+    private String tipo;
+    private int ano;
+    private String nivel;
+
+    @OneToMany(mappedBy = "turma", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<M_Materias> materias; // Turma é responsável por suas matérias
 
     // Getters e Setters
     public Long getId() {
@@ -56,7 +60,14 @@ public class M_Turmas {
         this.nivel = nivel;
     }
 
-    // Método personalizado para formatar o nome da turma
+    public List<M_Materias> getMaterias() {
+        return materias;
+    }
+
+    public void setMaterias(List<M_Materias> materias) {
+        this.materias = materias;
+    }
+
     public String getNomeFormatado() {
         return serie + tipo + " " + (nivel.startsWith("F") ? "F" : "M");
     }
