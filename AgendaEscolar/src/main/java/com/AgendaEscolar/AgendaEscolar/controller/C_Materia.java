@@ -134,6 +134,7 @@ public class C_Materia {
     public String exibirPaginaInicial(
             @SessionAttribute(name = "usuario", required = false) M_Usuarios usuario,
             @RequestParam(name = "materiaId", required = false) Long materiaId,
+            @SessionAttribute(name = "selectedMateriaId", required = false) Long selectedMateriaId,
             HttpSession session,
             Model model) {
 
@@ -153,21 +154,48 @@ public class C_Materia {
         } else {
             materias = new ArrayList<>();
         }
+
+        // Verifica se há um filtro por matéria via `materiaId`
+        if (materiaId != null) {
+            M_Materias materiaSelecionada = s_materia.findById(materiaId);
+            if (materiaSelecionada != null) {
+                session.setAttribute("selectedMateriaId", materiaId); // Armazena na sessão
+                model.addAttribute("materiaSelecionada", materiaSelecionada); // Adiciona ao modelo
+            }
+        } else if (selectedMateriaId != null) {
+            // Usa o filtro já armazenado na sessão
+            M_Materias materiaSelecionada = s_materia.findById(selectedMateriaId);
+            if (materiaSelecionada != null) {
+                materias = materias.stream()
+                        .filter(m -> m.getId().equals(selectedMateriaId))
+                        .toList();
+                model.addAttribute("materiaSelecionada", materiaSelecionada);
+            }
+        }
+
         model.addAttribute("exibirFormularioMaterias", true);
         model.addAttribute("materias", materias);
         model.addAttribute("usuario", usuario);
 
-        // Lógica para selecionar matéria
-        if (materiaId != null) {
-            M_Materias materiaSelecionada = s_materia.findById(materiaId);
-            if (materiaSelecionada != null) {
-                session.setAttribute("selectedMateriaId", materiaId);
-                model.addAttribute("materiaSelecionada", materiaSelecionada);
-                // Adicione aqui a lógica para carregar dados específicos da matéria selecionada
-            }
-        }
-
-
         return "index";
     }
+
+
+    @GetMapping("/materias/{id}")
+    public String filtrarPorMateria(@PathVariable Long id, Model model, HttpSession session) {
+        // Busca a matéria pelo ID
+        M_Materias materia = s_materia.buscarMateriaPorId(id);
+
+        if (materia == null) {
+            return "redirect:/"; // Caso a matéria não exista, redireciona para a página inicial sem filtro.
+        }
+
+        // Armazena a matéria selecionada na sessão
+        session.setAttribute("selectedMateriaId", id);
+        session.setAttribute("materiaSelecionada", materia);
+
+        // Redireciona para a home com o filtro
+        return "redirect:/";
+    }
+
 }
