@@ -18,8 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
         initialView: 'dayGridMonth',
         locale: 'pt-br',
         headerToolbar: {
-                left: '',  // "today" será traduzido para "Hoje"
-                center: 'title',
+                left: 'title',  // "today" será traduzido para "Hoje"
+                center: '',
                 right: 'prev,today,next'
             },
             buttonText: {

@@ -72,3 +72,13 @@ button:hover {
     background-color: #2980b9;
 }
 
+.fc-event-title {
+    white-space: normal !important; /* Permite a quebra de linha */
+    word-wrap: break-word !important; /* Garante a quebra de palavra, se necessário */
+}
+
+#calendar {
+    width: 100%;
+    max-width: 100%;  /* Garante que o calendário ocupe todo o espaço disponível */
+    overflow: visible; /* Permite que o conteúdo extra seja visível */
+}
