@@ -200,6 +200,7 @@ function salvarProva(dadosEvento, modal, calendario) {
         method: 'POST',
         data: dadosEvento,
         success: function(dados) {
+            enviaremail(materiaSelecionada);
             // Atualiza os eventos do calendário
             calendario.refetchEvents();
             // Exibe aviso de sucesso
@@ -288,3 +289,27 @@ document.getElementById('materiasSelect').addEventListener('change', function() 
             // Você pode adicionar lógicas personalizadas antes de mostrar a modal, se necessário
         });
     });
+
+function enviaremail(materiaSelecionada) {
+    // Definir a URL do controller para enviar o e-mail
+    const url = '/api/emailatividade/enviar';
+
+    // Fazer a requisição AJAX usando jQuery
+    $.ajax({
+        url: url,
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ materia: materiaSelecionada }),  // Enviar a matéria como corpo da requisição
+        success: function(response) {
+            // Exibir uma mensagem de sucesso ou realizar alguma ação adicional
+            console.log('E-mails enviados com sucesso!', response);
+        },
+        error: function(xhr, status, error) {
+            // Tratar erros
+            console.error('Erro ao enviar e-mails:', error);
+        }
+    });
+}
+
+
+

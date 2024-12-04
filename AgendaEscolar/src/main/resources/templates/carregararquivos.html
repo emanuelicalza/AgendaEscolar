@@ -30,14 +30,13 @@
         document.getElementById('provas-body').appendChild(row);
     }
 
-
     function carregarProvas() {
     $.ajax({
         url: '/buscarProvasJson',
         method: 'GET',
         success: function(data) {
             const provasBody = document.getElementById('provas-body');
-            provasBody.innerHTML = '';  // Limpar antes de inserir novos dados
+            provasBody.innerHTML = '';
 
             // Ordenar as provas pela data mais próxima
             data.sort((a, b) => new Date(a.data) - new Date(b.data));
