@@ -1,5 +1,5 @@
 body {
-    overflow: hidden; /* Removes scrollbar from the entire page */
+    overflow: auto; /* Removes scrollbar from the entire page */
     height: 100vh; /* Ensures the body takes up the full viewport height */
     margin: 0; /* Removes default margin */
 }
