@@ -1,4 +1,5 @@
 // Declaração global do calendário e tipo de usuário
+var idEditando = null;
 var calendario;
 var usuarioTipo = document.getElementById('info-usuario').getAttribute('data-usuario-tipo');
 
@@ -118,6 +119,7 @@ events: function(infoRequisicao, sucessoCallback, erroCallback) {
         eventDidMount: function(infoEvento) {
             var elementoEvento = $(infoEvento.el);
             elementoEvento.attr('id', 'atividade-' + infoEvento.event.id);
+
         },
 
         // Evento de clique em um evento existente
@@ -128,7 +130,8 @@ events: function(infoRequisicao, sucessoCallback, erroCallback) {
             $('#eventTypeDetails').text(infoEvento.event.extendedProps.type);
             $('#eventDateDetails').text(infoEvento.event.start.toLocaleDateString('pt-BR'));
             $('#modalTitleDetails').attr('data-event-id', infoEvento.event.id);
-            $('#eventIdDetails').text(infoEvento.event.id);
+            //$('#eventIdDetails').text(infoEvento.event.id);
+            idEditando = infoEvento.event.id;
 
             // Abre o modal de detalhes
             var modalDetalhes = new bootstrap.Modal(document.getElementById('detailsModalNew'));
@@ -148,9 +151,9 @@ events: function(infoRequisicao, sucessoCallback, erroCallback) {
 
         // Botão de deletar evento
         $('#deleteEventButton').click(function() {
-            var idEvento = $('#eventIdDetails').text();
-            deletarEvento(idEvento);
+            deletarEvento(idEditando);
         });
+
 
         // Botão de editar evento
         $('#editEventButton').click(function() {
@@ -225,11 +228,8 @@ function deletarEvento(idEvento) {
         method: 'DELETE',
         success: function() {
             console.log('Evento deletado com sucesso');
-            // Fecha o modal de detalhes
             $('#detailsModalNew').modal('hide');
-            // Remove o elemento do evento da página
             $("#atividade-" + idEvento).remove();
-            // Recarrega as provas
             carregarProvas();
         },
         error: function() {
