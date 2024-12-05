@@ -1,84 +1,112 @@
 body {
-    overflow: auto; /* Removes scrollbar from the entire page */
-    height: 100vh; /* Ensures the body takes up the full viewport height */
-    margin: 0; /* Removes default margin */
+  overflow: hidden;
+  height: 100vh;
+  margin: 0;
+  background-color: #f0f0f0 !important;
+}
+
+.avisos-container {
+  max-width: 600px;
+  margin: 30px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  background-color: #f5f5f5 !important;
+  max-height: 80vh; /* A altura máxima será 80% da altura da tela */
+  overflow-y: auto; /* Scroll vertical se o conteúdo ultrapassar */
+}
+.container-cale {
+  max-width: 800px;
+  margin: 30px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  background-color: #f5f5f5 !important;
+  height: 80vh; /* Definindo uma altura fixa */
+  overflow-y: auto; /* Adiciona o scroll vertical se necessário */
 }
 
 .container {
-    max-width: 900px;
-    margin: 30px auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 30px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  background-color: #f5f5f5 !important;
+  overflow-y: auto; /* Adiciona o scroll vertical se necessário */
+}
+
+
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.avisos-container, .calendar-container {
+  flex-basis: 48%;
 }
 
 h1 {
-    text-align: center;
-    color: #3498db;
-    margin-bottom: 30px;
+  text-align: center;
+  color: #3498db;
+  margin-bottom: 30px;
 }
 
 #calendar {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  overflow: visible;
 }
 
 .fc-toolbar-title {
-    font-size: 1.75rem;
-    color: #2c3e50;
+  font-size: 1.75rem;
+  color: #2c3e50;
 }
 
 .fc-daygrid-day {
-    background-color: #fafafa;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 .fc-daygrid-day:hover {
-    background-color: #eaf4ff;
-    cursor: pointer;
+  background-color: #eaf4ff;
+  cursor: pointer;
 }
 
 .fc-day-today {
-    background-color: #d9e8ff !important;
+  background-color: #d9e8ff !important;
 }
 
 .fc-event {
-    background-color: #3498db;
-    border: none;
-    border-radius: 5px;
-    padding: 5px;
-    color: white;
+  background-color: #3498db;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  color: white;
 }
 
 .modal-header {
-    background-color: #3498db;
-    color: white;
+  background-color: #3498db;
+  color: white;
 }
 
 .modal-content {
-    border-radius: 10px;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 button {
-    background-color: #3498db;
+  background-color: #3498db;
 }
 
 button:hover {
-    background-color: #2980b9;
+  background-color: #2980b9;
 }
 
 .fc-event-title {
-    white-space: normal !important; /* Permite a quebra de linha */
-    word-wrap: break-word !important; /* Garante a quebra de palavra, se necessário */
-}
-
-#calendar {
-    width: 100%;
-    max-width: 100%;  /* Garante que o calendário ocupe todo o espaço disponível */
-    overflow: visible; /* Permite que o conteúdo extra seja visível */
+  white-space: normal !important;
+  word-wrap: break-word !important;
 }

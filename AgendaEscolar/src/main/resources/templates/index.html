@@ -36,14 +36,15 @@
 <div th:insert="~{navbar}"></div>
 
 <div class="row">
-    <div class="container mb-5 mt-5 col-3" id="avisosContainer">
+    <div class="avisos-container mb-5 mt-5 col-3" id="avisosContainer">
+        <h1>Avisos</h1>
         <div th:insert="~{modaldasatividade}"></div>
 
         <div th:insert="~{carregararquivos}"></div>
 
 
         <!-- Container do calendário -->
-        <div class="container mt-5 col-9">
+        <div class="container-cale mt-5 col-9">
             <h1 class="text-center mb-4">Agenda Escolar</h1>
             <div id="calendar"></div>
         </div>
