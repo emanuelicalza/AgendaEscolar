@@ -5,7 +5,6 @@ var usuarioTipo = document.getElementById('info-usuario').getAttribute('data-usu
 
 var infoMateria = document.getElementById('info-materia');
 var materiaSelecionada = infoMateria ? infoMateria.getAttribute('data-materia-nome') : '';
-console.log('bah',materiaSelecionada);
 
 // Evento disparado quando o DOM é totalmente carregado
 document.addEventListener('DOMContentLoaded', function() {
