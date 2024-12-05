@@ -30,7 +30,11 @@
 
 <div id="info-usuario" th:data-usuario-tipo="${session.usuario != null ? session.usuario.tipo : 0}"></div>
 
-
+<div id="info-materia"
+     th:if="${materiaSelecionada != null}"
+     th:data-materia-nome="${materiaSelecionada.nome}"
+     th:text="${materiaSelecionada.nome}">
+</div>
 
 <!-- Incluindo o fragmento da navbar -->
 <div th:insert="~{navbar}"></div>
