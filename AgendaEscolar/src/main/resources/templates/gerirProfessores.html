@@ -44,7 +44,7 @@
             <tr>
                 <td th:text="${professor.nome}">Professor A</td>
                 <td th:text="${professor.email}">professorA@gmail.com</td>
-                <td th:text="${professor.dataNascimento}">1980-01-01</td>
+                <td th:text="${professor.dataNascimentoFormatada}">01/01/1980</td>
                 <td>
                     <button class="btn btn-warning btn-sm"
                             th:attr="onclick='openProfessorModal(' + ${professor.id} + ')'" >
