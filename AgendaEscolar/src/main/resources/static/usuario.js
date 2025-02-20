@@ -142,7 +142,7 @@ function atualizarTabelaProfessores() {
                     `<tr id="professor-${professor.id}">
                         <td class="nome">${professor.nome}</td>
                         <td class="email">${professor.email}</td>
-                        <td class="dataNascimento">${professor.dataNascimento}</td>
+                        <td th:text="${professor.dataNascimentoFormatada}"></td>
                         <td>
                             <button class="btn btn-warning btn-sm" onclick="openProfessorModal(${professor.id})">Editar</button>
                             <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${professor.id})">Deletar</button>

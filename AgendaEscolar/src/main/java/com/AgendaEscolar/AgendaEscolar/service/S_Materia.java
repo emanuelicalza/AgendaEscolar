@@ -41,9 +41,17 @@ public class S_Materia {
 
     // Método para excluir uma matéria
     public void excluirMateria(Long id) {
-        if (!r_materia.existsById(id)) {
-            throw new IllegalArgumentException("Matéria não encontrada para exclusão."); // Lança uma exceção específica
-        }
+            if (!r_materia.existsById(id)) {
+                throw new IllegalArgumentException("Matéria não encontrada para exclusão.");
+            }
+
+            try {
+                r_materia.deleteById(id);
+            } catch (Exception e) {
+                throw new RuntimeException("Erro ao excluir a matéria. Verifique dependências no banco.", e);
+            }
+
+
         r_materia.deleteById(id); // Exclui a matéria pelo ID
     }
 

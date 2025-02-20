@@ -6,7 +6,7 @@ body {
 }
 
 .avisos-container {
-  max-width: 600px;
+  max-width: 500px;
   margin: 30px auto;
   background-color: #fff;
   padding: 20px;
@@ -37,7 +37,6 @@ body {
   border-radius: 20px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
   background-color: #f5f5f5 !important;
-  overflow-y: auto; /* Adiciona o scroll vertical se necessário */
 }
 
 .row {
@@ -48,7 +47,6 @@ body {
 .avisos-container, .calendar-container {
   flex-basis: 48%;
 }
-
 h1 {
   text-align: center;
   color: #3498db;

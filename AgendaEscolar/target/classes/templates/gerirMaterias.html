@@ -29,7 +29,6 @@
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th>#</th>
             <th>Nome</th>
             <th>Professor</th>
             <th>Turma</th>
@@ -39,7 +38,6 @@
         <tbody>
         <!-- Loop para exibir as matérias -->
         <tr th:each="materia : ${materias}">
-            <td th:text="${materia.id}"></td>
             <td th:text="${materia.nome}"></td>
             <td>
                 <span th:text="${materia.professor != null ? materia.professor.nome : 'Sem professor'}"></span>
@@ -88,6 +86,7 @@
                     <div class="mb-3">
                         <label for="professorMateria" class="form-label">Professor</label>
                         <select class="form-select" id="professorMateria" name="professor.id" required>
+                            <option value="" selected disabled>Escolha um professor</option>
                             <option th:each="professor : ${professores}"
                                     th:value="${professor.id}"
                                     th:text="${professor.nome}"></option>
@@ -96,7 +95,7 @@
                     <div class="mb-3">
                         <label for="turmaMateria" class="form-label">Turma</label>
                         <select class="form-select" id="turmaMateria" name="turma.id" required>
-                            <option> </option>
+                            <option value="" selected disabled>Escolha uma turma</option>
                             <option th:each="turma : ${turmas}" th:value="${turma.id}" th:text="${turma.nomeFormatado}"></option>
                         </select>
                     </div>

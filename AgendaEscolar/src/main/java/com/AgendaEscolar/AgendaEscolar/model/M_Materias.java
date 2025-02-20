@@ -14,13 +14,13 @@ public class M_Materias {
 
     private String nome;
 
-    @ManyToOne(fetch = FetchType.EAGER) // Carregamento antecipado da turma
-    @JoinColumn(name = "turma_id")
-    private M_Turmas turma;
-
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "professor_id")
     private M_Usuarios professor;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "turma_id")
+    private M_Turmas turma;
 
     // Getters e Setters
     public Long getId() {
